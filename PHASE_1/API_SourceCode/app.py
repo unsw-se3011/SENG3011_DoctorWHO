@@ -1,12 +1,12 @@
 from flask import Flask, request
-from flask_restful import Resource, Api, reqparse
+from flask_restplus import Resource, Api, reqparse
 # from flask_jwt import JWT, jwt_required
 
 # from security import authenticate, identity
 
 app = Flask(__name__)
 
-api = Api(app)
+api = Api(app) # , title='Title of API', description='This is an API which doesn\'t work yet')
 
 articles = [
 	{
@@ -65,33 +65,35 @@ articles = [
 ]
 
 class Articles(Resource):
-	parser = reqparse.RequestParser()
-	parser.add_argument('start_date',
-		type=str,
-		required=True
-	)
-	parser.add_argument('end_date',
-		type=str,
-		required=True
-	)
-	parser.add_argument('key_terms',
-		type=str,
-		required=False
-	)
-	parser.add_argument('location',
-		type=str,
-		required=False
-	)
+    parser = reqparse.RequestParser()
+    parser.add_argument('start_date',
+        type=str,
+        required=True
+    )
+    parser.add_argument('end_date',
+        type=str,
+        required=True
+    )
+    parser.add_argument('key_terms',
+        type=str,
+        required=False
+    )
+    parser.add_argument('location',
+        type=str,
+        required=False
+    )
 
 def get(self):
-	data = Articles.parser.parse_args()
-	articles_in_dates = list(filter(lambda x: (x['date_of_publication'] <= data['end_date'] and x['date_of_publication'] >= data['start_date'], articles)))
-	if data['key_terms']:
-		pass
-	if data['location']:
-		pass
-	return {'articles': articles_in_dates}
+    data = Articles.parser.parse_args()
+    articles_in_dates = list(filter(lambda x: (x['date_of_publication'] <= data['end_date'] and x['date_of_publication'] >= data['start_date'], articles)))
+    if data['key_terms']:
+        pass
+    if data['location']:
+        pass
+    return {'articles': articles_in_dates}
 
+@app.route('/article/<article_id>')
+@api.doc(params={'id': 'An ID'})
 class Article(Resource):
 	def get(self, article_id):
 		pass 
