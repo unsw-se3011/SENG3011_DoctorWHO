@@ -1,0 +1,20 @@
+[
+    {
+        "event-type": "presence"
+    },
+    {
+        "event-type": "death"
+    },
+    {
+        "event-type": "infected"
+    },
+    {
+        "event-type": "hospitalised"
+    },
+    {
+        "event-type": "hospitalized"
+    },
+    {
+        "event-type": "recovered"
+    }
+]
