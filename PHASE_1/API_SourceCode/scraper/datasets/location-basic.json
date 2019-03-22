@@ -1,0 +1,10 @@
+[
+    {
+        "country": <string>,
+        "location": <string>,
+        "geonames-id": <number>
+    },
+    {
+        "country": 
+    }
+]
