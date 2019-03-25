@@ -82,11 +82,11 @@ report_model = api.model('Report', {
     'disease': fields.List(fields.String(example='unknown')),
     'syndrome': fields.List(fields.String(example='Acute fever and rash')),
     'reported_events': fields.List(fields.Nested(reported_event_model)),
-    'comment': fields.String(None)
+    'comment': fields.String(example='')
 })
 
 article_model = api.model('Article', {
-    'id': fields.Integer(example=5),
+    'id': fields.Integer(example=0),
     'url': fields.String(example='http://www.who.int/lalala'),
     'date_of_publication': fields.String(example='2018-12-12Txx:xx:xx'),
     'headline': fields.String(example='Outbreaks in Southern Vietnam'),
@@ -114,13 +114,13 @@ class Article(Resource):
     def get(self, article_id):
         article_id = request.view_args['article_id']
         if not article_id.isdigit():
-            return 400
+            return {'comment': 'Invalid article ID'}, 400
         desired_article = list(filter(lambda x: x['id'] == article_id, articles))
         print(desired_article)
         if len(desired_article) > 0:
             return desired_article[0], 200
         else:
-            return 404
+            return {'comment': 'Article not found'}, 404
 
 class Articles(Resource):
     parser = reqparse.RequestParser()
@@ -152,19 +152,30 @@ class Articles(Resource):
     def get(self):
         data = Articles.parser.parse_args()
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
-        if not (date_regex.match(data['start_date']) and date_regex.match(data['end_date'])) and data[start_date] <= data[end_date]:
-            return 400
+        if not date_regex.match(data['start_date']) or not date_regex.match(data['end_date']) or data['start_date'] > data['end_date']:
+            return {'comment': 'Invalid parameters'}, 400
         else: # start and end dates valid
             search_results = list(filter(lambda x: (x['date_of_publication'] <= data['end_date'] and x['date_of_publication'] >= data['start_date']), articles))
-            if data['key_terms']: #TODO 
-                search_terms = data['key_terms'].split(',');
-                pass
+            '''
+            if data['key_terms']: #TODO test if this actually works
+                search_terms = data['key_terms'].split(','); # add synonyms???
+                filtered_results = []
+                for article in search_results:
+                    for report in article['reports']:
+                        # put all diseases into one string, then check if keywords match
+                        diseases_string = report['disease'].join(',');
+                        for term in search_terms:
+                            if term in diseases_string:
+                                filtered_results += article
+                                break
+                search_results = filtered_results
+            '''
             if data['location']:
                 pass
-            if articles:
+            if search_results:
                 return {'articles': search_results}
             else:
-                return 404
+                return {'comment': 'No results found'}, 404
 
 
 api.add_resource(Article, '/article/<article_id>')
