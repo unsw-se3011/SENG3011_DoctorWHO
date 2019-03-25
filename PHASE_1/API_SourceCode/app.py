@@ -1,5 +1,5 @@
 from flask import Flask, request
-from flask_restplus import Resource, Api, reqparse
+from flask_restplus import Resource, Api, reqparse, fields
 import re
 # from flask_jwt import JWT, jwt_required
 
@@ -67,62 +67,57 @@ articles = [
     }
 ]
 
-'''
-article_model = api.model('Article', 
-    {
-        "url":"www.who.int/lalala",
-        "date_of_publication":"2018-12-12Txx:xx:xx",
-        "headline":"Outbreaks in Southern Vietnam",
-        "main_text":"Three people infected by what is thought to be H5N1 or H7N9 in Ho Chi Minh city. First infection occurred on 1 Dec 2018, and latest is report on 10 December. Two in hospital, one has recovered. Furthermore, two people with fever and rash infected by an unknown disease.",
-        "reports":[
-            {
-                "disease":[
-                    "influenza a/h5n1",
-                    "influenza a/h7n9" 
-                ],
-                "syndrome":[
-                ],
-                "reported_events":[
-                    {
-                        "type":"recovered",
-                        "date":"2018-12-01Txx:xx:xx to 2018-12-10Txx:xx:xx",
-                        "location":{
-                            "geonames-id":1566083
-                        },
-                        "number-affected":1 
-                    },
-                    {
-                        "type":"hospitalised",
-                        "date":"2018-12-01Txx:xx:xx to 2018-12-10Txx:xx:xx",
-                        "location":{
-                            "geonames-id":1566083 },
-                        "number-affected":2
-                    }
-                ],
-                "Comment":None
-            },
-            {
-                "disease":[
-                    "unknown"
-                ],
-                "syndrome":[
-                    "Acute fever and rash"
-                ],
-                "reported_events":[
-                    {
-                        "type":"infected",
-                        "date":"2018-12-01Txx:xx:xx to 2018-12-10Txx:xx:xx",
-                        "location":{
-                            "geonames-id":1566083
-                        },
-                        "number-affected":2
-                    }
-                ],
-                "comment":None
-            }
-        ]
-    })
-'''
+
+reported_event_model = api.model('Reported Event', {
+    'type': fields.String,
+    'date': fields.String,
+    'location': fields.List(fields.String),
+    'number-affected': fields.Integer
+})
+
+report_model = api.model('Report', {
+    'disease': fields.List(fields.String),
+    'syndrome': fields.List(fields.String),
+    'reported_events': fields.List(fields.Nested(reported_event_model)),
+    'comment': fields.String
+})
+
+article_model = api.model('Article', {
+    'id': fields.Integer,
+    'url': fields.String,
+    'date_of_publication': fields.String,
+    'headline': fields.String,
+    'main_text': fields.String,
+    'reports': fields.List(fields.Nested(report_model))
+})
+
+search_result_model = api.model('Search Results', {
+    'articles': fields.List(fields.Nested(article_model))
+})
+
+@api.param('article_id', 'ID of the requested article')
+class Article(Resource):
+    @api.response(200, 'Article retrieved', article_model)
+    @api.response(400, 'Invalid article ID')
+    @api.response(404, 'Article not found')
+
+    # for testing
+    # @api.response(600, 'Report', report_model)
+    # @api.response(601, 'Reported Event', reported_event_model)
+    # @api.response(602, 'Search result', search_result_model)
+
+    # how to get id:
+
+    def get(self, article_id):
+        article_id = request.view_args['article_id']
+        if not article_id.isdigit():
+            return 400
+        desired_article = list(filter(lambda x: x['id'] == article_id, articles))
+        print(desired_article)
+        if len(desired_article) > 0:
+            return desired_article[0], 200
+        else:
+            return 404
 
 class Articles(Resource):
     parser = reqparse.RequestParser()
@@ -148,11 +143,9 @@ class Articles(Resource):
     )
     
     @api.expect(parser)
-    @api.doc(responses = {
-        200: 'Search successful', 
-        400: 'Invalid parameters', 
-        404: 'No results found'
-    })
+    @api.response(200, 'Article retrieved', search_result_model)
+    @api.response(400, 'Invalid parameters')
+    @api.response(404, 'No results found')
     def get(self):
         data = Articles.parser.parse_args()
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
@@ -170,29 +163,9 @@ class Articles(Resource):
             else:
                 return 404
 
-@api.param('article_id', 'ID of the requested article')
-class Article(Resource):
-    @api.doc(responses = {
-        200: 'Article retrieved', 
-        400: 'Invalid article ID', 
-        404: 'Article not found'
-    })
 
-    # how to get id:
-
-    def get(self, article_id):
-        article_id = request.view_args['article_id']
-        if not article_id.isdigit():
-            return 400
-        desired_article = list(filter(lambda x: x['id'] == article_id, articles))
-        print(desired_article)
-        if len(desired_article) > 0:
-            return desired_article[0], 200
-        else:
-            return 404
-
-api.add_resource(Articles, '/articles')
 api.add_resource(Article, '/article/<article_id>')
+api.add_resource(Articles, '/articles')
 
 if __name__ == '__main__':
     app.run(debug=True)
