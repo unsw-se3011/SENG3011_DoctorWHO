@@ -3,7 +3,7 @@ import mysql.connector
 def create_database():
 	init_db = mysql.connector.connect(
 		host="localhost",
-		user="root",
+		user="cardis_db",
 		passwd="password"
 	)
 
@@ -18,7 +18,7 @@ def create_database():
 def create_tables():
 	mydb = mysql.connector.connect(
 		host="localhost",
-		user="root",
+		user="cardis_db",
 		passwd="password",
 		database="DoctorWHO"
 	)
