@@ -67,27 +67,30 @@ articles = [
     }
 ]
 
+location_model = api.model('Location', {
+    'geonames-id': fields.Integer(example=1566083)
+})
 
 reported_event_model = api.model('Reported Event', {
-    'type': fields.String,
-    'date': fields.String,
-    'location': fields.List(fields.String),
-    'number-affected': fields.Integer
+    'type': fields.String(enum=['presence','death','infected','hospitalised','recovered'], example='infected'),
+    'date': fields.String(example='2018-12-01Txx:xx:xx to 2018-12-10Txx:xx:xx'),
+    'location': fields.Nested(location_model),
+    'number-affected': fields.Integer(example=2)
 })
 
 report_model = api.model('Report', {
-    'disease': fields.List(fields.String),
-    'syndrome': fields.List(fields.String),
+    'disease': fields.List(fields.String(example='unknown')),
+    'syndrome': fields.List(fields.String(example='Acute fever and rash')),
     'reported_events': fields.List(fields.Nested(reported_event_model)),
-    'comment': fields.String
+    'comment': fields.String(None)
 })
 
 article_model = api.model('Article', {
-    'id': fields.Integer,
-    'url': fields.String,
-    'date_of_publication': fields.String,
-    'headline': fields.String,
-    'main_text': fields.String,
+    'id': fields.Integer(example=5),
+    'url': fields.String(example='http://www.who.int/lalala'),
+    'date_of_publication': fields.String(example='2018-12-12Txx:xx:xx'),
+    'headline': fields.String(example='Outbreaks in Southern Vietnam'),
+    'main_text': fields.String(example='Three people infected by what is thought to be H5N1 or H7N9 in Ho Chi Minh city. First infection occurred on 1 Dec 2018, and latest is report on 10 December. Two in hospital, one has recovered. Furthermore, two people with fever and rash infected by an unknown disease.'),
     'reports': fields.List(fields.Nested(report_model))
 })
 
