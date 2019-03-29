@@ -19,6 +19,7 @@ articles = [
         "main_text":"Three people infected by what is thought to be H5N1 or H7N9 in Ho Chi Minh city. First infection occurred on 1 Dec 2018, and latest is report on 10 December. Two in hospital, one has recovered. Furthermore, two people with fever and rash infected by an unknown disease.",
         "reports":[
             {
+                "id":0,
                 "disease":[
                     "influenza a/h5n1",
                     "influenza a/h7n9" 
@@ -27,6 +28,7 @@ articles = [
                 ],
                 "reported_events":[
                     {
+                        "id": 0,
                         "type":"recovered",
                         "date":"2018-12-01Txx:xx:xx to 2018-12-10Txx:xx:xx",
                         "location":{
@@ -35,6 +37,7 @@ articles = [
                         "number-affected":1 
                     },
                     {
+                        "id": 1,
                         "type":"hospitalised",
                         "date":"2018-12-01Txx:xx:xx to 2018-12-10Txx:xx:xx",
                         "location":{
@@ -45,6 +48,7 @@ articles = [
                 "Comment":None
             },
             {
+                "id":1,
                 "disease":[
                     "unknown"
                 ],
@@ -53,6 +57,7 @@ articles = [
                 ],
                 "reported_events":[
                     {
+                        "id": 2,
                         "type":"infected",
                         "date":"2018-12-01Txx:xx:xx to 2018-12-10Txx:xx:xx",
                         "location":{
@@ -72,6 +77,7 @@ location_model = api.model('Location', {
 })
 
 reported_event_model = api.model('Reported Event', {
+    'id': fields.Integer(example=0),
     'type': fields.String(enum=['presence','death','infected','hospitalised','recovered'], example='infected'),
     'date': fields.String(example='2018-12-01Txx:xx:xx to 2018-12-10Txx:xx:xx'),
     'location': fields.Nested(location_model),
@@ -79,6 +85,7 @@ reported_event_model = api.model('Reported Event', {
 })
 
 report_model = api.model('Report', {
+    'id': fields.Integer(example=0),
     'disease': fields.List(fields.String(example='unknown')),
     'syndrome': fields.List(fields.String(example='Acute fever and rash')),
     'reported_events': fields.List(fields.Nested(reported_event_model)),
@@ -127,12 +134,12 @@ class Articles(Resource):
     parser.add_argument('start_date',
         type=str,
         required=True,
-        help='Start date of articles in period of interest in the format "yyyy-mm-ddThh:mm:ss".\n Year is required, every other segment is optional and missing characters must be replaced with "x"'
+        help='Start date of articles in period of interest in the format "yyyy-mm-ddThh:mm:ss".\n Year is required, every other segment is optional, but missing characters must be replaced with "x"'
     )
     parser.add_argument('end_date',
         type=str,
         required=True,
-        help='End date of articles in period of interest in the format "yyyy-mm-ddThh:mm:ss".\n Year is required, every other segment is optional and missing characters must be replaced with "x"'
+        help='End date of articles in period of interest in the format "yyyy-mm-ddThh:mm:ss".\n Year is required, every other segment is optional, but missing characters must be replaced with "x".\n end_date must be identical to or chronologically after start_date.'
     )
     parser.add_argument('key_terms',
         type=str,
@@ -142,7 +149,7 @@ class Articles(Resource):
     parser.add_argument('location',
         type=str,
         required=False,
-        help='Names of locations of interest'
+        help='Name of location of interest'
     )
     
     @api.expect(parser)
@@ -152,6 +159,7 @@ class Articles(Resource):
     def get(self):
         data = Articles.parser.parse_args()
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
+        year_regex = re.compile('^(\d{4})')
         if not date_regex.match(data['start_date']) or not date_regex.match(data['end_date']) or data['start_date'] > data['end_date']:
             return {'comment': 'Invalid parameters'}, 400
         else: # start and end dates valid
@@ -162,8 +170,9 @@ class Articles(Resource):
                 filtered_results = []
                 for article in search_results:
                     for report in article['reports']:
+                        diseases_string = ''
                         # put all diseases into one string, then check if keywords match
-                        diseases_string = report['disease'].join(',');
+                        diseases_string = report['disease'].join(',')
                         for term in search_terms:
                             if term in diseases_string:
                                 filtered_results += article
@@ -171,12 +180,12 @@ class Articles(Resource):
                 search_results = filtered_results
             '''
             if data['location']:
+                geonames_id
                 pass
             if search_results:
                 return {'articles': search_results}
             else:
                 return {'comment': 'No results found'}, 404
-
 
 api.add_resource(Article, '/article/<article_id>')
 api.add_resource(Articles, '/articles')
