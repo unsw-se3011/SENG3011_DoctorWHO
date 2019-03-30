@@ -8,14 +8,14 @@ def read_json_list(filename):
     return json.loads(data)
 
 # by 'name'
-disease_list    = read_json_list("datasets/disease_list.json")
-syndrome_list   = read_json_list("datasets/syndrome_list.json")
-month_list      = read_json_list("datasets/month_list.json")
+disease_list    = read_json_list("scraper/datasets/disease_list.json")
+syndrome_list   = read_json_list("scraper/datasets/syndrome_list.json")
+month_list      = read_json_list("scraper/datasets/month_list.json")
 # by 'event-type'
-event_list      = read_json_list("datasets/event_list.json")
+event_list      = read_json_list("scraper/datasets/event_list.json")
 # by 'name' and 'id'
-topic_list      = read_json_list("datasets/topic_list.json")
-country_list    = read_json_list("datasets/country_list.json")
+topic_list      = read_json_list("scraper/datasets/topic_list.json")
+country_list    = read_json_list("scraper/datasets/country_list.json")
 
 def new_article(url):
     a = {

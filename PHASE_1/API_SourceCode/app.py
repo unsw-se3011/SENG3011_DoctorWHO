@@ -1,6 +1,7 @@
 from flask import Flask, request
 from flask_restplus import Resource, Api, reqparse, fields
 import re
+from scraper import scrape
 # from flask_jwt import JWT, jwt_required
 
 # from security import authenticate, identity
@@ -45,7 +46,7 @@ articles = [
                         "number-affected":2
                     }
                 ],
-                "Comment":None
+                "comment":None
             },
             {
                 "id":1,

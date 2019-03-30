@@ -2,7 +2,7 @@ import sys
 import requests
 import json
 from bs4 import BeautifulSoup
-import filter, update_db
+from scraper import filter, update_db
 
 """
 News scan + year + page number=> scrape for latest dates
