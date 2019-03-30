@@ -19,7 +19,7 @@ country_list    = read_json_list("datasets/country_list.json")
 
 def new_article(url):
     a = {
-        "id": 0,
+        #"id": 0,
         "url": url,
         "date_of_publication":"", #yyyy-mm-ddThh:mm:ss
         "headline":"",
@@ -32,7 +32,7 @@ def new_article(url):
 
 def new_report():
     r = {
-        "id": 0,
+        #"id": 0,
         "disease":[], # disease_list.json
         "syndrome":[], # syndrome_list.json
         "reported_events":[], # event dictionary
@@ -43,7 +43,7 @@ def new_report():
 
 def new_event():
     e = {
-        "id": 0,
+        #"id": 0,
         "type":"", # event_list.json
         "date":"", #yyyy-mm-ddThh:mm:ss to yyyy-mm-ddThh:mm:ss
         "location":{

@@ -3,6 +3,7 @@ Click==7.0
 Flask==1.0.2
 Flask-JWT==0.3.2
 Flask-RESTful==0.3.7
+Flask-RESTPlus==0.12.1
 itsdangerous==1.1.0
 Jinja2==2.10
 MarkupSafe==1.1.1
@@ -11,3 +12,4 @@ pytz==2018.9
 relativetimebuilder==0.2.0
 six==1.12.0
 Werkzeug==0.14.1
+mysql-connector-python==8.0.15
