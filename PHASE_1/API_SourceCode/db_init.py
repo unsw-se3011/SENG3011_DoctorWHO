@@ -9,18 +9,18 @@ def create_database():
 
 	init_cursor = init_db.cursor()
 
-	init_cursor.execute("DROP DATABASE IF EXISTS DoctorWHO")
-	print("Old DoctorWHO database removed (if it existed)")
+	init_cursor.execute("DROP DATABASE IF EXISTS Doctor")
+	print("Old Doctor database removed (if it existed)")
 
-	init_cursor.execute("CREATE DATABASE DoctorWHO")
-	print("DoctorWHO database created")
+	init_cursor.execute("CREATE DATABASE Doctor")
+	print("Doctor database created")
 
 def create_tables():
 	mydb = mysql.connector.connect(
 		host="localhost",
 		user="root",
 		passwd="password",
-		database="DoctorWHO"
+		database="Doctor"
 	)
 
 	mycursor = mydb.cursor()
@@ -58,16 +58,16 @@ def create_tables():
 	print("created Reports table")
 
 	mycursor.execute("CREATE TABLE Articles"
-		" (articl_id INT AUTO_INCREMENT PRIMARY KEY,"
+		" (article_id INT AUTO_INCREMENT PRIMARY KEY,"
 		" url VARCHAR(255),"
 		" date_of_publication VARCHAR(255),"
 		" headline VARCHAR(255),"
-		" main_text VARCHAR(255)")
+		" main_text VARCHAR(255))")
 	print("created Articles table")
 
 	mycursor.execute("CREATE TABLE Locations"
 		" (location_id INT AUTO_INCREMENT PRIMARY KEY,"
-		" location_name VARCHAR(255) PRIMARY KEY)")
+		" location_name VARCHAR(255))")
 	print("created Locations table")
 
 	mycursor.execute("CREATE TABLE Events_Locations"
@@ -95,17 +95,17 @@ def create_tables():
 	print("created Articles_Reports table")
 	
 	mycursor.execute(
-		"CREATE VIEW Events_Locations_Summary AS"
-		  "SELECT"
-		    "event_id AS els_event_id,"
-		    "cast(concat('[', group_concat(json_quote(location_name) ORDER BY location_name SEPARATOR ','), ']') as json) AS els_location_name_array"
-		  "FROM"
-		    "Events"
-		    "INNER JOIN Events_Locations"
-		      "ON Events.event_id = Events_Locations.el_event"
-		    "INNER JOIN fruit"
-		      "ON Events_Locations.el_location = Locations.location_id"
-		  "GROUP BY"
+		"CREATE VIEW Events_Locations_Summary AS "
+		  "SELECT "
+		    "event_id AS els_event_id, "
+		    "cast(concat('[', group_concat(json_quote(location_name) ORDER BY location_name SEPARATOR ','), ']') as json) AS els_location_name_array "
+		  "FROM "
+		    "Events "
+		    "INNER JOIN Events_Locations "
+		      "ON Events.event_id = Events_Locations.el_event "
+		    "INNER JOIN Locations "
+		      "ON Events_Locations.el_location = Locations.location_id "
+		  "GROUP BY "
 		    "event_id;")
 	print("created Events_Locations_Summary view")
 
