@@ -2,30 +2,30 @@ import json, requests, sys
 from bs4 import BeautifulSoup
 
 month = [
-    {"month":"January"},
-    {"month":"February"},
-    {"month":"March"},
-    {"month":"April"},
-    {"month":"May"},
-    {"month":"June"},
-    {"month":"July"},
-    {"month":"August"},
-    {"month":"September"},
-    {"month":"October"},
-    {"month":"November"},
-    {"month":"December"},
-    {"month":"Jan"},
-    {"month":"Feb"},
-    {"month":"Mar"},
-    {"month":"Apr"},
-    {"month":"May"},
-    {"month":"Jun"},
-    {"month":"Jul"},
-    {"month":"Aug"},
-    {"month":"Sep"},
-    {"month":"Oct"},
-    {"month":"Nov"},
-    {"month":"Dec"}
+    {"name":"January"  , "value": 1},
+    {"name":"February" , "value": 2},
+    {"name":"March"    , "value": 3},
+    {"name":"April"    , "value": 4},
+    {"name":"May"      , "value": 5},
+    {"name":"June"     , "value": 6},
+    {"name":"July"     , "value": 7},
+    {"name":"August"   , "value": 8},
+    {"name":"September", "value": 9},
+    {"name":"October"  , "value": 10},
+    {"name":"November" , "value": 11},
+    {"name":"December" , "value": 12},
+    {"name":"Jan", "value": 1},
+    {"name":"Feb", "value": 2},
+    {"name":"Mar", "value": 3},
+    {"name":"Apr", "value": 4},
+    {"name":"May", "value": 5},
+    {"name":"Jun", "value": 6},
+    {"name":"Jul", "value": 7},
+    {"name":"Aug", "value": 8},
+    {"name":"Sep", "value": 9},
+    {"name":"Oct", "value": 10},
+    {"name":"Nov", "value": 11},
+    {"name":"Dec", "value": 12}
 ]
 def update_list(filename, data):
     try:
@@ -74,7 +74,7 @@ for res in topic_result:
     t["id"] = content[start_id+len("topics%3A"):end_id]
     start_name = content.find("Apply ")
     end_name = content.find(" filter </span>")
-    t["name"] = content[start_name+len("Apply "):end_name+1]
+    t["name"] = content[start_name+len("Apply "):end_name]
     if t not in topic:
         topic.append(t)
 update_list("topic_list", topic)
@@ -92,7 +92,7 @@ for res in country_result:
     c["id"] = content[start_id+len("country%3A"):end_id]
     start_name = content.find("Apply ")
     end_name = content.find(" filter </span>")
-    c["name"] = content[start_name+len("Apply "):end_name+1]
+    c["name"] = content[start_name+len("Apply "):end_name]
     if c not in topic:
         country.append(c)
 update_list("country_list", country)

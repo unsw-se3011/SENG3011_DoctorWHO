@@ -25,5 +25,14 @@
     },
     {
         "name": "Meningitis"
+    },
+    {
+        "name": "Fever"
+    },
+    {
+        "name": "Rash"
+    },
+    {
+        "name": "Paralysis"
     }
 ]

@@ -16,5 +16,11 @@
     },
     {
         "event-type": "recovered"
+    },
+    {
+        "event-type": "sick"
+    },
+    {
+        "event-type": "ill"
     }
 ]

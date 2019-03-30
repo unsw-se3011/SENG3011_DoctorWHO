@@ -15,6 +15,9 @@
         "name": "anthrax inhalation"
     },
     {
+        "name": "anthrax"
+    },
+    {
         "name": "botulism"
     },
     {
@@ -45,6 +48,9 @@
         "name": "ebola haemorrhagic fever"
     },
     {
+        "name": "ebola"
+    },
+    {
         "name": "ehec (e.coli)"
     },
     {
@@ -73,6 +79,9 @@
     },
     {
         "name": "influenza a/h2n2"
+    },
+    {
+        "name": "influenza"
     },
     {
         "name": "hand, foot and mouth disease"
