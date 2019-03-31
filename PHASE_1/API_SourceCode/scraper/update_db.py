@@ -170,7 +170,6 @@ def get_article_reports(article_id):
     reports_list = []
     try:
         cursor.execute(query)
-        # if cursor.rowcount > 0:
         ar_reports = []
         for row in cursor:
             ar_reports.append(row)
@@ -214,21 +213,7 @@ def get_article_reports(article_id):
                         row['location'] = location
                         report['reported_events'].append(row)
 
-                    '''
-                    query = ("SELECT * from Events "
-                            "WHERE event_id=" + str(event_report['er_id']))
-                    cursor.execute(query)
-                    for event_obj in cursor:
-                        query = ("SELECT * from Locations "
-                                "WHERE location_id=" + str(event_obj['event_id']))
-                        cursor.execute(query)
-                        for row in cursor:
-                            event_obj['location'] = row
-                        event_list.append(event_obj)
-                    report['reported_events'] = event_list
-                    '''
                 reports_list.append(report)
-
             
     except Exception as ex:
         print(ex)
@@ -259,17 +244,17 @@ def search_article_id(article_id):
 
     return res
 
-def search_pub_date(pub_date):
+def search_by_date(start_date, end_date):
     conn   = db_connect()
-    cursor = conn.cursor(buffered=True)
-    query  = ("SELECT * from Articles "
-             "WHERE date_of_publication=%s") #how to search range???
+    cursor = conn.cursor(dictionary=True)
+    query  = ("SELECT article_id from Articles "
+             "WHERE date_of_publication BETWEEN %s and %s") #how to search range???
     res = []
     try:
-        cursor.execute(query, pub_date)
-        if cursor.rowcount > 0:
-            for row in cursor:
-                res.append(row)
+        cursor.execute(query, (start_date, end_date))
+        for row in cursor:
+            res.append(search_article_id(str(row['article_id'])))
+        print(res)
     except Exception as ex:
         print(ex)
     

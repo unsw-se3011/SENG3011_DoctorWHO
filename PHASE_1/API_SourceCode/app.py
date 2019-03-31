@@ -137,7 +137,6 @@ class Article(Resource):
             return desired_article[0], 200
         '''
         if article_res:
-            # get reports list - each report has reported events 
             return article_res, 200 
         else:
             return {'comment': 'Article not found'}, 404
@@ -177,24 +176,32 @@ class Articles(Resource):
         if not date_regex.match(data['start_date']) or not date_regex.match(data['end_date']) or data['start_date'] > data['end_date']:
             return {'comment': 'Invalid parameters'}, 400
         else: # start and end dates valid
-            search_results = list(filter(lambda x: (x['date_of_publication'] <= data['end_date'] and x['date_of_publication'] >= data['start_date']), articles))
-            '''
+            search_results = update_db.search_by_date(data['start_date'], data['end_date'])
+            # search_results = list(filter(lambda x: (x['date_of_publication'] <= data['end_date'] and x['date_of_publication'] >= data['start_date']), articles))
             if data['key_terms']: #TODO test if this actually works
                 search_terms = data['key_terms'].split(','); # add synonyms???
+                search_terms = filter(None, [x.strip() for x in search_terms])
+                print("search terms:")
+                print(search_terms)
                 filtered_results = []
                 for article in search_results:
+                    # print(search_results)
+                    diseases_list = []
                     for report in article['reports']:
-                        diseases_string = ''
                         # put all diseases into one string, then check if keywords match
-                        diseases_string = report['disease'].join(',')
-                        for term in search_terms:
-                            if term in diseases_string:
-                                filtered_results += article
-                                break
+                        diseases_list += report['disease']
+                    diseases_string = ','.join(diseases_list)
+                    print("diseases_string: " + diseases_string)
+                    print(article)
+
+                    for term in search_terms:
+                        if term in diseases_string:
+                            filtered_results.append(article)
+                            break
                 search_results = filtered_results
-            '''
+                print("search results:")
+                print(search_results)
             if data['location']:
-                geonames_id
                 pass
             if search_results:
                 return {'articles': search_results}
