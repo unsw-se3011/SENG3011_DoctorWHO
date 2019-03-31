@@ -1,0 +1,165 @@
+{
+    "date_of_publication": "2019-03-29T00:00:00",
+    "headline": "DRC Ebola total grows by 15; new antiviral clears hurdle",
+    "main_text": "",
+    "reports": [
+        {
+            "comment": "",
+            "disease": [
+                "ebola"
+            ],
+            "reported_events": [
+                {
+                    "date": "",
+                    "location": {
+                        "country": "unknown",
+                        "geonames-id": 0,
+                        "id": 0,
+                        "location": ""
+                    },
+                    "number-affected": 0,
+                    "type": "death, infected, infected"
+                }
+            ],
+            "syndrome": []
+        }
+    ],
+    "topics": [
+        "Ebola",
+        "VHF"
+    ],
+    "url": "http://www.cidrap.umn.edu/news-perspective/2019/03/drc-ebola-total-grows-15-new-antiviral-clears-hurdle"
+}
+{
+    "date_of_publication": "2019-03-29T00:00:00",
+    "headline": "Long US flu season extends but shows signs of decline",
+    "main_text": "",
+    "reports": [
+        {
+            "comment": "",
+            "disease": [
+                "influenza"
+            ],
+            "reported_events": [
+                {
+                    "date": "",
+                    "location": {
+                        "country": "United States",
+                        "geonames-id": 0,
+                        "id": "347",
+                        "location": ""
+                    },
+                    "number-affected": 0,
+                    "type": "death, hospitalized, hospitalized"
+                }
+            ],
+            "syndrome": [
+                "Influenza-like illness"
+            ]
+        }
+    ],
+    "topics": [
+        "Influenza, General"
+    ],
+    "url": "http://www.cidrap.umn.edu/news-perspective/2019/03/long-us-flu-season-extends-shows-signs-decline"
+}
+[]
+[]
+{
+    "date_of_publication": "2019-03-28T00:00:00",
+    "headline": "As Ebola rages in DRC, survey highlights wide mistrust",
+    "main_text": "",
+    "reports": [
+        {
+            "comment": "",
+            "disease": [
+                "ebola"
+            ],
+            "reported_events": [
+                {
+                    "date": "",
+                    "location": {
+                        "country": "unknown",
+                        "geonames-id": 0,
+                        "id": 0,
+                        "location": ""
+                    },
+                    "number-affected": 0,
+                    "type": "ill"
+                }
+            ],
+            "syndrome": []
+        }
+    ],
+    "topics": [
+        "Ebola",
+        "VHF"
+    ],
+    "url": "http://www.cidrap.umn.edu/news-perspective/2019/03/ebola-rages-drc-survey-highlights-wide-mistrust"
+}
+[]
+[]
+{
+    "date_of_publication": "2019-03-27T00:00:00",
+    "headline": "WHO names new Ebola chief in DRC as 7 more cases noted",
+    "main_text": "",
+    "reports": [
+        {
+            "comment": "",
+            "disease": [
+                "ebola"
+            ],
+            "reported_events": [
+                {
+                    "date": "",
+                    "location": {
+                        "country": "Liberia",
+                        "geonames-id": 0,
+                        "id": "896",
+                        "location": ""
+                    },
+                    "number-affected": 0,
+                    "type": "death, infected, infected"
+                }
+            ],
+            "syndrome": []
+        }
+    ],
+    "topics": [
+        "Ebola",
+        "VHF"
+    ],
+    "url": "http://www.cidrap.umn.edu/news-perspective/2019/03/who-names-new-ebola-chief-drc-7-more-cases-noted"
+}
+{
+    "date_of_publication": "2019-03-27T00:00:00",
+    "headline": "Yemen cholera spike renews fears of another huge outbreak",
+    "main_text": "",
+    "reports": [
+        {
+            "comment": "",
+            "disease": [
+                "cholera"
+            ],
+            "reported_events": [
+                {
+                    "date": "",
+                    "location": {
+                        "country": "unknown",
+                        "geonames-id": 0,
+                        "id": 0,
+                        "location": ""
+                    },
+                    "number-affected": 0,
+                    "type": "death, sick, sick"
+                }
+            ],
+            "syndrome": []
+        }
+    ],
+    "topics": [
+        "Cholera"
+    ],
+    "url": "http://www.cidrap.umn.edu/news-perspective/2019/03/yemen-cholera-spike-renews-fears-another-huge-outbreak"
+}
+[]

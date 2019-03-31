@@ -37,7 +37,7 @@ def scrape_scan(url):
     result = soup.findAll("h3")
     for res in result:
         for s in res.contents: #not .text
-            start_content = article_content.find(s)
+            start_content = article_content.find(str(s))
             end_content = article_content[start_content:].find("<p> </p>")
             if end_content == -1:
                 soup_content = BeautifulSoup(article_content[start_content:], "lxml").findAll("p")

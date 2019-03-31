@@ -36,7 +36,7 @@ def new_report():
         "disease":[], # disease_list.json
         "syndrome":[], # syndrome_list.json
         "reported_events":[], # event dictionary
-        "comments":""
+        "comment":""
     }
     
     return r

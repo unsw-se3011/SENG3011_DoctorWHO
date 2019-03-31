@@ -1,7 +1,8 @@
 from flask import Flask, request
 from flask_restplus import Resource, Api, reqparse, fields
 import re
-from scraper import scrape
+from scraper import scrape, update_db
+import json
 # from flask_jwt import JWT, jwt_required
 
 # from security import authenticate, identity
@@ -192,4 +193,15 @@ api.add_resource(Article, '/article/<article_id>')
 api.add_resource(Articles, '/articles')
 
 if __name__ == '__main__':
+    #while True:
+    out = open("log", "w")
+    
+    res = scrape.scrape_news("http://www.cidrap.umn.edu/news-perspective", [])
+    for r in res:
+        json.dump(r, indent=4, sort_keys=True, fp=out)
+        out.write("\n")
+    out.close()
+    
+    update_db.add_result(res)
     app.run(debug=True)
+

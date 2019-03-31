@@ -157,16 +157,79 @@ def add_article_report(article_report):
         conn.close()
         return -1
 
+def add_result(result):
+    art_id = []
+    for a in result:
+        if a == [] or search_article_url(a['url']) == True:
+            continue
+        article = {
+            "url": a['url'],
+            "date_of_publication": a['date_of_publication'],
+            "headline": a['headline'],
+            "main_text": a['main_text']
+        }
+        aid = add_article(article)
+        art_id.append(aid)
+        
+        rep_id = []
+        for r in a['reports']:
+            report = {
+                "disease": ','.join(r['disease']),
+                "syndrome": ','.join(r['syndrome']),
+                "comment": r['comment']
+            }
+            rid = add_report(report)
+            rep_id.append(rid)
+            
+            evn_id = []
+            for e in r['reported_events']:
+                event = {
+                    "type": e['type'],
+                    "date_of_event": e['date'],
+                    "number_affected": e['number-affected']
+                }
+                eid = add_event(event)
+                evn_id.append(eid)
+                
+                location = {
+                    "location_name": e['location']['country'],
+                    "geonames_id": e['location']['geonames-id']
+                }
+                lid = search_location(location)
+                if lid < 0:
+                    lid = add_location(location)
+                
+                event_location = {
+                    "event_id": eid,
+                    "location_id": lid
+                }
+                add_event_location(event_location)
+                
+                event_report = {
+                    "event_id": eid,
+                    "report_id": rid
+                }
+                add_event_report(event_report)
+                
+                article_report = {
+                    "event_id": eid,
+                    "article_id": aid
+                }
+                add_article_report(article_report)
+    
+    print("Have added these articles: ")
+    print(art_id)
+
 ########################################################
 
 def search_article_id(article_id):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
-    query  = ("SELECT * from Articles "
+    query  = ("SELECT * FROM Articles "
              "WHERE article_id=%s")
     res = None
     try:
-        cursor.execute(query, article_id)
+        cursor.execute(query, (article_id,))
         if cursor.rowcount > 0:
             for row in cursor:
                 res = row
@@ -180,11 +243,11 @@ def search_article_id(article_id):
 def search_pub_date(pub_date):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
-    query  = ("SELECT * from Articles "
+    query  = ("SELECT * FROM Articles "
              "WHERE date_of_publication=%s") #how to search range???
     res = []
     try:
-        cursor.execute(query, pub_date)
+        cursor.execute(query, (pub_date,))
         if cursor.rowcount > 0:
             for row in cursor:
                 res.append(row)
@@ -234,8 +297,8 @@ def search_event(event):
 def search_location(location):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
-    query  = ("SELECT location_id from Locations "
-             "WHERE geonames_id=%(geonames_id)s or location_name=%(location_name)s")
+    query  = ("SELECT location_id FROM Locations "
+             "WHERE geonames_id=%(geonames_id)s OR location_name=%(location_name)s")
     res = -1
     try:
         cursor.execute(query, location)
@@ -248,3 +311,20 @@ def search_location(location):
     cursor.close()
     conn.close()
     return res
+
+def search_article_url(url):
+    conn   = db_connect()
+    cursor = conn.cursor(buffered=True)
+    query  = ("SELECT * FROM Articles "
+             "WHERE url=%s")
+    try:
+        cursor.execute(query, (url,))
+        if cursor.rowcount > 0:
+            return True
+    except Exception as ex:
+        print(ex)
+    
+    cursor.close()
+    conn.close()
+    return False
+
