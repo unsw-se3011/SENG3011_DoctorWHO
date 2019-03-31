@@ -3,7 +3,7 @@ import mysql.connector
 def db_connect():
 	mydb = mysql.connector.connect(
 		host="localhost",
-		user="cardis_db",
+		user="root",
 		passwd="password",
 		database="DoctorWHO"
 	)
@@ -161,12 +161,14 @@ def add_article_report(article_report):
 
 def search_article_id(article_id):
     conn   = db_connect()
-    cursor = conn.cursor(buffered=True)
+    # cursor = conn.cursor(buffered=True)
+    cursor = conn.cursor(dictionary=True)
     query  = ("SELECT * from Articles "
-             "WHERE article_id=%s")
+             "WHERE article_id=" + article_id)
     res = None
     try:
-        cursor.execute(query, article_id)
+        cursor.execute(query)
+        print(cursor)
         if cursor.rowcount > 0:
             for row in cursor:
                 res = row
@@ -175,6 +177,7 @@ def search_article_id(article_id):
     
     cursor.close()
     conn.close()
+
     return res
 
 def search_pub_date(pub_date):

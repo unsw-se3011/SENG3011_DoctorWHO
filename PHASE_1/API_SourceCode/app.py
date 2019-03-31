@@ -1,8 +1,11 @@
 from flask import Flask, request
 from flask_restplus import Resource, Api, reqparse, fields
 import re
-from scraper import scrape
+import sys
+sys.path.append('/scraper')
+from scraper import scrape, update_db
 # from flask_jwt import JWT, jwt_required
+import mysql.connector
 
 # from security import authenticate, identity
 
@@ -11,6 +14,7 @@ app.config.SWAGGER_UI_DOC_EXPANSION = 'list'
 
 api = Api(app, title='CIDRAP', description='This API extracts disease report articles from the CIDRAP website. http://www.cidrap.umn.edu/')
 
+'''
 articles = [
     {
         "id": "0", # this field was added
@@ -72,6 +76,7 @@ articles = [
         ]
     }
 ]
+'''
 
 location_model = api.model('Location', {
     'geonames-id': fields.Integer(example=1566083)
@@ -111,22 +116,27 @@ class Article(Resource):
     @api.response(200, 'Article retrieved', article_model)
     @api.response(400, 'Invalid article ID')
     @api.response(404, 'Article not found')
+    @api.response(500, 'Database error') # ?
 
     # for testing
     # @api.response(600, 'Report', report_model)
     # @api.response(601, 'Reported Event', reported_event_model)
     # @api.response(602, 'Search result', search_result_model)
 
-    # how to get id:
-
     def get(self, article_id):
         article_id = request.view_args['article_id']
         if not article_id.isdigit():
             return {'comment': 'Invalid article ID'}, 400
+        print('*' + article_id + '*')
+        result = update_db.search_article_id(article_id)
+        '''
         desired_article = list(filter(lambda x: x['id'] == article_id, articles))
         print(desired_article)
         if len(desired_article) > 0:
             return desired_article[0], 200
+        '''
+        if result:
+            return result, 200 
         else:
             return {'comment': 'Article not found'}, 404
 
@@ -157,6 +167,7 @@ class Articles(Resource):
     @api.response(200, 'Article retrieved', search_result_model)
     @api.response(400, 'Invalid parameters')
     @api.response(404, 'No results found')
+    @api.response(500, 'Database error') # ?
     def get(self):
         data = Articles.parser.parse_args()
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')

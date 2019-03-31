@@ -4,11 +4,11 @@ from scraper import update_db
 def create_database():
 	init_db = mysql.connector.connect(
 		host="localhost",
-		user="cardis_db",
+		user="root",
 		passwd="password"
 	)
 
-	init_cursor = init_db.cursor()
+	init_cursor = init_db.cursor(dictionary=True)
 
 	init_cursor.execute("DROP DATABASE IF EXISTS DoctorWHO")
 	print("Old DoctorWHO database removed (if it existed)")
@@ -19,7 +19,7 @@ def create_database():
 def create_tables():
 	mydb = mysql.connector.connect(
 		host="localhost",
-		user="cardis_db",
+		user="root",
 		passwd="password",
 		database="DoctorWHO"
 	)
