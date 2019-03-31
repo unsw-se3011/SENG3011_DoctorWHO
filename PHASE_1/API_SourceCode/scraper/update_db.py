@@ -164,6 +164,7 @@ def add_article_report(article_report):
 def get_article_reports(article_id):
     conn   = db_connect()
     cursor = conn.cursor(dictionary=True)
+    one_cursor = conn.cursor()
     query  = ("SELECT * from Articles_Reports "
              "WHERE ar_article=" + article_id)
     reports_list = []
@@ -186,13 +187,34 @@ def get_article_reports(article_id):
                 query = ("SELECT * from Events_Reports "
                         "WHERE er_report=" + str(report['report_id']))
                 cursor.execute(query)
-                event_reports = []
+                event_report_links = []
+                report['reported_events'] = []
                 for row in cursor:
-                    event_reports.append(row)
-                print(event_reports)
-                event_list = []
-                for event_report in event_reports:
-                    print(event_report)
+                    event_report_links.append(row)
+                # print(event_reports)
+                for event_report_link in event_report_links:
+                    event_id = str(event_report_link['er_event'])
+                    # print(event_report)
+                    query = ("SELECT el_location from Events_Locations "
+                            "WHERE el_event=" + event_id)
+                    one_cursor.execute(query)
+                    location_id = one_cursor.fetchone()
+                    location_id = location_id[0]
+                    # print(location_id) 
+                    query = ("SELECT * from Locations "
+                            "WHERE location_id=" + str(location_id))
+                    cursor.execute(query)
+                    location = cursor.fetchone()
+                   # print(event_report)
+
+                    query = ("SELECT * from Events "
+                            "WHERE event_id=" + event_id)
+                    cursor.execute(query)
+                    for row in cursor:
+                        row['location'] = location
+                        report['reported_events'].append(row)
+
+                    '''
                     query = ("SELECT * from Events "
                             "WHERE event_id=" + str(event_report['er_id']))
                     cursor.execute(query)
@@ -203,26 +225,7 @@ def get_article_reports(article_id):
                         for row in cursor:
                             event_obj['location'] = row
                         event_list.append(event_obj)
-                    '''
-                    query = ("SELECT * from Events_Locations "
-                            "WHERE el_event=" + str(event_report['er_event']))
-                    cursor.execute(query)
-                    for row in cursor:
-                        location = row['el_location']
-                        print("location: " + location)
-                    '''
-                    '''
-                    query = ("SELECT * from Locations "
-                            "WHERE location_id=" + str(location))
-                    '''
-
                     report['reported_events'] = event_list
-                    '''
-                    query = ("SELECT * from Locations "
-                            "WHERE location_id=" + str(event['el_location']))
-                    cursor.execute(query)
-                    for row in cursor:
-                    event_obj['location'] = row
                     '''
                 reports_list.append(report)
 
