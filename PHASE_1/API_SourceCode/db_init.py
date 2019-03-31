@@ -47,7 +47,7 @@ def create_tables():
 	mycursor.execute("CREATE TABLE Events"
 		" (event_id INT AUTO_INCREMENT PRIMARY KEY,"
 		" type VARCHAR(255),"
-		" date_of_event VARCHAR(255)," 
+		" date VARCHAR(255)," 
 		" number_affected INT)")
 	print("created Events table")
 
@@ -199,7 +199,7 @@ def add_example():
             for e in r['reported_events']:
                 event = {
                     "type": e['type'],
-                    "date_of_event": e['date'],
+                    "date": e['date'],
                     "number_affected": e['number-affected']
                 }
                 eid = update_db.add_event(event)

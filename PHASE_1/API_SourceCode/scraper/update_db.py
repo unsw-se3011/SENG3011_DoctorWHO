@@ -57,8 +57,8 @@ def add_event(event):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
     query  = ("INSERT INTO Events "
-             "(type, date_of_event, number_affected) "
-             "VALUES (%(type)s, %(date_of_event)s, %(number_affected)s)")
+             "(type, date, number_affected) "
+             "VALUES (%(type)s, %(date)s, %(number_affected)s)")
     try:
         cursor.execute(query, event)
         insert_id = cursor.lastrowid
@@ -165,24 +165,73 @@ def get_article_reports(article_id):
     conn   = db_connect()
     cursor = conn.cursor(dictionary=True)
     query  = ("SELECT * from Articles_Reports "
-             "WHERE ar_id=" + article_id)
-    list_reports = []
+             "WHERE ar_article=" + article_id)
+    reports_list = []
     try:
         cursor.execute(query)
         # if cursor.rowcount > 0:
+        ar_reports = []
         for row in cursor:
-            ar_reports = row
+            ar_reports.append(row)
         print(ar_reports)
         for ar_report in ar_reports:
             query = ("SELECT * from Reports "
-                    "WHERE report_id=
+                    "WHERE report_id=" + str(ar_report['ar_id']))
+            cursor.execute(query)
+            for row in cursor:
+                row['disease'] = list(filter(None, row['disease'].split(',')))
+                row['syndrome'] = list(filter(None, row['syndrome'].split(',')))
+                report = row
+                # each report has reported events
+                query = ("SELECT * from Events_Reports "
+                        "WHERE er_report=" + str(report['report_id']))
+                cursor.execute(query)
+                event_reports = []
+                for row in cursor:
+                    event_reports.append(row)
+                print(event_reports)
+                event_list = []
+                for event_report in event_reports:
+                    print(event_report)
+                    query = ("SELECT * from Events "
+                            "WHERE event_id=" + str(event_report['er_id']))
+                    cursor.execute(query)
+                    for event_obj in cursor:
+                        query = ("SELECT * from Locations "
+                                "WHERE location_id=" + str(event_obj['event_id']))
+                        cursor.execute(query)
+                        for row in cursor:
+                            event_obj['location'] = row
+                        event_list.append(event_obj)
+                    '''
+                    query = ("SELECT * from Events_Locations "
+                            "WHERE el_event=" + str(event_report['er_event']))
+                    cursor.execute(query)
+                    for row in cursor:
+                        location = row['el_location']
+                        print("location: " + location)
+                    '''
+                    '''
+                    query = ("SELECT * from Locations "
+                            "WHERE location_id=" + str(location))
+                    '''
+
+                    report['reported_events'] = event_list
+                    '''
+                    query = ("SELECT * from Locations "
+                            "WHERE location_id=" + str(event['el_location']))
+                    cursor.execute(query)
+                    for row in cursor:
+                    event_obj['location'] = row
+                    '''
+                reports_list.append(report)
+
             
     except Exception as ex:
         print(ex)
     cursor.close()
     conn.close()
-    return list_reports
-
+    return reports_list
 
 ########################################################
 

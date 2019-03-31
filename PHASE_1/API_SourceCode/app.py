@@ -79,27 +79,29 @@ articles = [
 '''
 
 location_model = api.model('Location', {
-    'geonames-id': fields.Integer(example=1566083)
+    'location_id': fields.Integer(example=1),
+    'location_name': fields.String(example='null'),
+    'geonames_id': fields.Integer(example=1566083)
 })
 
 reported_event_model = api.model('Reported Event', {
-    'id': fields.Integer(example=0),
+    'event_id': fields.Integer(example=0),
     'type': fields.String(enum=['presence','death','infected','hospitalised','recovered'], example='infected'),
     'date': fields.String(example='2018-12-01Txx:xx:xx to 2018-12-10Txx:xx:xx'),
     'location': fields.Nested(location_model),
-    'number-affected': fields.Integer(example=2)
+    'number_affected': fields.Integer(example=2)
 })
 
 report_model = api.model('Report', {
-    'id': fields.Integer(example=0),
-    'disease': fields.List(fields.String(example='unknown')),
-    'syndrome': fields.List(fields.String(example='Acute fever and rash')),
+    'report_id': fields.Integer(example=1),
+    'disease': fields.List(fields.String(example='influenza a/h5n1')),
+    'syndrome': fields.List(fields.String()),
     'reported_events': fields.List(fields.Nested(reported_event_model)),
-    'comment': fields.String(example='')
+    'comment': fields.String(example="null")
 })
 
 article_model = api.model('Article', {
-    'id': fields.Integer(example=0),
+    'article_id': fields.Integer(example=1),
     'url': fields.String(example='http://www.who.int/lalala'),
     'date_of_publication': fields.String(example='2018-12-12Txx:xx:xx'),
     'headline': fields.String(example='Outbreaks in Southern Vietnam'),
@@ -127,7 +129,6 @@ class Article(Resource):
         article_id = request.view_args['article_id']
         if not article_id.isdigit():
             return {'comment': 'Invalid article ID'}, 400
-        print('*' + article_id + '*')
         article_res = update_db.search_article_id(article_id)
         '''
         desired_article = list(filter(lambda x: x['id'] == article_id, articles))
