@@ -158,20 +158,47 @@ def add_article_report(article_report):
         return -1
 
 ########################################################
+# helper functions to get everything
+
+# return list of reports for article with id=article_id
+def get_article_reports(article_id):
+    conn   = db_connect()
+    cursor = conn.cursor(dictionary=True)
+    query  = ("SELECT * from Articles_Reports "
+             "WHERE ar_id=" + article_id)
+    list_reports = []
+    try:
+        cursor.execute(query)
+        # if cursor.rowcount > 0:
+        for row in cursor:
+            ar_reports = row
+        print(ar_reports)
+        for ar_report in ar_reports:
+            query = ("SELECT * from Reports "
+                    "WHERE report_id=
+            
+    except Exception as ex:
+        print(ex)
+    cursor.close()
+    conn.close()
+    return list_reports
+
+
+########################################################
 
 def search_article_id(article_id):
     conn   = db_connect()
-    # cursor = conn.cursor(buffered=True)
     cursor = conn.cursor(dictionary=True)
     query  = ("SELECT * from Articles "
              "WHERE article_id=" + article_id)
     res = None
     try:
         cursor.execute(query)
-        print(cursor)
-        if cursor.rowcount > 0:
-            for row in cursor:
-                res = row
+        for row in cursor:
+            res = row
+            if res:
+                article_reports = get_article_reports(article_id)
+                res['reports'] = article_reports
     except Exception as ex:
         print(ex)
     

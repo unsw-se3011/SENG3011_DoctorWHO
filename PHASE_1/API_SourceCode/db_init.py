@@ -8,7 +8,7 @@ def create_database():
 		passwd="password"
 	)
 
-	init_cursor = init_db.cursor(dictionary=True)
+	init_cursor = init_db.cursor()
 
 	init_cursor.execute("DROP DATABASE IF EXISTS DoctorWHO")
 	print("Old DoctorWHO database removed (if it existed)")

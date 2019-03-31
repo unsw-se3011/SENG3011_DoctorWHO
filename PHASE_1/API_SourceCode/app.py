@@ -128,15 +128,16 @@ class Article(Resource):
         if not article_id.isdigit():
             return {'comment': 'Invalid article ID'}, 400
         print('*' + article_id + '*')
-        result = update_db.search_article_id(article_id)
+        article_res = update_db.search_article_id(article_id)
         '''
         desired_article = list(filter(lambda x: x['id'] == article_id, articles))
         print(desired_article)
         if len(desired_article) > 0:
             return desired_article[0], 200
         '''
-        if result:
-            return result, 200 
+        if article_res:
+            # get reports list - each report has reported events 
+            return article_res, 200 
         else:
             return {'comment': 'Article not found'}, 404
 
