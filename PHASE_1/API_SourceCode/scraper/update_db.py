@@ -4,7 +4,7 @@ def db_connect():
 	mydb = mysql.connector.connect(
 		host="localhost",
 		user="root",
-		password="password",
+		password="",
 		database="DoctorWHO"
 	)
 
@@ -174,6 +174,8 @@ def add_result(result):
             "headline": a['headline'],
             "main_text": a['main_text']
         }
+        print(article)
+		print(a['reports'])
         aid = add_article(article)
         art_id.append(aid)
 
@@ -200,6 +202,8 @@ def add_result(result):
                 location = {
                     "location_name": e['location']['country']
                 }
+                print(location)
+                lid = search_location(location)
                 lid = search_location_name(location)
                 if lid < 0:
                     print("adding")
@@ -283,8 +287,7 @@ def get_article_reports(article_id):
                         row['location'] = location
                         print(row)
                         report['reported_events'].append(row.copy())
-                    
-                    print("I'm here")
+
                 print(report['reported_events'])
                 reports_list.append(report)
             print(reports_list)
@@ -333,15 +336,50 @@ def search_by_date(start_date, end_date):
         cursor.execute(query, (start_date, end_date))
         for row in cursor:
             res.append(search_article_id(str(row['article_id'])))
-        print(res)
+    except Exception as ex:
+	    print("exception")
+    print("I'm working")
+    cursor.close()
+    conn.close()
+    print(res)
+    return res
+
+def search_location_name(location):
+    conn   = db_connect()
+    cursor = conn.cursor(buffered=True)
+    query  = ("SELECT location_id FROM Locations "
+             "WHERE location_name=%(location_name)s")
+    res = -1
+    try:
+        cursor.execute(query, location)
+        if cursor.rowcount > 0:
+            for (location_id,) in cursor:
+                res = int(location_id)
     except Exception as ex:
         print(ex)
 
     cursor.close()
     conn.close()
-    print("RESULTS FROM SEARCH BY DATE")
-    print(res)
     return res
+
+def search_location(location):
+    conn   = db_connect()
+    cursor = conn.cursor(buffered=True)
+    query  = ("SELECT location_id FROM Locations "
+             "WHERE geonames_id=%(geonames_id)s OR location_name=%(location_name)s")
+    res = -1
+    try:
+        cursor.execute(query, (location['geonames_id'], location['location_name']))
+        if cursor.rowcount > 0:
+            for (location_id,) in cursor:
+                res = int(location_id)
+    except Exception as ex:
+        print(ex)
+
+    cursor.close()
+    conn.close()
+    return res
+
 """
 def search_report(report):
     conn   = db_connect()
@@ -379,23 +417,8 @@ def search_event(event):
     conn.close()
     return res
 """
-def search_location(location):
-    conn   = db_connect()
-    cursor = conn.cursor(buffered=True)
-    query  = ("SELECT location_id FROM Locations "
-             "WHERE geonames_id=%(geonames_id)s OR location_name=%(location_name)s")
-    res = -1
-    try:
-        cursor.execute(query, location)
-        if cursor.rowcount > 0:
-            for (location_id,) in cursor:
-                res = int(location_id)
-    except Exception as ex:
-        print(ex)
 
-    cursor.close()
-    conn.close()
-    return res
+
 
 def search_location_name(location):
     conn   = db_connect()
