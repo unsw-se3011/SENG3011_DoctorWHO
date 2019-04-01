@@ -5,7 +5,7 @@ def create_database():
 	init_db = mysql.connector.connect(
 		host="localhost",
 		user="root",
-		passwd="password"
+		passwd=""
 	)
 
 	init_cursor = init_db.cursor()
@@ -20,7 +20,7 @@ def create_tables():
 	mydb = mysql.connector.connect(
 		host="localhost",
 		user="root",
-		passwd="password",
+		passwd="",
 		database="DoctorWHO"
 	)
 
@@ -47,7 +47,7 @@ def create_tables():
 	mycursor.execute("CREATE TABLE Events"
 		" (event_id INT AUTO_INCREMENT PRIMARY KEY,"
 		" type VARCHAR(255),"
-		" date VARCHAR(255)," 
+		" date VARCHAR(255),"
 		" number_affected INT)")
 	print("created Events table")
 
@@ -95,7 +95,7 @@ def create_tables():
 		" FOREIGN KEY (ar_event) REFERENCES Events(event_id),"
 		" FOREIGN KEY (ar_article) REFERENCES Articles(article_id))")
 	print("created Articles_Reports table")
-	
+
 	mycursor.execute(
 		"CREATE VIEW Events_Locations_Summary AS "
 		  "SELECT "
@@ -124,7 +124,7 @@ def add_example():
                     "id":0,
                     "disease":[
                         "influenza a/h5n1",
-                        "influenza a/h7n9" 
+                        "influenza a/h7n9"
                     ],
                     "syndrome":[
                     ],
@@ -136,7 +136,7 @@ def add_example():
                             "location":{
                                 "geonames-id":1566083
                             },
-                            "number-affected":1 
+                            "number-affected":1
                         },
                         {
                             "id": 1,
@@ -173,7 +173,7 @@ def add_example():
             ]
         }
     ]
-    
+
     art_id = []
     for a in articles:
         article = {
@@ -184,7 +184,7 @@ def add_example():
         }
         aid = update_db.add_article(article)
         art_id.append(aid)
-        
+
         rep_id = []
         for r in a['reports']:
             report = {
@@ -194,7 +194,7 @@ def add_example():
             }
             rid = update_db.add_report(report)
             rep_id.append(rid)
-            
+
             evn_id = []
             for e in r['reported_events']:
                 event = {
@@ -204,7 +204,7 @@ def add_example():
                 }
                 eid = update_db.add_event(event)
                 evn_id.append(eid)
-                
+
                 location = {
                     "location_name": None,
                     "geonames_id": e['location']['geonames-id']
@@ -212,19 +212,19 @@ def add_example():
                 lid = update_db.search_location(location)
                 if lid < 0:
                     lid = update_db.add_location(location)
-                
+
                 event_location = {
                     "event_id": eid,
                     "location_id": lid
                 }
                 update_db.add_event_location(event_location)
-                
+
                 event_report = {
                     "event_id": eid,
                     "report_id": rid
                 }
                 update_db.add_event_report(event_report)
-                
+
                 article_report = {
                     "event_id": eid,
                     "article_id": aid

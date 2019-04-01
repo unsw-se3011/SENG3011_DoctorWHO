@@ -27,7 +27,7 @@ def new_article(url):
         "topics":[], # extra stuff, can be referenced to disease
         "reports":[] # disease dictionary
     }
-    
+
     return a
 
 def new_report():
@@ -38,7 +38,7 @@ def new_report():
         "reported_events":[], # event dictionary
         "comment":""
     }
-    
+
     return r
 
 def new_event():
@@ -54,23 +54,23 @@ def new_event():
         },
         "number-affected":0
     }
-    
+
     return e
 
 def get_time(text):
     #print("\nGetting time")
     content = ' '.join(t for t in text)
-    
+
     count_month = 0
     for m in month_list:
         if m['name'] in content:
             count_month += 1
             #print(m['name'] + " found")
     #print(str(count_month) + " times months appear\n")
-    
+
     content = content.lower()
     time_sets = ["week", "weeks", "day", "days", "month", "months", "year", "years"]
-    
+
     count_set = 0
     for t in time_sets:
         if t in content:
@@ -100,23 +100,25 @@ def get_metadata(text):
     date = ""
     headline = ""
     topics = []
-    
+
     header_start = text.find("<a id=\"main-content\"></a>")
     header_end = text.find("<!-- Article Start -->")
     soup = BeautifulSoup(text[header_start:header_end], "lxml")
-    
     headline = BeautifulSoup(text, "lxml").find("title").text
     try:
         date = soup.find("span", {"class":"date-display-single"})['content'][:19]
     except:
         if " Scan " in headline and " for " in headline:
             date = convert_time(headline[headline.find(" for") + len(" for "):])
-    result = soup.find("div", {"class":" fieldlayout-inline fieldlayout node-field-filed_under"}).findAll("a")
+    try:
+        result = soup.find("div", {"class":"fieldlayout-inline fieldlayout node-field-filed_under"}).findAll("a")
+    except:
+        result = soup.find("div", {"class":" fieldlayout-inline fieldlayout node-field-filed_under"}).findAll("a")
     for res in result:
         for c in res.contents:
             if "Stewardship" not in c:
                 topics.append(c)
-    
+
     return date, headline[:headline.find(" | CIDRAP")], topics
 
 def get_location(text):
@@ -128,10 +130,10 @@ def get_location(text):
             continue
         if d['name'].lower() in content:
             location.append(d)
-    
+
     if len(location) > 0:
         return location
-    
+
     return None
 
 def get_event_type(text):
@@ -141,10 +143,10 @@ def get_event_type(text):
     for e in event_list:
         if e['event-type'].lower() in content:
             event.append(e)
-    
+
     if len(event) > 0:
         return event
-    
+
     return None
 
 def get_disease(text):
@@ -156,10 +158,10 @@ def get_disease(text):
             continue
         if d['name'].lower() in content:
             disease.append(d)
-    
+
     if len(disease) > 0:
         return disease
-    
+
     return None
 
 def get_syndrome(text):
@@ -171,9 +173,8 @@ def get_syndrome(text):
             continue
         if s['name'].lower() in content:
             syndrome.append(s)
-    
+
     if len(syndrome) > 0:
         return syndrome
-    
-    return None
 
+    return None
