@@ -141,8 +141,8 @@ def add_article_report(article_report):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
     query  = ("INSERT INTO Articles_Reports "
-             "(ar_event, ar_article) "
-             "VALUES (%(event_id)s, %(article_id)s)")
+             "(ar_report, ar_article) "
+             "VALUES (%(report_id)s, %(article_id)s)")
     try:
         cursor.execute(query, article_report)
         insert_id = cursor.lastrowid
@@ -169,9 +169,10 @@ def add_result(result):
             "main_text": a['main_text']
         }
         print(article)
-		print(a['reports'])
+        print(a['reports'])
         aid = add_article(article)
         art_id.append(aid)
+
 
         rep_id = []
         for r in a['reports']:
@@ -182,6 +183,12 @@ def add_result(result):
             }
             rid = add_report(report)
             rep_id.append(rid)
+
+            article_report = {
+				"report_id": rid,
+				"article_id": aid
+            }
+            add_article_report(article_report)
 
             evn_id = []
             for e in r['reported_events']:
@@ -216,11 +223,7 @@ def add_result(result):
                 }
                 add_event_report(event_report)
 
-                article_report = {
-                    "event_id": eid,
-                    "article_id": aid
-                }
-                add_article_report(article_report)
+
 
     print("Have added these articles: ")
     print(art_id)
@@ -241,6 +244,7 @@ def get_article_reports(article_id):
         ar_reports = []
         for row in cursor:
             ar_reports.append(row.copy())
+        print("ar_reports is")
         print(ar_reports)
         for ar_report in ar_reports:
             query = ("SELECT * from Reports "
@@ -250,6 +254,7 @@ def get_article_reports(article_id):
                 row['disease'] = list(filter(None, row['disease'].split(',')))
                 row['syndrome'] = list(filter(None, row['syndrome'].split(',')))
                 report = row
+                print("report is")
                 print(report)
                 # each report has reported events
                 query = ("SELECT * from Events_Reports "
@@ -306,9 +311,11 @@ def search_article_id(article_id):
              "WHERE article_id=%s")
     res = None
     print("search_article_id")
+    print(article_id)
     try:
         cursor.execute(query, (article_id,))
         for row in cursor:
+            print("row is")
             print(row)
             if row:
                 article_reports = get_article_reports(str(row['article_id']))
@@ -324,20 +331,23 @@ def search_article_id(article_id):
 
 def search_by_date(start_date, end_date):
     conn   = db_connect()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(dictionary=True, buffered=True)
     query  = ("SELECT article_id from Articles "
              "WHERE date_of_publication BETWEEN %s and %s") #how to search range???
     res = []
+    print("res is")
+    print(res)
     try:
         cursor.execute(query, (start_date, end_date))
         for row in cursor:
+            print("article id is")
+            print(row['article_id'])
             res.append(search_article_id(str(row['article_id'])))
     except Exception as ex:
 	    print("exception")
     print("I'm working")
     cursor.close()
     conn.close()
-    print(res)
     return res
 
 def search_location_name(location):

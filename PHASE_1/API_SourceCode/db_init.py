@@ -90,9 +90,9 @@ def create_tables():
 
 	mycursor.execute("CREATE TABLE Articles_Reports"
 		" (ar_id INT AUTO_INCREMENT PRIMARY KEY,"
-		" ar_event INT,"
+		" ar_report INT,"
 		" ar_article INT,"
-		" FOREIGN KEY (ar_event) REFERENCES Events(event_id),"
+		" FOREIGN KEY (ar_report) REFERENCES Reports(report_id),"
 		" FOREIGN KEY (ar_article) REFERENCES Articles(article_id))")
 	print("created Articles_Reports table")
 
@@ -195,6 +195,12 @@ def add_example():
             rid = update_db.add_report(report)
             rep_id.append(rid)
 
+            article_report = {
+				"report_id": rid,
+				"article_id": aid
+			}
+            update_db.add_article_report(article_report)
+
             evn_id = []
             for e in r['reported_events']:
                 event = {
@@ -225,11 +231,7 @@ def add_example():
                 }
                 update_db.add_event_report(event_report)
 
-                article_report = {
-                    "event_id": eid,
-                    "article_id": aid
-                }
-                update_db.add_article_report(article_report)
+
 
 create_database()
 create_tables()
