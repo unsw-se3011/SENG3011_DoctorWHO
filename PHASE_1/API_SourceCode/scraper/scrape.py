@@ -22,7 +22,6 @@ host = "http://www.cidrap.umn.edu"
 
 # scrape for a specific scan
 def scrape_scan(url):
-    print("Scraping: " + url)
     r = requests.get(url, headers)
     if r.status_code != 200:
         print("Error in scraping: " + url)
@@ -37,35 +36,31 @@ def scrape_scan(url):
     
     result = soup.findAll("h3")
     for res in result:
-        for s in res.contents: #not .text
-            start_content = article_content.find(str(s))
-            end_content = article_content[start_content:].find("<p> </p>")
-            if end_content == -1:
-                soup_content = BeautifulSoup(article_content[start_content:], "lxml").findAll("p")
-                #content = ' '.join(i for i in (j.contents for j in soup_content))
-                content = ""
-                for i in soup_content:
-                    for j in i.text: #not .contents
-                        content += str(j).replace("\\xa0", " ").replace("\\", "")
-                        #content += ' '
-                #content = content.replace("\\xa0", " ")
-                #content = content.replace("\\", "")
-                pair = {"headline":str(s), "content":content}
-            else:
-                soup_content = BeautifulSoup(article_content[start_content:end_content], "lxml").findAll("p")
-                #content = ' '.join(i.contents for i in (j.contents for j in soup_content))
-                content = ""
-                for i in soup_content:
-                    for j in i.text: #not .contents
-                        content += str(j).replace("\\xa0", " ").replace("\\", "")
-                        #content += ' '
-                #content = content.replace("\\xa0", " ")
-                #content = content.replace("\\", "")
-                pair = {"headline":str(s), "content":content}
-            headlines.append(pair)
-    
-    #print("headlines:")
-    #print(headlines)
+        start_content = article_content.find(str(res))
+        end_content = article_content[start_content:].find("<p> </p>")
+        if end_content == -1:
+            soup_content = BeautifulSoup(article_content[start_content:], "lxml").findAll("p")
+            #content = ' '.join(i for i in (j.contents for j in soup_content))
+            content = ""
+            for i in soup_content:
+                for j in i.text: #not .contents
+                    content += str(j).replace('\\xa0', ' ').replace('\\', '')
+                    #content += ' '
+            #content = content.replace("\\xa0", " ")
+            #content = content.replace("\\", "")
+            pair = {"headline":str(res.text), "content":content}
+        else:
+            soup_content = BeautifulSoup(article_content[start_content:end_content], "lxml").findAll("p")
+            #content = ' '.join(i.contents for i in (j.contents for j in soup_content))
+            content = ""
+            for i in soup_content:
+                for j in i.text: #not .contents
+                    content += str(j).replace('\\xa0', ' ').replace('\\', '')# \ , \xa0
+                    #content += ' '
+            #content = content.replace("\\xa0", " ")
+            #content = content.replace("\\", "")
+            pair = {"headline":str(res.text), "content":content}
+        headlines.append(pair)
     
     articles = []
     for head in headlines:
@@ -77,8 +72,9 @@ def scrape_scan(url):
         report['reported_events'].append(event)
         
         article['date_of_publication'], article['headline'], article['topics'] = filter.get_metadata(r.text)
+        article['headline'] += " - " + head['headline']
         
-        event_type = filter.get_event_type(scraped)
+        event_type = filter.get_event_type(head['content']) # not scraped
         if event_type != None:
             event['type'] = event_type[0]['event-type']
             for i in range(1, len(event_type)):
@@ -86,7 +82,7 @@ def scrape_scan(url):
         else:
             event['type'] = "unknown"
         
-        country = filter.get_location(scraped)
+        country = filter.get_location(head['content'])
         if country != None:
             event['location']['country'] = country[0]['name']
             event['location']['id'] = country[0]['id']
@@ -95,14 +91,14 @@ def scrape_scan(url):
         else:
             event['location']['country'] = "unknown"
         
-        syndrome = filter.get_syndrome(scraped)
+        syndrome = filter.get_syndrome(head['content'])
         if syndrome != None:
             for i in range(len(syndrome)):
                 report['syndrome'].append(syndrome[i]['name'])
         #else:
             #report['syndrome'] = "unknown"
         
-        disease = filter.get_disease(scraped)
+        disease = filter.get_disease(head['content'])
         if disease != None:
             for i in range(len(disease)):
                 report['disease'].append(disease[i]['name'])
@@ -111,6 +107,7 @@ def scrape_scan(url):
         
         filter.get_affected(scraped)
         filter.get_time(scraped)
+        articles.append(article)
     
     return articles
 
@@ -233,7 +230,7 @@ def scrape_news(url, options):
             query += "f[" + str(count) + "]=field_organization%3A" + options[i] + "&"
             count += 1
             continue
-        
+    
     r = requests.get(url + query, headers)
     if r.status_code != 200:
         print("Error in getting news from: " + url + query)
@@ -250,7 +247,7 @@ def scrape_news(url, options):
     
     for i in searches:
         if "-scan-" in i:
-            news.append(scrape_scan(host + i))
+            news += scrape_scan(host + i)
         else:
             news.append(scrape_article(host + i))
     

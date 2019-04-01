@@ -160,7 +160,11 @@ def add_article_report(article_report):
 def add_result(result):
     art_id = []
     for a in result:
-        if a == [] or search_article_url(a['url']) == True:
+        url_headline = {
+            "url": a['url'],
+            "headline": a['headline']
+        }
+        if search_article_url_headline(url_headline) == True:
             continue
         article = {
             "url": a['url'],
@@ -185,7 +189,7 @@ def add_result(result):
             for e in r['reported_events']:
                 event = {
                     "type": e['type'],
-                    "date_of_event": e['date'],
+                    "date": e['date'],
                     "number_affected": e['number-affected']
                 }
                 eid = add_event(event)
@@ -386,6 +390,22 @@ def search_article_url(url):
              "WHERE url=%s")
     try:
         cursor.execute(query, (url,))
+        if cursor.rowcount > 0:
+            return True
+    except Exception as ex:
+        print(ex)
+    
+    cursor.close()
+    conn.close()
+    return False
+
+def search_article_url_headline(args):
+    conn   = db_connect()
+    cursor = conn.cursor(buffered=True)
+    query  = ("SELECT * FROM Articles "
+             "WHERE url=%(url)s and headline=%(headline)s")
+    try:
+        cursor.execute(query, args)
         if cursor.rowcount > 0:
             return True
     except Exception as ex:

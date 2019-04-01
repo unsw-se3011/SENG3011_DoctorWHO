@@ -111,7 +111,10 @@ def get_metadata(text):
     except:
         if " Scan " in headline and " for " in headline:
             date = convert_time(headline[headline.find(" for") + len(" for "):])
-    result = soup.find("div", {"class":" fieldlayout-inline fieldlayout node-field-filed_under"}).findAll("a")
+    try:
+        result = soup.find("div", {"class":"fieldlayout-inline fieldlayout node-field-filed_under"}).findAll("a")
+    except:
+        result = soup.find("div", {"class":" fieldlayout-inline fieldlayout node-field-filed_under"}).findAll("a")
     for res in result:
         for c in res.contents:
             if "Stewardship" not in c:
