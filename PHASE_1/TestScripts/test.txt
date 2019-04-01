@@ -6,7 +6,7 @@ aritcle_id = 1
 article_id = 2
 
 # article not found
-article_id = 100
+article_id = 10000
 
 # invalid input
 article_id = abc
@@ -54,21 +54,21 @@ end_date = 2019-03-29Txx:xx:xx
 # correct without location1
 start_date = 2019-03-28Txx:xx:xx
 end_date = 2019-03-29Txx:xx:xx
-key_term = Ebola
+key_term = ebola
 
-# correct without location2
+# correct without location2, to compare the results to see if they're different
 start_date = 2019-03-28Txx:xx:xx
 end_date = 2019-03-29Txx:xx:xx
 key_term = flu
 
 # correct without key_term
-start_date = 2019-03-28Txx:xx:xx
-end_date = 2019-03-29Txx:xx:xx
-location = Liberia
+start_date = 2019-03-27T00:00:00
+end_date = 2019-03-29T23:59:59
+location = United States
 
 # correct full input
-start_date = 2019-03-28Txx:xx:xx
-end_date = 2019-03-29Txx:xx:xx
-key_term = flu
-location = United States
+start_date = 2019-03-27T00:00:00
+end_date = 2019-03-29T23:59:59
+key_term = influenza
+location = Liberia
 

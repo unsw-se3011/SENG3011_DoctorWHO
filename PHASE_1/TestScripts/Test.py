@@ -29,12 +29,12 @@ def count_articles(text):
 if __name__ == "__main__":	
 
 	# Testing for /article/{article_id}
-	# get article 2
+	# get article 1
 	test1 = {'article_id':'1'}
 	result1 = test_id(test1)
 	print("**** TEST1 PASSED ****")
 	
-	# get article 1
+	# get article 2
 	test2 = {'article_id':'2'}
 	result2 = test_id(test2)
 	print("**** TEST2 PASSED ****")
@@ -129,14 +129,14 @@ if __name__ == "__main__":
 	print("**** TEST14.1 PASSED ****")
 
 	# correct without key_term
-	test15 = {'start_date':'2019-03-27T00:00:00','end_date':'2019-03-27T23:59:59','location':'Liberia'}
+	test15 = {'start_date':'2019-03-27T00:00:00','end_date':'2019-03-29T23:59:59','location':'United States'}
 	result15 = test_article(test15)
 	num15 = count_articles(result15)
 	assert num15 >= 1
 	print("**** TEST15 PASSED ****")
 
 	# correct full input
-	test16 = {'start_date':'2019-03-27T00:00:00','end_date':'2019-03-29T23:59:59','key_terms':'influenza','location':'United States'}
+	test16 = {'start_date':'2019-03-27T00:00:00','end_date':'2019-03-29T23:59:59','key_terms':'influenza','location':'Liberia'}
 	result16 = test_article(test16)
 	num16 = count_articles(result16)
 	assert num16 >= 1
