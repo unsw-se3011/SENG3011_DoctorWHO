@@ -4,10 +4,10 @@ def db_connect():
 	mydb = mysql.connector.connect(
 		host="localhost",
 		user="root",
-		passwd="password",
+		passwd="",
 		database="DoctorWHO"
 	)
-	
+
 	return mydb
 
 # Insert new article into database
@@ -170,7 +170,7 @@ def add_result(result):
         }
         aid = add_article(article)
         art_id.append(aid)
-        
+
         rep_id = []
         for r in a['reports']:
             report = {
@@ -180,17 +180,17 @@ def add_result(result):
             }
             rid = add_report(report)
             rep_id.append(rid)
-            
+
             evn_id = []
             for e in r['reported_events']:
                 event = {
                     "type": e['type'],
-                    "date_of_event": e['date'],
+                    "date": e['date'],
                     "number_affected": e['number-affected']
                 }
                 eid = add_event(event)
                 evn_id.append(eid)
-                
+
                 location = {
                     "location_name": e['location']['country'],
                     "geonames_id": e['location']['geonames-id']
@@ -198,25 +198,25 @@ def add_result(result):
                 lid = search_location(location)
                 if lid < 0:
                     lid = add_location(location)
-                
+
                 event_location = {
                     "event_id": eid,
                     "location_id": lid
                 }
                 add_event_location(event_location)
-                
+
                 event_report = {
                     "event_id": eid,
                     "report_id": rid
                 }
                 add_event_report(event_report)
-                
+
                 article_report = {
                     "event_id": eid,
                     "article_id": aid
                 }
                 add_article_report(article_report)
-    
+
     print("Have added these articles: ")
     print(art_id)
 
@@ -262,7 +262,7 @@ def get_article_reports(article_id):
                     one_cursor.execute(query)
                     location_id = one_cursor.fetchone()
                     location_id = location_id[0]
-                    # print(location_id) 
+                    # print(location_id)
                     query = ("SELECT * from Locations "
                             "WHERE location_id=" + str(location_id))
                     cursor.execute(query)
@@ -277,7 +277,7 @@ def get_article_reports(article_id):
                         report['reported_events'].append(row)
 
                 reports_list.append(report)
-            
+
     except Exception as ex:
         print(ex)
     cursor.close()
@@ -301,7 +301,7 @@ def search_article_id(article_id):
                 res['reports'] = article_reports
     except Exception as ex:
         print(ex)
-    
+
     cursor.close()
     conn.close()
 
@@ -320,7 +320,7 @@ def search_by_date(start_date, end_date):
         print(res)
     except Exception as ex:
         print(ex)
-    
+
     cursor.close()
     conn.close()
     return res
@@ -338,7 +338,7 @@ def search_report(report):
                 res = int(location_id)
     except Exception as ex:
         print(ex)
-    
+
     cursor.close()
     conn.close()
     return res
@@ -356,7 +356,7 @@ def search_event(event):
                 res = int(location_id)
     except Exception as ex:
         print(ex)
-    
+
     cursor.close()
     conn.close()
     return res
@@ -374,7 +374,7 @@ def search_location(location):
                 res = int(location_id)
     except Exception as ex:
         print(ex)
-    
+
     cursor.close()
     conn.close()
     return res
@@ -390,8 +390,7 @@ def search_article_url(url):
             return True
     except Exception as ex:
         print(ex)
-    
+
     cursor.close()
     conn.close()
     return False
-
