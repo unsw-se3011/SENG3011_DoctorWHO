@@ -159,12 +159,15 @@ def add_article_report(article_report):
 
 def add_result(result):
     art_id = []
+    count = 0
     for a in result:
         url_headline = {
             "url": a['url'],
             "headline": a['headline']
         }
+        print("Inserting :" + a['url'] + " : " + a['headline'])
         if search_article_url_headline(url_headline) == True:
+            count += 1
             continue
         article = {
             "url": a['url'],
@@ -220,9 +223,9 @@ def add_result(result):
                     "article_id": aid
                 }
                 add_article_report(article_report)
-    
-    print("Have added these articles: ")
-    print(art_id)
+    if count == len(result):
+        return False
+    return True
 
 ########################################################
 # helper functions to get everything

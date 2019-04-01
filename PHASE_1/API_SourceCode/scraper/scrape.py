@@ -277,6 +277,17 @@ def scrape_topics(url):
     
     return topics
 
+def get_last_page():
+    r = requests.get("http://www.cidrap.umn.edu/news-perspective", headers)
+    if r.status_code != 200:
+        print("Error in getting last page: " + url)
+        return None
+    
+    soup = BeautifulSoup(r.text, "lxml").find("li", {"class":"pager-last last"}).findAll("a")
+    link = soup[0]['href']
+    index = link.find("page=")
+    return int(link[index+len("page="):])
+
 if __name__ == "__main__":
     args = {}
     

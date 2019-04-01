@@ -211,9 +211,11 @@ api.add_resource(Articles, '/articles')
 
 if __name__ == '__main__':
     page = 0
-    while True:
+    last = scrape.get_last_page()
+    while page <= last:
         res = scrape.scrape_news("http://www.cidrap.umn.edu/news-perspective?page=" + str(page), [])
-        update_db.add_result(res)
+        if update_db.add_result(res) == False:
+            break
         page += 1
     app.run(debug=True)
 
