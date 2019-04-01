@@ -159,8 +159,14 @@ def add_article_report(article_report):
 
 def add_result(result):
     art_id = []
+    count = 0
     for a in result:
-        if a == [] or search_article_url(a['url']) == True:
+        url_headline = {
+            "url": a['url'],
+            "headline": a['headline']
+        }
+        if search_article_url_headline(url_headline) == True:
+            count += 1
             continue
         article = {
             "url": a['url'],
@@ -201,8 +207,7 @@ def add_result(result):
                 evn_id.append(eid)
 
                 location = {
-                    "location_name": e['location']['country'],
-                    "geonames_id": e['location']['geonames-id']
+                    "location_name": e['location']['country']
                 }
                 print(location)
                 lid = search_location(location)
@@ -223,8 +228,16 @@ def add_result(result):
                 }
                 add_event_report(event_report)
 
+<<<<<<< HEAD
 
 
+=======
+                article_report = {
+                    "event_id": eid,
+                    "article_id": aid
+                }
+                add_article_report(article_report)
+>>>>>>> f1320b64cf377768fdf3471f707f1d158391574a
     print("Have added these articles: ")
     print(art_id)
 
@@ -425,6 +438,24 @@ def search_event(event):
 """
 
 
+
+def search_location_name(location):
+    conn   = db_connect()
+    cursor = conn.cursor(buffered=True)
+    query  = ("SELECT location_id FROM Locations "
+             "WHERE location_name=%(location_name)s")
+    res = -1
+    try:
+        cursor.execute(query, location)
+        if cursor.rowcount > 0:
+            for (location_id,) in cursor:
+                res = int(location_id)
+    except Exception as ex:
+        print(ex)
+    
+    cursor.close()
+    conn.close()
+    return res
 
 def search_article_url(url):
     conn   = db_connect()
