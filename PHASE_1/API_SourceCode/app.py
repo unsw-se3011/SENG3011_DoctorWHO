@@ -129,6 +129,7 @@ class Article(Resource):
         if not article_id.isdigit():
             return {'comment': 'Invalid article ID'}, 400
         article_res = update_db.search_article_id(article_id)
+        print(article_res)
         '''
         desired_article = list(filter(lambda x: x['id'] == article_id, articles))
         print(desired_article)
@@ -136,6 +137,7 @@ class Article(Resource):
             return desired_article[0], 200
         '''
         if article_res:
+            print(article_res)
             return article_res, 200 
         else:
             return {'comment': 'Article not found'}, 404
