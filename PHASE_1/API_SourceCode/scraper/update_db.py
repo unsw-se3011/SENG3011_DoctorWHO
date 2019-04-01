@@ -165,7 +165,6 @@ def add_result(result):
             "url": a['url'],
             "headline": a['headline']
         }
-        print("Inserting :" + a['url'] + " : " + a['headline'])
         if search_article_url_headline(url_headline) == True:
             count += 1
             continue
@@ -199,11 +198,11 @@ def add_result(result):
                 evn_id.append(eid)
                 
                 location = {
-                    "location_name": e['location']['country'],
-                    "geonames_id": e['location']['geonames-id']
+                    "location_name": e['location']['country']
                 }
-                lid = search_location(location)
+                lid = search_location_name(location)
                 if lid < 0:
+                    print("adding")
                     lid = add_location(location)
                 
                 event_location = {
@@ -373,6 +372,24 @@ def search_location(location):
     cursor = conn.cursor(buffered=True)
     query  = ("SELECT location_id FROM Locations "
              "WHERE geonames_id=%(geonames_id)s OR location_name=%(location_name)s")
+    res = -1
+    try:
+        cursor.execute(query, location)
+        if cursor.rowcount > 0:
+            for (location_id,) in cursor:
+                res = int(location_id)
+    except Exception as ex:
+        print(ex)
+    
+    cursor.close()
+    conn.close()
+    return res
+
+def search_location_name(location):
+    conn   = db_connect()
+    cursor = conn.cursor(buffered=True)
+    query  = ("SELECT location_id FROM Locations "
+             "WHERE location_name=%(location_name)s")
     res = -1
     try:
         cursor.execute(query, location)

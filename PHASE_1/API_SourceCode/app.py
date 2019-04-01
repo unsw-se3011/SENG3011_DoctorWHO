@@ -211,7 +211,6 @@ api.add_resource(Article, '/article/<article_id>')
 api.add_resource(Articles, '/articles')
 
 if __name__ == '__main__':
-    app.run(debug=True)
     page = 0
     last = scrape.get_last_page()
     while page <= last:
@@ -219,5 +218,6 @@ if __name__ == '__main__':
         if update_db.add_result(res) == False:
             break
         page += 1
-    multithread.checkThread()
+    app.run(debug=True)
+    #multithread.checkThread()
 
