@@ -1,23 +1,24 @@
 import requests
 from bs4 import BeautifulSoup
+import json
 
 # Testing for /article/{article_id}
 def test_id(payload):
-	r = requests.get('http://doctorwhoseng.tk/article/{article_id}', params=payload)
-	if r.status_code != 200
-		return r.status_code
+	r = requests.get('http://127.0.0.1:5000/article/{article_id}', params=payload)
+	if (r.status_code != 200):
+		return str(r.status_code)
 	else:
 		return r.text
 
 # Testing for /article
 def test_article(payload):
-	r = requests.get('http://doctorwhoseng.tk/articles', params=payload)
-	if r.status_code != 200
-		return r.status_code
+	r = requests.get('http://http://127.0.0.1:5000/articles', params=payload)
+	if (r.status_code != 200):
+		return str(r.status_code)
 	else:
 		return r.text
 
-def count_articles(text)：
+def count_articles(text):
 	dic = json.loads(text)
 	num = len(dic["articles"])
 	return num
