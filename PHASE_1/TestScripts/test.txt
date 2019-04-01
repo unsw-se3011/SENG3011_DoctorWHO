@@ -1,9 +1,9 @@
 # Testing for /article/{article_id}
-# get article 0
-aritcle_id = 0
-
 # get article 1
-article_id = 1
+aritcle_id = 1
+
+# get article 2
+article_id = 2
 
 # article not found
 article_id = 100
