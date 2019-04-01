@@ -3,7 +3,7 @@ import mysql.connector
 def db_connect():
 	mydb = mysql.connector.connect(
 		host="localhost",
-		user="cardis_db",
+		user="root",
 		passwd="password",
 		database="DoctorWHO"
 	)
@@ -57,8 +57,8 @@ def add_event(event):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
     query  = ("INSERT INTO Events "
-             "(type, date_of_event, number_affected) "
-             "VALUES (%(type)s, %(date_of_event)s, %(number_affected)s)")
+             "(type, date, number_affected) "
+             "VALUES (%(type)s, %(date)s, %(number_affected)s)")
     try:
         cursor.execute(query, event)
         insert_id = cursor.lastrowid
@@ -221,6 +221,70 @@ def add_result(result):
     print(art_id)
 
 ########################################################
+# helper functions to get everything
+
+# return list of reports for article with id=article_id
+def get_article_reports(article_id):
+    conn   = db_connect()
+    cursor = conn.cursor(dictionary=True)
+    one_cursor = conn.cursor()
+    query  = ("SELECT * from Articles_Reports "
+             "WHERE ar_article=" + article_id)
+    reports_list = []
+    try:
+        cursor.execute(query)
+        ar_reports = []
+        for row in cursor:
+            ar_reports.append(row)
+        print(ar_reports)
+        for ar_report in ar_reports:
+            query = ("SELECT * from Reports "
+                    "WHERE report_id=" + str(ar_report['ar_id']))
+            cursor.execute(query)
+            for row in cursor:
+                row['disease'] = list(filter(None, row['disease'].split(',')))
+                row['syndrome'] = list(filter(None, row['syndrome'].split(',')))
+                report = row
+                # each report has reported events
+                query = ("SELECT * from Events_Reports "
+                        "WHERE er_report=" + str(report['report_id']))
+                cursor.execute(query)
+                event_report_links = []
+                report['reported_events'] = []
+                for row in cursor:
+                    event_report_links.append(row)
+                # print(event_reports)
+                for event_report_link in event_report_links:
+                    event_id = str(event_report_link['er_event'])
+                    # print(event_report)
+                    query = ("SELECT el_location from Events_Locations "
+                            "WHERE el_event=" + event_id)
+                    one_cursor.execute(query)
+                    location_id = one_cursor.fetchone()
+                    location_id = location_id[0]
+                    # print(location_id) 
+                    query = ("SELECT * from Locations "
+                            "WHERE location_id=" + str(location_id))
+                    cursor.execute(query)
+                    location = cursor.fetchone()
+                   # print(event_report)
+
+                    query = ("SELECT * from Events "
+                            "WHERE event_id=" + event_id)
+                    cursor.execute(query)
+                    for row in cursor:
+                        row['location'] = location
+                        report['reported_events'].append(row)
+
+                reports_list.append(report)
+            
+    except Exception as ex:
+        print(ex)
+    cursor.close()
+    conn.close()
+    return reports_list
+
+########################################################
 
 def search_article_id(article_id):
     conn   = db_connect()
@@ -230,27 +294,30 @@ def search_article_id(article_id):
     res = None
     try:
         cursor.execute(query, (article_id,))
-        if cursor.rowcount > 0:
-            for row in cursor:
-                res = row
+        for row in cursor:
+            res = row
+            if res:
+                article_reports = get_article_reports(article_id)
+                res['reports'] = article_reports
     except Exception as ex:
         print(ex)
     
     cursor.close()
     conn.close()
+
     return res
 
-def search_pub_date(pub_date):
+def search_by_date(start_date, end_date):
     conn   = db_connect()
-    cursor = conn.cursor(buffered=True)
-    query  = ("SELECT * FROM Articles "
-             "WHERE date_of_publication=%s") #how to search range???
+    cursor = conn.cursor(dictionary=True)
+    query  = ("SELECT article_id from Articles "
+             "WHERE date_of_publication BETWEEN %s and %s") #how to search range???
     res = []
     try:
-        cursor.execute(query, (pub_date,))
-        if cursor.rowcount > 0:
-            for row in cursor:
-                res.append(row)
+        cursor.execute(query, (start_date, end_date))
+        for row in cursor:
+            res.append(search_article_id(str(row['article_id'])))
+        print(res)
     except Exception as ex:
         print(ex)
     

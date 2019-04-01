@@ -12,6 +12,7 @@ app.config.SWAGGER_UI_DOC_EXPANSION = 'list'
 
 api = Api(app, title='CIDRAP', description='This API extracts disease report articles from the CIDRAP website. http://www.cidrap.umn.edu/')
 
+'''
 articles = [
     {
         "id": "0", # this field was added
@@ -73,29 +74,32 @@ articles = [
         ]
     }
 ]
+'''
 
 location_model = api.model('Location', {
-    'geonames-id': fields.Integer(example=1566083)
+    'location_id': fields.Integer(example=1),
+    'location_name': fields.String(example='null'),
+    'geonames_id': fields.Integer(example=1566083)
 })
 
 reported_event_model = api.model('Reported Event', {
-    'id': fields.Integer(example=0),
+    'event_id': fields.Integer(example=0),
     'type': fields.String(enum=['presence','death','infected','hospitalised','recovered'], example='infected'),
     'date': fields.String(example='2018-12-01Txx:xx:xx to 2018-12-10Txx:xx:xx'),
     'location': fields.Nested(location_model),
-    'number-affected': fields.Integer(example=2)
+    'number_affected': fields.Integer(example=2)
 })
 
 report_model = api.model('Report', {
-    'id': fields.Integer(example=0),
-    'disease': fields.List(fields.String(example='unknown')),
-    'syndrome': fields.List(fields.String(example='Acute fever and rash')),
+    'report_id': fields.Integer(example=1),
+    'disease': fields.List(fields.String(example='influenza a/h5n1')),
+    'syndrome': fields.List(fields.String()),
     'reported_events': fields.List(fields.Nested(reported_event_model)),
-    'comment': fields.String(example='')
+    'comment': fields.String(example="null")
 })
 
 article_model = api.model('Article', {
-    'id': fields.Integer(example=0),
+    'article_id': fields.Integer(example=1),
     'url': fields.String(example='http://www.who.int/lalala'),
     'date_of_publication': fields.String(example='2018-12-12Txx:xx:xx'),
     'headline': fields.String(example='Outbreaks in Southern Vietnam'),
@@ -112,22 +116,26 @@ class Article(Resource):
     @api.response(200, 'Article retrieved', article_model)
     @api.response(400, 'Invalid article ID')
     @api.response(404, 'Article not found')
+    @api.response(500, 'Database error') # ?
 
     # for testing
     # @api.response(600, 'Report', report_model)
     # @api.response(601, 'Reported Event', reported_event_model)
     # @api.response(602, 'Search result', search_result_model)
 
-    # how to get id:
-
     def get(self, article_id):
         article_id = request.view_args['article_id']
         if not article_id.isdigit():
             return {'comment': 'Invalid article ID'}, 400
+        article_res = update_db.search_article_id(article_id)
+        '''
         desired_article = list(filter(lambda x: x['id'] == article_id, articles))
         print(desired_article)
         if len(desired_article) > 0:
             return desired_article[0], 200
+        '''
+        if article_res:
+            return article_res, 200 
         else:
             return {'comment': 'Article not found'}, 404
 
@@ -158,6 +166,7 @@ class Articles(Resource):
     @api.response(200, 'Article retrieved', search_result_model)
     @api.response(400, 'Invalid parameters')
     @api.response(404, 'No results found')
+    @api.response(500, 'Database error') # ?
     def get(self):
         data = Articles.parser.parse_args()
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
@@ -165,24 +174,32 @@ class Articles(Resource):
         if not date_regex.match(data['start_date']) or not date_regex.match(data['end_date']) or data['start_date'] > data['end_date']:
             return {'comment': 'Invalid parameters'}, 400
         else: # start and end dates valid
-            search_results = list(filter(lambda x: (x['date_of_publication'] <= data['end_date'] and x['date_of_publication'] >= data['start_date']), articles))
-            '''
+            search_results = update_db.search_by_date(data['start_date'], data['end_date'])
+            # search_results = list(filter(lambda x: (x['date_of_publication'] <= data['end_date'] and x['date_of_publication'] >= data['start_date']), articles))
             if data['key_terms']: #TODO test if this actually works
                 search_terms = data['key_terms'].split(','); # add synonyms???
+                search_terms = filter(None, [x.strip() for x in search_terms])
+                print("search terms:")
+                print(search_terms)
                 filtered_results = []
                 for article in search_results:
+                    # print(search_results)
+                    diseases_list = []
                     for report in article['reports']:
-                        diseases_string = ''
                         # put all diseases into one string, then check if keywords match
-                        diseases_string = report['disease'].join(',')
-                        for term in search_terms:
-                            if term in diseases_string:
-                                filtered_results += article
-                                break
+                        diseases_list += report['disease']
+                    diseases_string = ','.join(diseases_list)
+                    print("diseases_string: " + diseases_string)
+                    print(article)
+
+                    for term in search_terms:
+                        if term in diseases_string:
+                            filtered_results.append(article)
+                            break
                 search_results = filtered_results
-            '''
+                print("search results:")
+                print(search_results)
             if data['location']:
-                geonames_id
                 pass
             if search_results:
                 return {'articles': search_results}
