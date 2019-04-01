@@ -22,6 +22,7 @@ host = "http://www.cidrap.umn.edu"
 
 # scrape for a specific scan
 def scrape_scan(url):
+    print("Scraping: " + url)
     r = requests.get(url, headers)
     if r.status_code != 200:
         print("Error in scraping: " + url)
@@ -63,11 +64,11 @@ def scrape_scan(url):
                 pair = {"headline":str(s), "content":content}
             headlines.append(pair)
     
-    print("headlines:")
-    print(headlines)
+    #print("headlines:")
+    #print(headlines)
     
     articles = []
-    for art in articles:
+    for head in headlines:
     
         article = filter.new_article(url)
         report = filter.new_report()

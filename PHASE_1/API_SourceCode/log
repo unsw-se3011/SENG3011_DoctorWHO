@@ -65,6 +65,7 @@
 }
 []
 []
+[]
 {
     "date_of_publication": "2019-03-28T00:00:00",
     "headline": "As Ebola rages in DRC, survey highlights wide mistrust",
@@ -130,36 +131,5 @@
         "VHF"
     ],
     "url": "http://www.cidrap.umn.edu/news-perspective/2019/03/who-names-new-ebola-chief-drc-7-more-cases-noted"
-}
-{
-    "date_of_publication": "2019-03-27T00:00:00",
-    "headline": "Yemen cholera spike renews fears of another huge outbreak",
-    "main_text": "",
-    "reports": [
-        {
-            "comment": "",
-            "disease": [
-                "cholera"
-            ],
-            "reported_events": [
-                {
-                    "date": "",
-                    "location": {
-                        "country": "unknown",
-                        "geonames-id": 0,
-                        "id": 0,
-                        "location": ""
-                    },
-                    "number-affected": 0,
-                    "type": "death, sick, sick"
-                }
-            ],
-            "syndrome": []
-        }
-    ],
-    "topics": [
-        "Cholera"
-    ],
-    "url": "http://www.cidrap.umn.edu/news-perspective/2019/03/yemen-cholera-spike-renews-fears-another-huge-outbreak"
 }
 []

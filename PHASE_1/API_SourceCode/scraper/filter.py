@@ -58,15 +58,15 @@ def new_event():
     return e
 
 def get_time(text):
-    print("\nGetting time")
+    #print("\nGetting time")
     content = ' '.join(t for t in text)
     
     count_month = 0
     for m in month_list:
         if m['name'] in content:
             count_month += 1
-            print(m['name'] + " found")
-    print(str(count_month) + " times months appear\n")
+            #print(m['name'] + " found")
+    #print(str(count_month) + " times months appear\n")
     
     content = content.lower()
     time_sets = ["week", "weeks", "day", "days", "month", "months", "year", "years"]
@@ -75,8 +75,8 @@ def get_time(text):
     for t in time_sets:
         if t in content:
             count_set += 1
-            print(t + " found")
-    print(str(count_set) + " times time_sets appear\n")
+            #print(t + " found")
+    #print(str(count_set) + " times time_sets appear\n")
 
 def convert_time(string):
     s = string.split(' ')
@@ -93,8 +93,8 @@ def get_affected(text):
     content = ' '.join(t for t in text)
     # extract just numbers (positive integers)
     numbers = [int(s) for s in content.split() if s.isdigit()]
-    print("\nNumbers for affected:")
-    print(numbers)
+    #print("\nNumbers for affected:")
+    #print(numbers)
 
 def get_metadata(text):
     date = ""
