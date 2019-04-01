@@ -4,7 +4,7 @@ def db_connect():
 	mydb = mysql.connector.connect(
 		host="localhost",
 		user="root",
-		password="",
+		password="password",
 		database="DoctorWHO"
 	)
 
@@ -207,7 +207,8 @@ def add_result(result):
                 evn_id.append(eid)
 
                 location = {
-                    "location_name": e['location']['country']
+                    "location_name": e['location']['country'],
+                    "geonames_id": e['location']['geonames-id']
                 }
                 print(location)
                 lid = search_location(location)

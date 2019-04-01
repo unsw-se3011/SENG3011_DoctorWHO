@@ -145,7 +145,7 @@ class Articles(Resource):
     parser.add_argument('start_date',
         type=str,
         required=True,
-        help='Start date of articles in period of interest in the format "yyyy-mm-ddThh:mm:ss".\n Year is required, every other segment is optional, but missing characters must be replaced with "x"'
+        help='Start date of articles in period of interest in the format "yyyy-mm-ddThh:mm:ss".\n Earliest start_date available is "2018-07-23T00:00:00".\n Year is required, every other segment is optional, but missing characters must be replaced with "x".'
     )
     parser.add_argument('end_date',
         type=str,
@@ -177,7 +177,7 @@ class Articles(Resource):
             return {'comment': 'Invalid parameters'}, 400
         else: # start and end dates valid
             print("------------here I am --------------------")
-            search_results = update_db.search_by_date(data['start_date'], data['end_date'])
+            search_results = update_db.search_by_date(data['start_date'].replace("x","0"), data['end_date'])
             # search_results = list(filter(lambda x: (x['date_of_publication'] <= data['end_date'] and x['date_of_publication'] >= data['start_date']), articles))
             print("search_results are after the date")
             print(search_results)
@@ -221,7 +221,7 @@ api.add_resource(Articles, '/articles')
 if __name__ == '__main__':
     page = 0
     last = scrape.get_last_page()
-    while page <= last:
+    while page <= 1:
         res = scrape.scrape_news("http://www.cidrap.umn.edu/news-perspective?page=" + str(page), [])
         if update_db.add_result(res) == False:
             break
