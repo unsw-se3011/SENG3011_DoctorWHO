@@ -4,7 +4,7 @@ def db_connect():
 	mydb = mysql.connector.connect(
 		host="localhost",
 		user="root",
-		passwd="",
+		password="password",
 		database="DoctorWHO"
 	)
 
@@ -235,7 +235,7 @@ def get_article_reports(article_id):
         cursor.execute(query)
         ar_reports = []
         for row in cursor:
-            ar_reports.append(row)
+            ar_reports.append(row.copy())
         print(ar_reports)
         for ar_report in ar_reports:
             query = ("SELECT * from Reports "
@@ -245,6 +245,7 @@ def get_article_reports(article_id):
                 row['disease'] = list(filter(None, row['disease'].split(',')))
                 row['syndrome'] = list(filter(None, row['syndrome'].split(',')))
                 report = row
+                print(report)
                 # each report has reported events
                 query = ("SELECT * from Events_Reports "
                         "WHERE er_report=" + str(report['report_id']))
@@ -252,7 +253,7 @@ def get_article_reports(article_id):
                 event_report_links = []
                 report['reported_events'] = []
                 for row in cursor:
-                    event_report_links.append(row)
+                    event_report_links.append(row.copy())
                 # print(event_reports)
                 for event_report_link in event_report_links:
                     event_id = str(event_report_link['er_event'])
@@ -262,43 +263,53 @@ def get_article_reports(article_id):
                     one_cursor.execute(query)
                     location_id = one_cursor.fetchone()
                     location_id = location_id[0]
-                    # print(location_id)
+                    print(location_id)
                     query = ("SELECT * from Locations "
                             "WHERE location_id=" + str(location_id))
                     cursor.execute(query)
                     location = cursor.fetchone()
-                   # print(event_report)
+                    print(location)
+                    # print(event_report)
 
                     query = ("SELECT * from Events "
                             "WHERE event_id=" + event_id)
                     cursor.execute(query)
                     for row in cursor:
                         row['location'] = location
-                        report['reported_events'].append(row)
-
+                        print(row)
+                        report['reported_events'].append(row.copy())
+                    
+                    print("I'm here")
+                print(report['reported_events'])
                 reports_list.append(report)
+            print(reports_list)
 
     except Exception as ex:
         print(ex)
     cursor.close()
     conn.close()
+    print("conn closed")
+    print(type(reports_list))
+    print(reports_list)
     return reports_list
 
 ########################################################
 
 def search_article_id(article_id):
     conn   = db_connect()
-    cursor = conn.cursor(buffered=True)
+    cursor = conn.cursor(dictionary=True,buffered=True)
     query  = ("SELECT * FROM Articles "
              "WHERE article_id=%s")
     res = None
+    print("search_article_id")
     try:
         cursor.execute(query, (article_id,))
         for row in cursor:
-            res = row
-            if res:
-                article_reports = get_article_reports(article_id)
-                res['reports'] = article_reports
+            print(row)
+            if row:
+                article_reports = get_article_reports(str(row['article_id']))
+                row['reports'] = article_reports
+                return row
     except Exception as ex:
         print(ex)
 
@@ -323,6 +334,8 @@ def search_by_date(start_date, end_date):
 
     cursor.close()
     conn.close()
+    print("RESULTS FROM SEARCH BY DATE")
+    print(res)
     return res
 """
 def search_report(report):
