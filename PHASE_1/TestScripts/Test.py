@@ -133,7 +133,7 @@ if __name__ == "__main__":
 	assert num15 >= 1
 	print("**** TEST15 PASSED ****")
 
-	# correct full input1
+	# correct full input
 	test16 = {'start_date':'2019-03-28Txx:xx:xx','end_date':'2019-03-29Txx:xx:xx','key_terms':'flu','location':'United States'}
 	result16 = test_article(test16)
 	num16 = count_articles(result16)

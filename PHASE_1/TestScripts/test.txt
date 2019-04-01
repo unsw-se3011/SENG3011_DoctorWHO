@@ -1,0 +1,74 @@
+# Testing for /article/{article_id}
+# get article 0
+aritcle_id = 0
+
+# get article 1
+article_id = 1
+
+# article not found
+article_id = 100
+
+# invalid input
+article_id = abc
+
+# Testing for /article
+# start_date > end_date
+start_date = 2019-03-29Txx:xx:xx
+end_date = 2019-03-28Txx:xx:xx
+
+# invalid format of the date
+start_date = 19.03.28
+end_date = 19.03.29
+
+# date range bigger than the stored date range
+start_date = 2019-03-27Txx:xx:xx
+end_date = 2019-04-01Txx:xx:xx
+
+# no articles of the chosen date range
+start_date = 2020-01-01Txx:xx:xx
+end_date = 2020-01-02Txx:xx:xx
+
+# on just one day
+start_date = 2019-03-29T00:00:00
+end_date = 2019-03-29T23:59:59
+
+# key_term doesn't exit (hopital doesn't exist)
+start_date = start_date':'2019-03-28Txx:xx:xx
+end_date = end_date':'2019-03-29Txx:xx:xx
+key_term = hopital
+
+# location doesn't exit
+start_date = 2019-03-28Txx:xx:xx
+end_date = 2019-03-29Txx:xx:xx
+location = Toko
+
+# location invalid format
+start_date = 2019-03-28Txx:xx:xx
+end_date = 2019-03-29Txx:xx:xx
+location = Tokyo, Shanghai
+
+# correct dates only
+start_date = 2019-03-28Txx:xx:xx
+end_date = 2019-03-29Txx:xx:xx
+
+# correct without location1
+start_date = 2019-03-28Txx:xx:xx
+end_date = 2019-03-29Txx:xx:xx
+key_term = Ebola
+
+# correct without location2
+start_date = 2019-03-28Txx:xx:xx
+end_date = 2019-03-29Txx:xx:xx
+key_term = flu
+
+# correct without key_term
+start_date = 2019-03-28Txx:xx:xx
+end_date = 2019-03-29Txx:xx:xx
+location = Liberia
+
+# correct full input
+start_date = 2019-03-28Txx:xx:xx
+end_date = 2019-03-29Txx:xx:xx
+key_term = flu
+location = United States
+
