@@ -25,7 +25,7 @@ articles = [
                 "id":0,
                 "disease":[
                     "influenza a/h5n1",
-                    "influenza a/h7n9" 
+                    "influenza a/h7n9"
                 ],
                 "syndrome":[
                 ],
@@ -37,7 +37,7 @@ articles = [
                         "location":{
                             "geonames-id":1566083
                         },
-                        "number-affected":1 
+                        "number-affected":1
                     },
                     {
                         "id": 1,
@@ -128,7 +128,6 @@ class Article(Resource):
         if not article_id.isdigit():
             return {'comment': 'Invalid article ID'}, 400
         article_res = update_db.search_article_id(article_id)
-        print(article_res)
         '''
         desired_article = list(filter(lambda x: x['id'] == article_id, articles))
         print(desired_article)
@@ -136,8 +135,7 @@ class Article(Resource):
             return desired_article[0], 200
         '''
         if article_res:
-            print(article_res)
-            return article_res, 200 
+            return article_res, 200
         else:
             return {'comment': 'Article not found'}, 404
 
@@ -163,7 +161,7 @@ class Articles(Resource):
         required=False,
         help='Name of location of interest'
     )
-    
+
     @api.expect(parser)
     @api.response(200, 'Article retrieved', search_result_model)
     @api.response(400, 'Invalid parameters')
@@ -173,16 +171,18 @@ class Articles(Resource):
         data = Articles.parser.parse_args()
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
         year_regex = re.compile('^(\d{4})')
+        print("I'm in getting")
         if not date_regex.match(data['start_date']) or not date_regex.match(data['end_date']) or data['start_date'] > data['end_date']:
             return {'comment': 'Invalid parameters'}, 400
         else: # start and end dates valid
+            print("------------here I am --------------------")
             search_results = update_db.search_by_date(data['start_date'], data['end_date'])
             # search_results = list(filter(lambda x: (x['date_of_publication'] <= data['end_date'] and x['date_of_publication'] >= data['start_date']), articles))
+            print("search_results are after the date")
+            print(search_results)
             if data['key_terms']: #TODO test if this actually works
                 search_terms = data['key_terms'].split(','); # add synonyms???
                 search_terms = filter(None, [x.strip() for x in search_terms])
-                print("search terms:")
-                print(search_terms)
                 filtered_results = []
                 for article in search_results:
                     # print(search_results)
@@ -191,18 +191,22 @@ class Articles(Resource):
                         # put all diseases into one string, then check if keywords match
                         diseases_list += report['disease']
                     diseases_string = ','.join(diseases_list)
-                    print("diseases_string: " + diseases_string)
-                    print(article)
 
                     for term in search_terms:
                         if term in diseases_string:
-                            filtered_results.append(article)
+                            filtered_results.append(article.copy())
                             break
                 search_results = filtered_results
-                print("search results:")
-                print(search_results)
             if data['location']:
-                pass
+                filtered_results = []
+                for article in search_results:
+                    location_list = []
+                    for report in article['reports']:
+                        for event in report['reported_events']:
+                            location_list.append(event['location']['location_name'])
+                    if data['location'] in location_list:
+                        filtered_results.append(article.copy())
+                search_results = filtered_results
             if search_results:
                 return {'articles': search_results}
             else:
@@ -213,16 +217,13 @@ api.add_resource(Articles, '/articles')
 
 if __name__ == '__main__':
     #while True:
-    '''
     out = open("log", "w")
-    
+
     res = scrape.scrape_news("http://www.cidrap.umn.edu/news-perspective", [])
     for r in res:
         json.dump(r, indent=4, sort_keys=True, fp=out)
         out.write("\n")
     out.close()
-    
-    update_db.add_result(res)
-    '''
-    app.run(debug=True)
 
+    update_db.add_result(res)
+    app.run(debug=True)
