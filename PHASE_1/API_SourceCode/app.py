@@ -206,7 +206,7 @@ class Articles(Resource):
                         for event in report['reported_events']:
                             location_event = event['location']['location_name']
                             l_lower = location_event.lower()
-                            location_list.append()
+                            location_list.append(l_lower)
                     if data['location'].lower() in location_list:
                         filtered_results.append(article.copy())
                 search_results = filtered_results
