@@ -3,6 +3,7 @@ from flask_restplus import Resource, Api, reqparse, fields
 import re
 from scraper import scrape, update_db
 import json
+import multithread
 # from flask_jwt import JWT, jwt_required
 
 # from security import authenticate, identity
@@ -210,6 +211,7 @@ api.add_resource(Article, '/article/<article_id>')
 api.add_resource(Articles, '/articles')
 
 if __name__ == '__main__':
+    app.run(debug=True)
     page = 0
     last = scrape.get_last_page()
     while page <= last:
@@ -217,5 +219,5 @@ if __name__ == '__main__':
         if update_db.add_result(res) == False:
             break
         page += 1
-    app.run(debug=True)
+    multithread.checkThread()
 
