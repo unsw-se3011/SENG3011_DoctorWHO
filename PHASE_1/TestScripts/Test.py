@@ -127,14 +127,14 @@ if __name__ == "__main__":
 	print("**** TEST14.1 PASSED ****")
 
 	# correct without key_term
-	test15 = {'start_date':'2019-03-28Txx:xx:xx','end_date':'2019-03-29Txx:xx:xx','location':'America'}
+	test15 = {'start_date':'2019-03-28Txx:xx:xx','end_date':'2019-03-29Txx:xx:xx','location':'Liberia'}
 	result15 = test_article(test15)
 	num15 = count_articles(result15)
 	assert num15 >= 1
 	print("**** TEST15 PASSED ****")
 
 	# correct full input1
-	test16 = {'start_date':'2019-03-28Txx:xx:xx','end_date':'2019-03-29Txx:xx:xx','key_terms':'flu','location':'the United States'}
+	test16 = {'start_date':'2019-03-28Txx:xx:xx','end_date':'2019-03-29Txx:xx:xx','key_terms':'flu','location':'United States'}
 	result16 = test_article(test16)
 	num16 = count_articles(result16)
 	assert num16 >= 1
