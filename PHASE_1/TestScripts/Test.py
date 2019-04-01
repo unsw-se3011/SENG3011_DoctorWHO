@@ -5,7 +5,7 @@ import json
 # Testing for /article/{article_id}
 def test_id(payload):
 	r = requests.get('http://127.0.0.1:5000/article/{article_id}', params=payload)
-	if (r.status_code != 200):
+	if r.status_code != 200:
 		return str(r.status_code)
 	else:
 		return r.text
@@ -13,7 +13,7 @@ def test_id(payload):
 # Testing for /article
 def test_article(payload):
 	r = requests.get('http://http://127.0.0.1:5000/articles', params=payload)
-	if (r.status_code != 200):
+	if r.status_code != 200:
 		return str(r.status_code)
 	else:
 		return r.text
