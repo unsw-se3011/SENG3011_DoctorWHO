@@ -227,17 +227,6 @@ def add_result(result):
                     "report_id": rid
                 }
                 add_event_report(event_report)
-
-<<<<<<< HEAD
-
-
-=======
-                article_report = {
-                    "event_id": eid,
-                    "article_id": aid
-                }
-                add_article_report(article_report)
->>>>>>> f1320b64cf377768fdf3471f707f1d158391574a
     print("Have added these articles: ")
     print(art_id)
 
@@ -399,6 +388,23 @@ def search_location(location):
     conn.close()
     return res
 
+def search_article_url_headline(args):
+    conn   = db_connect()
+    cursor = conn.cursor(buffered=True)
+    query  = ("SELECT * FROM Articles "
+             "WHERE url=%(url)s and headline=%(headline)s")
+    try:
+        cursor.execute(query, args)
+        if cursor.rowcount > 0:
+            return True
+    except Exception as ex:
+        print(ex)
+
+    cursor.close()
+    conn.close()
+    return False
+
+
 """
 def search_report(report):
     conn   = db_connect()
@@ -452,7 +458,7 @@ def search_location_name(location):
                 res = int(location_id)
     except Exception as ex:
         print(ex)
-    
+
     cursor.close()
     conn.close()
     return res
