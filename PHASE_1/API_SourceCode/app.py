@@ -207,7 +207,8 @@ class Articles(Resource):
                     diseases_string = ','.join(diseases_list)
 
                     for term in search_terms:
-                        if term in diseases_string:
+                        term = term.strip()
+                        if term != "" and term in diseases_string:
                             filtered_results.append(article.copy())
                             break
                 search_results = filtered_results
@@ -253,7 +254,6 @@ def request_log(req):
             f.write(message)
 
 if __name__ == '__main__':
-    """
     page = 0
     last = scrape.get_last_page()
     while page <= 1:
@@ -261,6 +261,5 @@ if __name__ == '__main__':
         if update_db.add_result(res) == False:
             break
         page += 1
-    """
     app.run(debug=True)
     #multithread.checkThread()
