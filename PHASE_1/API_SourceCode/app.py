@@ -3,6 +3,7 @@ from flask_restplus import Resource, Api, reqparse, fields
 import re
 from scraper import scrape, update_db
 import json
+from datetime import datetime
 import multithread
 # from flask_jwt import JWT, jwt_required
 
@@ -125,6 +126,7 @@ class Article(Resource):
     # @api.response(602, 'Search result', search_result_model)
 
     def get(self, article_id):
+        request_log(str(request.__dict__['environ']['PATH_INFO']))
         article_id = request.view_args['article_id']
         if not article_id.isdigit():
             return {'comment': 'Invalid article ID'}, 400
@@ -170,6 +172,17 @@ class Articles(Resource):
     @api.response(500, 'Database error') # ?
     def get(self):
         data = Articles.parser.parse_args()
+        
+        # Get the args to form path for log entry
+        req = str(request.__dict__['environ']['PATH_INFO'])
+        for arg in data:
+            if data[arg]:
+                if "?" not in req:
+                    req += "?" + arg + "=" + data[arg]
+                else:
+                    req += "&" + arg + "=" + data[arg]
+        request_log(req)
+        
         date_regex = re.compile('^(\d{4})-(\d\d|xx)-(\d\d|xx)T(\d\d|xx):(\d\d|xx):(\d\d|xx)$')
         year_regex = re.compile('^(\d{4})')
         print("I'm in getting")
@@ -215,8 +228,29 @@ class Articles(Resource):
             else:
                 return {'comment': 'No results found'}, 404
 
+@app.route("/log.txt", methods=["GET"])
+def logfile():
+    try:
+        with open("log.txt", "r") as f:
+            log_content = f.read()
+    except:
+        with open("log.txt", "w") as f:
+            f.write("")
+        with open("log.txt", "r") as fp:
+            log_content = fp.read()
+    return log_content
+
 api.add_resource(Article, '/article/<article_id>')
 api.add_resource(Articles, '/articles')
+
+def request_log(req):
+    message = "DoctorWHO - CIDRAP source - \"GET " + req + "\" - " + str(datetime.now()) + "\n"
+    try:
+        with open("log.txt", "a") as f:
+            f.write(message)
+    except:
+        with open("log.txt", "w") as f:
+            f.write(message)
 
 if __name__ == '__main__':
     page = 0
