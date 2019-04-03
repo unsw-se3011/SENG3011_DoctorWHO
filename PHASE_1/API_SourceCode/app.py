@@ -192,11 +192,11 @@ class Articles(Resource):
             print("------------here I am --------------------")
             search_results = update_db.search_by_date(data['start_date'].replace("x","0"), data['end_date'])
             # search_results = list(filter(lambda x: (x['date_of_publication'] <= data['end_date'] and x['date_of_publication'] >= data['start_date']), articles))
-            print("search_results are after the date")
-            print(search_results)
+            #print("search_results are after the date")
+            #print(search_results)
             if data['key_terms']: #TODO test if this actually works
                 search_terms = data['key_terms'].split(','); # add synonyms???
-                search_terms = filter(None, [x.strip() for x in search_terms])
+                #search_terms = filter(None, [x.strip() for x in search_terms])
                 filtered_results = []
                 for article in search_results:
                     # print(search_results)
@@ -253,6 +253,7 @@ def request_log(req):
             f.write(message)
 
 if __name__ == '__main__':
+    """
     page = 0
     last = scrape.get_last_page()
     while page <= 1:
@@ -260,5 +261,6 @@ if __name__ == '__main__':
         if update_db.add_result(res) == False:
             break
         page += 1
+    """
     app.run(debug=True)
     #multithread.checkThread()

@@ -247,8 +247,8 @@ def get_article_reports(article_id):
         ar_reports = []
         for row in cursor:
             ar_reports.append(row.copy())
-        print("ar_reports is")
-        print(ar_reports)
+        #print("ar_reports is")
+        #print(ar_reports)
         for ar_report in ar_reports:
             query = ("SELECT * from Reports "
                     "WHERE report_id=" + str(ar_report['ar_id']))
@@ -257,8 +257,8 @@ def get_article_reports(article_id):
                 row['disease'] = list(filter(None, row['disease'].split(',')))
                 row['syndrome'] = list(filter(None, row['syndrome'].split(',')))
                 report = row
-                print("report is")
-                print(report)
+                #print("report is")
+                #print(report)
                 # each report has reported events
                 query = ("SELECT * from Events_Reports "
                         "WHERE er_report=" + str(report['report_id']))
@@ -276,12 +276,12 @@ def get_article_reports(article_id):
                     one_cursor.execute(query)
                     location_id = one_cursor.fetchone()
                     location_id = location_id[0]
-                    print(location_id)
+                    #print(location_id)
                     query = ("SELECT * from Locations "
                             "WHERE location_id=" + str(location_id))
                     cursor.execute(query)
                     location = cursor.fetchone()
-                    print(location)
+                    #print(location)
                     # print(event_report)
 
                     query = ("SELECT * from Events "
@@ -289,20 +289,20 @@ def get_article_reports(article_id):
                     cursor.execute(query)
                     for row in cursor:
                         row['location'] = location
-                        print(row)
+                        #print(row)
                         report['reported_events'].append(row.copy())
 
-                print(report['reported_events'])
+                #print(report['reported_events'])
                 reports_list.append(report)
-            print(reports_list)
+            #print(reports_list)
 
     except Exception as ex:
         print(ex)
     cursor.close()
     conn.close()
-    print("conn closed")
-    print(type(reports_list))
-    print(reports_list)
+    #print("conn closed")
+    #print(type(reports_list))
+    #print(reports_list)
     return reports_list
 
 ########################################################
@@ -313,13 +313,13 @@ def search_article_id(article_id):
     query  = ("SELECT * FROM Articles "
              "WHERE article_id=%s")
     res = None
-    print("search_article_id")
-    print(article_id)
+    #print("search_article_id")
+    #print(article_id)
     try:
         cursor.execute(query, (article_id,))
         for row in cursor:
-            print("row is")
-            print(row)
+            #print("row is")
+            #print(row)
             if row:
                 article_reports = get_article_reports(str(row['article_id']))
                 row['reports'] = article_reports
@@ -338,17 +338,17 @@ def search_by_date(start_date, end_date):
     query  = ("SELECT article_id from Articles "
              "WHERE date_of_publication BETWEEN %s and %s") #how to search range???
     res = []
-    print("res is")
-    print(res)
+    #print("res is")
+    #print(res) #this print empty list?!?
     try:
         cursor.execute(query, (start_date, end_date))
         for row in cursor:
-            print("article id is")
-            print(row['article_id'])
+            #print("article id is")
+            #print(row['article_id'])
             res.append(search_article_id(str(row['article_id'])))
     except Exception as ex:
 	    print("exception")
-    print("I'm working")
+    #print("I'm working")
     cursor.close()
     conn.close()
     return res

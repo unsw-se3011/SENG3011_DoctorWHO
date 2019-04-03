@@ -1,2 +1,25 @@
 DoctorWHO - CIDRAP source - "GET /article/4" - 2019-04-03 23:57:19.815296
 DoctorWHO - CIDRAP source - "GET /articles?key_terms=Liberia&start_date=2019-03-03Txx:xx:xx&end_date=2019-05-04Txx:xx:xx" - 2019-04-03 23:57:29.529808
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&key_terms=ebola&end_date=2019-05-04Txx:xx:xx&location=Liberia" - 2019-04-04 00:09:46.608780
+DoctorWHO - CIDRAP source - "GET /articles?location=Liberia&key_terms=ebola&start_date=2019-03-03Txx:xx:xx&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:11:45.721558
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&key_terms=ebola&location=Liberia&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:12:14.123474
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&location=Liberia&key_terms=ebola&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:13:59.996551
+DoctorWHO - CIDRAP source - "GET /articles?key_terms=ebola&start_date=2019-03-03Txx:xx:xx&end_date=2019-05-04Txx:xx:xx&location=Liberia" - 2019-04-04 00:15:02.708734
+DoctorWHO - CIDRAP source - "GET /articles?end_date=2019-05-04Txx:xx:xx&key_terms=ebola&location=Liberia&start_date=2019-03-03Txx:xx:xx" - 2019-04-04 00:15:22.829667
+DoctorWHO - CIDRAP source - "GET /articles?location=Liberia&key_terms=ebola&end_date=2019-05-04Txx:xx:xx&start_date=2019-03-03Txx:xx:xx" - 2019-04-04 00:15:47.349868
+DoctorWHO - CIDRAP source - "GET /articles?location=Liberia&end_date=2019-05-04Txx:xx:xx&key_terms=ebola&start_date=2019-03-03Txx:xx:xx" - 2019-04-04 00:16:08.682683
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&location=Liberia&key_terms=ebola&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:16:30.496260
+DoctorWHO - CIDRAP source - "GET /articles?end_date=2019-05-04Txx:xx:xx&location=Liberia&key_terms=ebola&start_date=2019-03-03Txx:xx:xx" - 2019-04-04 00:17:11.988873
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&key_terms=ebola&location=Liberia&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:18:03.326854
+DoctorWHO - CIDRAP source - "GET /articles?end_date=2019-05-04Txx:xx:xx&key_terms=ebola&location=Liberia&start_date=2019-03-03Txx:xx:xx" - 2019-04-04 00:19:13.914766
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&location=Liberia&key_terms=ebola&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:19:24.236549
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&location=Liberia&key_terms=flu&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:20:00.035733
+DoctorWHO - CIDRAP source - "GET /articles?key_terms=flu&location=Liberia&start_date=2019-03-03Txx:xx:xx&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:20:38.187354
+DoctorWHO - CIDRAP source - "GET /articles?key_terms=influenza&location=Liberia&start_date=2019-03-03Txx:xx:xx&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:20:58.587504
+DoctorWHO - CIDRAP source - "GET /articles?key_terms=influenza&end_date=2019-05-04Txx:xx:xx&start_date=2019-03-03Txx:xx:xx&location=Liberia" - 2019-04-04 00:21:28.499976
+DoctorWHO - CIDRAP source - "GET /articles?key_terms=influenza&location=Liberia&end_date=2019-05-04Txx:xx:xx&start_date=2019-03-03Txx:xx:xx" - 2019-04-04 00:22:09.617566
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&key_terms=influenza&location=Liberia&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:23:52.278967
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&key_terms=influenza&location=United States&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:24:09.372505
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&key_terms=influenza&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:24:20.741766
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&key_terms=ebola&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:24:36.757781
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&end_date=2019-05-04Txx:xx:xx&key_terms=ebola" - 2019-04-04 00:25:23.747069
