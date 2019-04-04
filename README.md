@@ -4,6 +4,7 @@ This repository contains the specification for the SENG3011 project in 19T1.
 # D2 deliverable
 url: doctorwhoseng.tk 
      www.doctorwhoseng.tk
-the log file can be accessed using www.doctorwhoseng.tk/log
+
+The log file can be accessed using www.doctorwhoseng.tk/log
 
      
