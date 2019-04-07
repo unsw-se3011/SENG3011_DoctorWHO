@@ -3,9 +3,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const routerOptions = [
-    { path: '/', component: 'Home' },
-    { path: '/about', component: 'About' },
-    { path: '*', component: 'NotFound' }
+    { path: '/', name: 'Home', component: 'Home' },
+    { path: '/Article', name: 'Article', component: 'Article' },
+    { path: '/Graphs', name: 'Graphs', component: 'Graphs' },
+    { path: '/Search', name: 'Search', component: 'Search' },
+    { path: '*', name: 'NotFound', component: 'NotFound' }
 ]
 
 const routes = routerOptions.map(route => {
