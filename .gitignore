@@ -106,3 +106,4 @@ venv.bak/
 # manually added stuff
 .DS_Store
 .swp
+# .*.swp    ????????

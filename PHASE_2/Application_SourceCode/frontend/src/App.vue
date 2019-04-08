@@ -2,11 +2,13 @@
   <div id="app">
     <Navigation></Navigation>
     <router-view/>
+    {{ info }}
   </div>
 </template>
 
 <script>
 import Navigation from './components/Navigation'
+// import axios from 'axios'
 export default {
   name: 'App',
   components: {
