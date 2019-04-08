@@ -5,7 +5,7 @@ import Router from 'vue-router'
 const routerOptions = [
     { path: '/', name: 'Home', component: 'Home' },
     { path: '/Article', name: 'Article', component: 'Article' },
-    { path: '/Graphs', name: 'Graphs', component: 'Graphs' },
+    { path: '/Graphs', name: 'Graphs', component: 'PieGraph' },
     { path: '/Search', name: 'Search', component: 'Search' },
     { path: '*', name: 'NotFound', component: 'NotFound' }
 ]
