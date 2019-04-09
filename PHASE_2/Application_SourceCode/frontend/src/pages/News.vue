@@ -12,10 +12,7 @@
             <p>
               Key terms (optional): <br> <input type="text"> <br>
             </p>
-            <p>
-              Location (optional): <br> <input type="text"> <br>
-            </p>
-            <button class="btn"> Create Graphs  </button>
+            <button class="btn"> Search News  </button>
           </form>
         </div>
       </card>

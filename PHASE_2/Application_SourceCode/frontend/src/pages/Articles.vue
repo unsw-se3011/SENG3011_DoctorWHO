@@ -20,7 +20,7 @@
         <p>
           Location (optional): <br> <input type="text"> <br>
         </p>
-        <button class="btn"> Submit </button> 
+        <button class="btn"> Search Articles </button> 
       </form>
     </div>
   </card>
