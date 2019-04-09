@@ -1,0 +1,2 @@
+webpackJsonp([5],{OQQf:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var i={render:function(){var e=this.$createElement,t=this._self._c||e;return t("div",[t("h1",[this._v("Article")]),this._v("\n  "+this._s(this.info)+"\n")])},staticRenderFns:[]},s=n("VU/8")({name:"Article"},i,!1,null,null,null);t.default=s.exports}});
+//# sourceMappingURL=5.cd18f5d7f5a25f5cf199.js.map
