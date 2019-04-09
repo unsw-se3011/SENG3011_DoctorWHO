@@ -69,6 +69,7 @@ def create_tables():
 	mycursor.execute("CREATE TABLE Locations"
 		" (location_id INT AUTO_INCREMENT PRIMARY KEY,"
 		" location_name VARCHAR(255),"
+		" country_name VARCHAR(255),"
 		" geonames_id INT)")
 	print("created Locations table")
 

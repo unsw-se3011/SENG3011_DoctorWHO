@@ -85,12 +85,16 @@ def scrape_scan(url):
         
         country = filter.get_location(head['content'])
         if country != None:
-            event['location']['country'] = country[0]['name']
-            event['location']['id'] = country[0]['id']
+            event['location']['location'] = country[0]['name']
+            event['location']['country'] = country[0]['country']
+            event['location']['geonames-id'] = country[0]['geonames']
             for i in range(1, len(country)):
-                event['location']['country'] += ", " + country[i]['name'] 
+                event['location']['location'] += ", " + country[i]['name']
+                event['location']['country'] += ", " + country[i]['country']
+                event['location']['geonames-id'] += ", " + country[i]['geonames']
         else:
             event['location']['country'] = "unknown"
+            event['location']['location'] = "unknown"
         
         syndrome = filter.get_syndrome(head['content'])
         if syndrome != None:

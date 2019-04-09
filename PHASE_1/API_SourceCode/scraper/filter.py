@@ -15,7 +15,7 @@ month_list      = read_json_list("scraper/datasets/month_list.json")
 event_list      = read_json_list("scraper/datasets/event_list.json")
 # by 'name' and 'id'
 topic_list      = read_json_list("scraper/datasets/topic_list.json")
-country_list    = read_json_list("scraper/datasets/country_list.json")
+country_list    = read_json_list("scraper/datasets/geonames_list.json")
 
 def new_article(url):
     a = {
@@ -126,10 +126,16 @@ def get_location(text):
     content = content.lower()
     location = []
     for d in country_list:
-        if d['name'] == 'other' or d['name'] == 'unknown':
-            continue
-        if d['name'].lower() in content:
-            location.append(d)
+        l = {}
+        ctry_names = [d['location_name']] + d['alternatives']
+        for cn in ctry_names:
+            if cn == "":
+                continue
+            if cn.lower() in content:
+                l['name'] = d['location_name']
+                l['geonames'] = d['geonames_id']
+                l['country'] = d['country']
+                location.append(l)
 
     if len(location) > 0:
         return location
