@@ -73,6 +73,7 @@ def scrape_scan(url):
         
         article['date_of_publication'], article['headline'], article['topics'] = filter.get_metadata(r.text)
         article['headline'] += " - " + head['headline']
+        article['main_text'] = head['content']
         
         event_type = filter.get_event_type(head['content']) # not scraped
         if event_type != None:
