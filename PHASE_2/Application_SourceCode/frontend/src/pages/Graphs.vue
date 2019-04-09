@@ -2,11 +2,16 @@
   <div>
     <div class="row">
       <card type="plain" title="Graphs">
-      <p>
-      Please choose a type of graph <br> (not yet implemented)
-      </p>
-      <p>
-      </p>
+      <p> Please select the graph to create: </p> <br>
+        <div class="col-md-8">
+          <form>
+          <p>
+          <input type="radio" name="graphtype"> <b> Line graph </b> - number of reports for a particular disease over a period of time <br>
+          <input type="radio" name="graphtype"> <b> Column graph </b> - number of reports for each disase over a period of time <br>
+          </p>
+          <p> </p>
+          </form>
+        </div>
       </card>
       <card type="plain">
       <p> Specify the range of data you wish to use: </p> <br>
@@ -19,12 +24,12 @@
               End date: <datetime type="datetime" v-model="datetime"></datetime>
             </p>
             <p>
-              Key terms (optional): <br> <input type="text"> <br>
+              Key terms: <br> <input type="text"> <br>
             </p>
             <p>
               Location (optional): <br> <input type="text"> <br>
             </p>
-            <button class="btn"> Create Graphs  </button> 
+            <button class="btn"> Create Graph </button> 
           </form>
         </div>
       </card>
