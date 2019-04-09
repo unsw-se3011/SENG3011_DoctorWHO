@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-12">
         <h1> Welcome to SIDRAT </h1>
-        <h3> Stay healthy and move on </h3>
+        <h3> Saved Articles </h3>
       </div>
     </div>
   </div>
