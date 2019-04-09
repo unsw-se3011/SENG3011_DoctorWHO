@@ -5,6 +5,8 @@
       <div class="col-12">
         <h1> Welcome to SIDRAT </h1>
         <h3> Saved Articles </h3>
+        <h3> Saved Search for Articles </h3>
+        <h3> Saved Search for Graphs </h3>
       </div>
     </div>
   </div>
