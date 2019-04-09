@@ -4,10 +4,13 @@ import NotFound from "@/pages/NotFoundPage.vue";
 
 // Admin pages
 const Dashboard = () => import(/* webpackChunkName: "dashboard" */"@/pages/Dashboard.vue");
+const Graphs = () => import(/* webpackChunkName: "dashboard" */"@/pages/Graphs.vue");
 const Profile = () => import(/* webpackChunkName: "common" */ "@/pages/Profile.vue");
 const Notifications = () => import(/* webpackChunkName: "common" */"@/pages/Notifications.vue");
+const Search = () => import(/* webpackChunkName: "common" */"@/pages/Search.vue");
 const Icons = () => import(/* webpackChunkName: "common" */ "@/pages/Icons.vue");
 const Maps = () => import(/* webpackChunkName: "common" */ "@/pages/Maps.vue");
+const News = () => import(/* webpackChunkName: "common" */ "@/pages/News.vue");
 const Typography = () => import(/* webpackChunkName: "common" */ "@/pages/Typography.vue");
 const TableList = () => import(/* webpackChunkName: "common" */ "@/pages/TableList.vue");
 
@@ -23,9 +26,24 @@ const routes = [
         component: Dashboard
       },
       {
+        path: "graphs",
+        name: "graphs",
+        component: Dashboard
+      },
+      {
         path: "profile",
         name: "profile",
         component: Profile
+      },
+      {
+        path: "search",
+        name: "search",
+        component: Search
+      },
+      {
+        path: "news",
+        name: "news",
+        component: News
       },
       {
         path: "notifications",
