@@ -27,10 +27,10 @@ export default {
     var xScale = d3.scaleLinear()
       .domain([0, n - 1]) // input
       .range([0, width]) // output
-
+    
     // 6. Y scale will use the randomly generate number
     var yScale = d3.scaleLinear()
-      .domain([0, 1]) // input
+      .domain([0, 10]) // input
       .range([height, 0]) // output
 
     // 7. d3's line generator
@@ -40,10 +40,10 @@ export default {
       .curve(d3.curveMonotoneX) // apply smoothing to the line
 
     // 8. An array of objects of length N. Each object has key - value pair, the key being 'y' and the value is a random number
-    var dataset = d3.range(n).map(function (d) { return {'y': d3.randomUniform(1)()} })
+    var dataset = d3.range(n).map(function (d) { return {'y': d3.randomUniform(1)() * 10} })
 
     // 1. Add the SVG to the page and employ #2
-    var svg = d3.select('body').append('svg')
+    var svg = d3.select('#my_dataviz_line').append('svg')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
