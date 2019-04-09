@@ -7,7 +7,7 @@ const Dashboard = () => import(/* webpackChunkName: "dashboard" */"@/pages/Dashb
 const Graphs = () => import(/* webpackChunkName: "dashboard" */"@/pages/Graphs.vue");
 const Profile = () => import(/* webpackChunkName: "common" */ "@/pages/Profile.vue");
 const Notifications = () => import(/* webpackChunkName: "common" */"@/pages/Notifications.vue");
-const Search = () => import(/* webpackChunkName: "common" */"@/pages/Search.vue");
+const Articles = () => import(/* webpackChunkName: "common" */"@/pages/Articles.vue");
 const Icons = () => import(/* webpackChunkName: "common" */ "@/pages/Icons.vue");
 const Maps = () => import(/* webpackChunkName: "common" */ "@/pages/Maps.vue");
 const News = () => import(/* webpackChunkName: "common" */ "@/pages/News.vue");
@@ -28,7 +28,7 @@ const routes = [
       {
         path: "graphs",
         name: "graphs",
-        component: Dashboard
+        component: Graphs
       },
       {
         path: "profile",
@@ -36,9 +36,9 @@ const routes = [
         component: Profile
       },
       {
-        path: "search",
-        name: "search",
-        component: Search
+        path: "articles",
+        name: "articles",
+        component: Articles
       },
       {
         path: "news",

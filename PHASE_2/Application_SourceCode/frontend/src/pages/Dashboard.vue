@@ -3,27 +3,8 @@
 
     <div class="row">
       <div class="col-12">
-        <card type="chart">
-          <template slot="header">
-            <div class="row">
-              <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
-              <h2 class="card-title">Number of Ebola reports in 2016</h2>
-              </div>
-              <div class="col-sm-6">
-              </div>
-            </div>
-          </template>
-          <div class="chart-area">
-            <line-chart style="height: 100%"
-                        ref="bigChart"
-                        chart-id="big-line-chart"
-                        :chart-data="bigLineChart.chartData"
-                        :gradient-colors="bigLineChart.gradientColors"
-                        :gradient-stops="bigLineChart.gradientStops"
-                        :extra-options="bigLineChart.extraOptions">
-            </line-chart>
-          </div>
-        </card>
+        <h1> Welcome to SIDRAT </h1>
+        <h3> Stay healthy and move on </h3>
       </div>
     </div>
   </div>

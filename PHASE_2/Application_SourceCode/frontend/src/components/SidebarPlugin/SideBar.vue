@@ -9,7 +9,7 @@
     <div class="sidebar-wrapper" id="style-3">
       <div class="logo">
         <a class="simple-text logo-normal">
-          CIDRAT
+          SIDRAT
         </a>
       </div>
       <slot>

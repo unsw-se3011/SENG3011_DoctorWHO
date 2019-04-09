@@ -1,7 +1,35 @@
 <template>
   <div>
-
     <div class="row">
+      <card type="plain" title="Graphs">
+      <p>
+      Please choose a type of graph <br> (not yet implemented)
+      </p>
+      <p>
+      </p>
+      </card>
+      <card type="plain">
+      <p> Specify the range of data you wish to use: </p> <br>
+        <div class="col-md-8">
+          <form>
+            <p>
+              Start date: <datetime type="datetime" v-model="datetime"></datetime>
+            </p>
+            <p>
+              End date: <datetime type="datetime" v-model="datetime"></datetime>
+            </p>
+            <p>
+              Key terms (optional): <br> <input type="text"> <br>
+            </p>
+            <p>
+              Location (optional): <br> <input type="text"> <br>
+            </p>
+            <button class="btn"> Create Graphs  </button> 
+          </form>
+        </div>
+      </card>
+
+      <h4> Example Graph: </h4>
       <div class="col-12">
         <card type="chart">
           <template slot="header">

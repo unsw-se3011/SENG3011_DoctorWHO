@@ -3,7 +3,7 @@
     <side-bar>
       <template slot="links">
         <sidebar-link to="/dashboard" :name="$t('sidebar.dashboard')"/>
-        <sidebar-link to="/search" :name="$t('search')"/>
+        <sidebar-link to="/articles" :name="$t('articles')"/>
         <sidebar-link to="/graphs" :name="$t('graphs')"/>
         <sidebar-link to="/news" :name="$t('news')"/>
       </template>
