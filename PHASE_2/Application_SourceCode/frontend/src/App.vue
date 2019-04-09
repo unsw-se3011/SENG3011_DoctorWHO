@@ -1,30 +1,28 @@
 <template>
-  <div id="app">
-    <Navigation/>
-    <router-view/>
-    {{ info }}
+  <div>
+    <notifications></notifications>
+    <router-view :key="$route.fullPath"></router-view>
   </div>
 </template>
 
 <script>
-import Navigation from './components/Navigation'
-// import axios from 'axios'
-export default {
-  name: 'App',
-  components: {
-    'Navigation': Navigation
-  }
-}
+  export default {
+    methods: {
+      disableRTL() {
+        if (!this.$rtl.isRTL) {
+          this.$rtl.disableRTL();
+        }
+      },
+      toggleNavOpen() {
+        let root = document.getElementsByTagName('html')[0];
+        root.classList.toggle('nav-open');
+      }
+    },
+    mounted() {
+      this.$watch('$route', this.disableRTL, { immediate: true });
+      this.$watch('$sidebar.showSidebar', this.toggleNavOpen)
+    }
+  };
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 0px;
-
-}
-</style>
+<style lang="scss"></style>

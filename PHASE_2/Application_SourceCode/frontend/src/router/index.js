@@ -1,25 +1,17 @@
-/* eslint-disable */
-import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from "vue-router";
+import routes from "./routes";
 
-const routerOptions = [
-    { path: '/', name: 'Home', component: 'Home' },
-    { path: '/Article', name: 'Article', component: 'Article' },
-    { path: '/Graphs', name: 'Graphs', component: 'LineGraph' },
-    { path: '/Search', name: 'Search', component: 'Search' },
-    { path: '*', name: 'NotFound', component: 'NotFound' }
-]
-
-const routes = routerOptions.map(route => {
-    return {
-        ...route,
-        component: () => import(`@/components/${route.component}.vue`)
+// configure router
+const router = new VueRouter({
+  routes, // short for routes: routes
+  linkExactActiveClass: "active",
+  scrollBehavior: (to) => {
+    if (to.hash) {
+      return {selector: to.hash}
+    } else {
+      return { x: 0, y: 0 }
     }
-})
+  }
+});
 
-Vue.use(Router)
-
-export default new Router({
-    routes,
-    mode: 'history'
-})
+export default router;
