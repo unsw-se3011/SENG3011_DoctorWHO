@@ -27,7 +27,7 @@ export default {
     var xScale = d3.scaleLinear()
       .domain([0, n - 1]) // input
       .range([0, width]) // output
-    
+
     // 6. Y scale will use the randomly generate number
     var yScale = d3.scaleLinear()
       .domain([0, 10]) // input
