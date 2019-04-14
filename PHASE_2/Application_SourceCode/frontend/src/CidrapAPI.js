@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-const WhoAPI = axios.create({
-  // baseURL: 'http://www.doctorwhoseng.tk'
+const CidrapAPI = axios.create({
+  baseURL: 'http://www.doctorwhoseng.tk'
   // baseURL: 'http://localhost:5000'
-  baseURL: 'http://epiproapp.appspot.com/api/v1'
+  // baseURL: 'http://epiproapp.appspot.com/api/v1'
   // baseURL: 'http://www.epiwatchnull.me',
   /*
   mode: 'no-cors',
@@ -19,12 +19,12 @@ const WhoAPI = axios.create({
 export default {
   Search (startDate, endDate) {
     // return axios.get('https://epiproapp.appspot.com/api/v1/reports/filter?Start-date=2018-01-01Txx%3Axx%3Axx&End-date=2018-02-01Txx%3Axx%3Axx')
-    // return WhoAPI.get('/articles', { // doctorwho
-    return WhoAPI.get('/reports/filter', { // epipro
+    return CidrapAPI.get('/articles', { // doctorwho
+    // return whoAPI.get('/reports/filter', { // epipro
     // return whoAPI.get('/api/articles', { // epiwatch
       params: {
-        'Start-date': startDate,
-        'End-date': endDate
+        'start_date': startDate,
+        'end_date': endDate
       }
       /*
       headers: {
@@ -34,7 +34,7 @@ export default {
       */
     })
       .then(response => {
-        return response.data
+        return response.data.articles
       })
       .catch(err => console.log(err))
   }
