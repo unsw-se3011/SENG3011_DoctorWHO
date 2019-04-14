@@ -129,7 +129,7 @@ class Article(Resource):
         request_log(str(request.__dict__['environ']['PATH_INFO']))
         article_id = request.view_args['article_id']
         if not article_id.isdigit():
-            return {'comment': 'Invalid article ID'}, 400
+            return {'comment': 'Invalid article ID'}, 400, {'Access-Control-Allow-Origin': '*'}
         article_res = update_db.search_article_id(article_id)
         '''
         desired_article = list(filter(lambda x: x['id'] == article_id, articles))
@@ -138,9 +138,9 @@ class Article(Resource):
             return desired_article[0], 200
         '''
         if article_res:
-            return article_res, 200
+            return article_res, 200, {'Access-Control-Allow-Origin': '*'}
         else:
-            return {'comment': 'Article not found'}, 404
+            return {'comment': 'Article not found'}, 404, {'Access-Control-Allow-Origin': '*'}
 
 class Articles(Resource):
     parser = reqparse.RequestParser()
@@ -187,7 +187,7 @@ class Articles(Resource):
         year_regex = re.compile('^(\d{4})')
         print("I'm in getting")
         if not date_regex.match(data['start_date']) or not date_regex.match(data['end_date']) or data['start_date'] > data['end_date']:
-            return {'comment': 'Invalid parameters'}, 400
+            return {'comment': 'Invalid parameters'}, 400, {'Access-Control-Allow-Origin': '*'}
         else: # start and end dates valid
             print("------------here I am --------------------")
             search_results = update_db.search_by_date(data['start_date'].replace("x","0"), data['end_date'])
@@ -225,9 +225,10 @@ class Articles(Resource):
                         filtered_results.append(article.copy())
                 search_results = filtered_results
             if search_results:
-                return {'articles': search_results}
+                return {'articles': search_results}, 200, {'Access-Control-Allow-Origin': '*'}
             else:
-                return {'comment': 'No results found'}, 404
+                return {'comment': 'No results found'}, 404, {'Access-Control-Allow-Origin': '*'}
+
 
 @app.route("/log.txt", methods=["GET"])
 def logfile():

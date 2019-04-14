@@ -24,3 +24,15 @@ DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&key_te
 DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&key_terms=ebola&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:24:36.757781
 DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&end_date=2019-05-04Txx:xx:xx&key_terms=ebola" - 2019-04-04 00:25:23.747069
 DoctorWHO - CIDRAP source - "GET /articles?key_terms=ebola, influenza, &start_date=2019-03-03Txx:xx:xx&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:33:51.493851
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2018-01-01T00:00:00&end_date=2019-02-01T00:00:00" - 2019-04-14 19:40:06.134736
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2018-01-01T00:00:00&end_date=2019-02-01T00:00:00" - 2019-04-14 19:40:08.435139
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2018-01-01T00:00:00&end_date=2019-02-01T00:00:00" - 2019-04-14 19:40:23.242588
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2018-01-01T00:00:00&end_date=2019-02-01T00:00:00" - 2019-04-14 19:40:25.443201
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2018-07-23T00:00:00&end_date=2019-07-23T00:00:00" - 2019-04-14 19:57:36.965725
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2018-07-23T00:00:00&end_date=2019-07-23T00:00:00" - 2019-04-14 19:57:36.965960
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2018-01-01T00:00:00&end_date=2019-02-01T00:00:00" - 2019-04-14 19:57:50.164610
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2018-01-01T00:00:00&end_date=2019-02-01T00:00:00" - 2019-04-14 20:00:48.888781
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2018-01-01T00:00:00&end_date=2019-02-01T00:00:00" - 2019-04-14 20:00:48.888551
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2018-01-01T00:00:00&end_date=2019-02-01T00:00:00" - 2019-04-14 20:01:26.370449
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2018-01-01T00:00:00&end_date=2019-02-01T00:00:00" - 2019-04-14 20:01:28.911232
+DoctorWHO - CIDRAP source - "GET /articles?start_date=2018-01-01T00:00:00&end_date=2019-02-01T00:00:00" - 2019-04-14 20:01:34.796551
