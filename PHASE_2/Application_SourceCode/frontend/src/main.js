@@ -3,12 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import axios from 'axios'
+// import axios from 'axios'
 import './../node_modules/bulma/css/bulma.css'
 
 Vue.config.productionTip = false
 // axios.defaults.baseURL = 'http://www.doctorwhoseng.tk'
-axios.defaults.baseURL = 'http://epipro.appspot.com/api/v1/doc'
+// axios.defaults.baseURL = 'http://epiproapp.appspot.com/api/v1'
 
 // axios.create({ baseURL })
 // https://itnext.io/anyway-heres-how-to-do-ajax-api-calls-with-vue-js-e71e57d5cf12

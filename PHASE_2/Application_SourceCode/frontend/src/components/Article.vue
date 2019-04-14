@@ -25,8 +25,7 @@ export default {
   name: 'Article',
   data () {
     return {
-      info: [],
-      errors: []
+      info: ''
     }
   },
   created () {
@@ -34,7 +33,7 @@ export default {
     // axios.get('http://www.doctorwhoseng.tk/articles?start_date=2018-07-01Txx%3Axx%3Axx&end_date=2018-07-23Txx%3Axx%3Axx')
     // axios.get('http://jsonplaceholder.typicode.com/posts/1')
     // axios.get('https://epiproapp.appspot.com/api/v1/reports/filter?Start-date=2018-01-01Txx%3Axx%3Axx&End-date=2018-02-01Txx%3Axx%3Axx')
-    WhoAPI.Search()
+    WhoAPI.Search('2018-01-01T00:00:00', '2019-02-01T00:00:00')
       .then(response => {
         this.info = response
       })
