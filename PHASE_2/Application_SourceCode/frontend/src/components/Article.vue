@@ -1,10 +1,10 @@
 <template>
   <div>
     <h1>Article</h1>
-    <div v-for="article in info">
+    <div v-for="article in who_res.concat(cidrap_res)">
       <h2>{{ article.headline }}</h2>
       <p> URL: {{ article.url }} </p>
-      <p> Date published: {{ article.date_of_publication }} </p>
+      <p> Date published: {{ article.date_of_publication.replace(/(Txx:xx:xx)|(T00:00:00)/g,'') }} </p>
       <p> {{ article.main_text }} </p>
       <h3> Reports </h3>
       <div v-for="report in article.reports">
@@ -26,16 +26,26 @@
         </ul>
         <div v-for="event in report.reported_events">
           <p> Type: {{ event.type }} </p>
-          <p> Date: {{ event.date }} </p>
-          <p> Location: {{ event.location }} </p>
-          <p> Number affected: {{ event.number-affected }} </p>
+          <p v-if="event.date"> Date: {{ event.date.replace(/(Txx:xx:xx)|(T00:00:00)/g,'') }} </p>
+          <p v-if="event.location.location_name"> Location: {{ event.location.location_name }} </p>
+          <div v-if="event.location.country">
+            <p> Location: {{ event.location.country  }} </p>
+            <ul style="list-style-type:disc;">
+              <div v-for="place in event.location.location.split(';')">
+                <li>
+                  {{ place }}
+                </li>
+              </div>
+            </ul>
+          </div>
+          <p v-if="event.number_affected"> Number affected: {{ event.number_affected }} </p>
+          <p v-if="event['number-affected']"> Number affected: {{ event['number-affected'] }} </p>
         </div>
-        <!-- unfinished -->
       </div>
       <br>
     </div>
-    <div> {{ info }} </div>
-    <div> {{ info2 }} </div>
+    <div> {{ who_res }} </div>
+    <div> {{ cidrap_res }} </div>
   </div>
 </template>
 
@@ -47,8 +57,8 @@ export default {
   name: 'Article',
   data () {
     return {
-      info: '',
-      info2: ''
+      who_res: [],
+      cidrap_res: []
     }
   },
   created () {
@@ -58,12 +68,12 @@ export default {
     // axios.get('https://epiproapp.appspot.com/api/v1/reports/filter?Start-date=2018-01-01Txx%3Axx%3Axx&End-date=2018-02-01Txx%3Axx%3Axx')
     WhoAPI.Search('2018-01-01T00:00:00', '2018-02-01T00:00:00')
       .then(response => {
-        this.info = response
+        this.who_res = response
       })
       .catch(err => console.log(err))
     CidrapAPI.Search('2018-08-01Txx:xx:xx', '2018-08-01Txx:xx:xx')
       .then(results => {
-        this.info2 = results
+        this.cidrap_res = results
       })
       .catch(err => console.log(err))
   }
