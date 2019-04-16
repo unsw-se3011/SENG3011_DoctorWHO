@@ -63,7 +63,7 @@ def create_tables():
 		" url VARCHAR(255),"
 		" date_of_publication VARCHAR(255),"
 		" headline VARCHAR(255),"
-		" main_text VARCHAR(2550))")
+		" main_text VARCHAR(5000))")
 	print("created Articles table")
 
 	mycursor.execute("CREATE TABLE Locations"
@@ -213,7 +213,8 @@ def add_example():
                 evn_id.append(eid)
 
                 location = {
-                    "location_name": None,
+                    "location_name": "Ho Chi Minh",
+                    "country_name": "Vietnam",
                     "geonames_id": e['location']['geonames-id']
                 }
                 lid = update_db.search_location(location)

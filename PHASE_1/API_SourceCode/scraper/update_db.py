@@ -78,8 +78,8 @@ def add_location(location):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
     query  = ("INSERT INTO Locations "
-             "(location_name, geonames_id) "
-             "VALUES (%(location_name)s, %(geonames_id)s)")
+             "(location_name, country_name, geonames_id) "
+             "VALUES (%(location_name)s, %(country_name)s, %(geonames_id)s)")
     try:
         cursor.execute(query, location)
         insert_id = cursor.lastrowid
@@ -213,7 +213,6 @@ def add_result(result):
                 }
                 print(location)
                 lid = search_location(location)
-                lid = search_location_name(location)
                 if lid < 0:
                     print("adding")
                     lid = add_location(location)

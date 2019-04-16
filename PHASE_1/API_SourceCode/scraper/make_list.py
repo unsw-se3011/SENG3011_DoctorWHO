@@ -30,7 +30,7 @@ month = [
 def update_list(filename, data):
     try:
         with open("datasets/" + filename + ".json", "r") as outfile:
-            source = json.loads(outfile.read())
+            source = json.load(outfile)
             for d in data:
                 if d not in source:
                     source.append(d)
@@ -92,6 +92,8 @@ with open("datasets/countryInfo.txt", "r") as inf:
 
 # Getting geonames_id of cities
 cityfile = open("datasets/cities500.txt", "r")
+#cityfile = open("datasets/cities5000.txt", "r")
+#cityfile = open("datasets/cities15000.txt", "r")
 geosource = cityfile.read().split('\n')
 cityfile.close()
 """
@@ -107,7 +109,14 @@ for s in geosource:
     i = s.split('\t')
     l['geonames_id'] = i[0]
     l['location_name'] = i[2]
-    l['alternatives'] = i[3].split(',')
+    l['alternatives'] = []
+    alter_names = i[3].split(',')
+    for an in alter_names:
+        try:
+            str(an, "ascii")
+            l['alternatives'].append(an)
+        except:
+            pass
     l['country_code'] = i[8]
     l['country'] = country_names[i[8]]
     location.append(l)

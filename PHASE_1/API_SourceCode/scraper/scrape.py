@@ -135,6 +135,7 @@ def scrape_article(url):
             scraped.append(str(s))
     
     article = filter.new_article(url)
+    article['main_text'] = ''.join(mt for mt in scraped)
     report = filter.new_report()
     article['reports'].append(report)
     event = filter.new_event()
@@ -152,12 +153,17 @@ def scrape_article(url):
     
     country = filter.get_location(scraped)
     if country != None:
-        event['location']['country'] = country[0]['name']
-        event['location']['id'] = country[0]['id']
+        event['location']['location'] = country[0]['name']
+        event['location']['country'] = country[0]['country']
+        event['location']['geonames-id'] = country[0]['geonames']
         for i in range(1, len(country)):
-            event['location']['country'] += ", " + country[i]['name'] 
+            if country[i]['country'] not in event['location']['country']:
+                event['location']['country'] += ", " + country[i]['country']
+            event['location']['location'] += ", " + country[i]['name']
+            event['location']['geonames-id'] += ", " + country[i]['geonames']
     else:
         event['location']['country'] = "unknown"
+        event['location']['location'] = "unknown"
     
     syndrome = filter.get_syndrome(scraped)
     if syndrome != None:

@@ -2,10 +2,13 @@ import json
 from bs4 import BeautifulSoup
 
 def read_json_list(filename):
-    infile = open(filename, "r")
-    data = infile.read()
-    infile.close()
-    return json.loads(data)
+    with open(filename) as f:
+        j = json.load(f)
+    return j
+
+# end/beginning of words
+stoppers = [' ', ',', '.', '?', '!', '\n', '\t', ')', '(', '\'', '\"', ':']
+blacklist= ['Of', 'Lab', 'See', 'Republic', 'Congress', 'East', 'West', 'South', 'North']
 
 # by 'name'
 disease_list    = read_json_list("scraper/datasets/disease_list.json")
@@ -123,20 +126,55 @@ def get_metadata(text):
 
 def get_location(text):
     content = ' '.join(t for t in text)
-    content = content.lower()
+    ending = content.find("See also:")
+    if ending > 0:
+        content = content[:ending]
+    #content = content.lower()
     location = []
-    for d in country_list:
+    print(type(country_list))
+    for d in range(len(country_list)):
         l = {}
-        ctry_names = [d['location_name']] + d['alternatives']
-        for cn in ctry_names:
-            if cn == "":
+        ctry_names = []
+        ctry_names.append(country_list[d]['location_name'])
+        ctry_names += country_list[d]['alternatives']
+        for i in range(len(ctry_names)):
+            if ctry_names[i] == "" or ctry_names[i] in blacklist:
                 continue
-            if cn.lower() in content:
-                l['name'] = d['location_name']
-                l['geonames'] = d['geonames_id']
-                l['country'] = d['country']
+            #if ctry_names[i].lower() in content:
+            name_index = content.find(ctry_names[i])
+            while name_index > 0:
+                prev = -1
+                next = -1
+                if name_index > 0:
+                    prev = content[name_index - 1]
+                if name_index + len(ctry_names[i]) < len(content):
+                    next = content[name_index + len(ctry_names[i])]
+                if (prev == -1 or prev in stoppers) and (next in stoppers or next == -1):
+                    #print("Found(" + str(d) + "): " + ctry_names[i] + " --- " + country_list[d]['location_name'])
+                    l['name'] = country_list[d]['location_name']
+                    l['geonames'] = country_list[d]['geonames_id']
+                    l['country'] = country_list[d]['country']
+                    if l not in location:
+                        location.append(l)
+                name_index = content[name_index:].find(ctry_names[i])
+            """
+            if ctry_names[i] in content:
+                print("Found(" + str(d) + "): " + ctry_names[i] + " --- " + country_list[d]['location_name'])
+                l['name'] = country_list[d]['location_name']
+                l['geonames'] = country_list[d]['geonames_id']
+                l['country'] = country_list[d]['country']
+                if l not in location:
+                    location.append(l)
+            """
+        """
+        if d['location_name'].lower() in content:
+            print(d)
+            l['name'] = d['location_name']
+            l['geonames'] = d['geonames_id']
+            l['country'] = d['country']
+            if l not in location:
                 location.append(l)
-
+        """
     if len(location) > 0:
         return location
 
@@ -148,7 +186,8 @@ def get_event_type(text):
     event = []
     for e in event_list:
         if e['event-type'].lower() in content:
-            event.append(e)
+            if e not in event:
+                event.append(e)
 
     if len(event) > 0:
         return event

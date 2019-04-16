@@ -24,3 +24,11 @@ DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&key_te
 DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&key_terms=ebola&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:24:36.757781
 DoctorWHO - CIDRAP source - "GET /articles?start_date=2019-03-03Txx:xx:xx&end_date=2019-05-04Txx:xx:xx&key_terms=ebola" - 2019-04-04 00:25:23.747069
 DoctorWHO - CIDRAP source - "GET /articles?key_terms=ebola, influenza, &start_date=2019-03-03Txx:xx:xx&end_date=2019-05-04Txx:xx:xx" - 2019-04-04 00:33:51.493851
+DoctorWHO - CIDRAP source - "GET /articles?end_date=2019-04-09Txx:xx:xx&start_date=2019-04-06Txx:xx:xx" - 2019-04-09 22:52:28.584427
+DoctorWHO - CIDRAP source - "GET /articles?end_date=2019-04-09Txx:xx:xx&start_date=2019-04-05Txx:xx:xx" - 2019-04-09 22:53:03.144281
+DoctorWHO - CIDRAP source - "GET /article/2" - 2019-04-12 14:25:25.432901
+DoctorWHO - CIDRAP source - "GET /article/3" - 2019-04-12 14:26:04.413269
+DoctorWHO - CIDRAP source - "GET /article/10" - 2019-04-12 14:26:41.674065
+DoctorWHO - CIDRAP source - "GET /article/5" - 2019-04-12 14:26:55.544227
+DoctorWHO - CIDRAP source - "GET /article/6" - 2019-04-12 14:27:06.099600
+DoctorWHO - CIDRAP source - "GET /article/8" - 2019-04-12 14:27:29.492105

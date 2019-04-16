@@ -257,7 +257,7 @@ def request_log(req):
 if __name__ == '__main__':
     page = 0
     last = scrape.get_last_page()
-    while page <= 1:
+    while page <= 0:
         res = scrape.scrape_news("http://www.cidrap.umn.edu/news-perspective?page=" + str(page), [])
         if update_db.add_result(res) == False:
             break
