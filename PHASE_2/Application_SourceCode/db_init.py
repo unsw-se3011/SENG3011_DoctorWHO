@@ -34,7 +34,9 @@ def create_tables():
 	mycursor.execute("CREATE TABLE Users"
 		" (user_id INT AUTO_INCREMENT PRIMARY KEY,"
 		" username VARCHAR(255),"
-		" password VARCHAR(255))")
+		" password VARCHAR(255),"
+		" email VARCHAR(255),"
+		" name VARCHAR(255))")
 	print("created Users table")
 
 	mycursor.execute("CREATE TABLE Articles"
