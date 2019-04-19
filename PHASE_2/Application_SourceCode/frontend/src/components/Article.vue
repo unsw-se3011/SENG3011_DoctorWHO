@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- {{ search('2019-01-01T00:00:00', '2019-02-01T00:00:00', null, null) }} -->
     <h1>Search results</h1>
     <!-- div v-for="article in who_res.concat(cidrap_res)" -->
     <div v-for="article in search_result">
@@ -68,14 +69,14 @@ export default {
     }
   },
   methods: {
-    search: function () {
-      WhoAPI.Search('2019-01-01T00:00:00', '2019-02-01T00:00:00', null, null)
+    search: function (startDate, endDate, keywords, location) {
+      WhoAPI.Search(startDate, endDate, keywords, location)
         .then(response => {
           this.who_res = response
           this.search_result = this.search_result.concat(this.who_res)
         })
         .catch(err => console.log(err))
-      CidrapAPI.Search('2019-01-01Txx:xx:xx', '2019-02-01Txx:xx:xx', null, null)
+      CidrapAPI.Search(startDate, endDate, keywords, location)
         .then(results => {
           this.cidrap_res = results
           this.search_result = this.search_result.concat(this.cidrap_res)
@@ -85,12 +86,11 @@ export default {
     sort: function () {
     }
   },
-  created () {
-    // axios.get('http://www.doctorwhoseng.tk/article/1')
-    // axios.get('http://www.doctorwhoseng.tk/articles?start_date=2018-07-01Txx%3Axx%3Axx&end_date=2018-07-23Txx%3Axx%3Axx')
-    // axios.get('http://jsonplaceholder.typicode.com/posts/1')
-    // axios.get('https://epiproapp.appspot.com/api/v1/reports/filter?Start-date=2018-01-01Txx%3Axx%3Axx&End-date=2018-02-01Txx%3Axx%3Axx')
-    this.search()
+  mounted () {
+    // this.startDate = '2019-01-01T00:00:00'
+    // this.endDate = '2019-02-01T00:00:00'
+    // this.search()
+    this.search('2019-01-01T00:00:00', '2019-02-01T00:00:00', null, null)
   }
 }
 </script>
