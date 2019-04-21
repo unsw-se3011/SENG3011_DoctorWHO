@@ -13,7 +13,7 @@
             <router-link to="/graphs">Graphs</router-link>
           </a>
           <a class="navbar-item">
-            <router-link to="/article">Article</router-link>
+            <router-link to="/news">News</router-link>
           </a>
         </div>
       </div>

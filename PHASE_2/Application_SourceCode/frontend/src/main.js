@@ -3,8 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Datetime from 'vue-datetime'
+
 // import axios from 'axios'
 import './../node_modules/bulma/css/bulma.css'
+import 'vue-datetime/dist/vue-datetime.css'
 
 Vue.config.productionTip = false
 // axios.defaults.baseURL = 'http://www.doctorwhoseng.tk'
@@ -20,3 +23,6 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+Vue.use(Datetime)
+// https://github.com/mariomka/vue-datetime

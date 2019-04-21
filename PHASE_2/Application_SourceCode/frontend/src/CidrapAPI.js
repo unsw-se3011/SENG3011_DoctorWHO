@@ -19,6 +19,7 @@ const CidrapAPI = axios.create({
 export default {
   // arguments: start_date, end_date, key_terms, location
   Search () {
+    // console.log(arguments[0], arguments[1], "key_terms = ", arguments[2], "location = ", arguments[3])
     // return axios.get('https://epiproapp.appspot.com/api/v1/reports/filter?Start-date=2018-01-01Txx%3Axx%3Axx&End-date=2018-02-01Txx%3Axx%3Axx')
     return CidrapAPI.get('/articles', { // doctorwho
     // return whoAPI.get('/reports/filter', { // epipro
