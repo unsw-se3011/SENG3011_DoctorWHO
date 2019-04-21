@@ -15,6 +15,12 @@
           <a class="navbar-item">
             <router-link to="/article">Article</router-link>
           </a>
+          <a class="navbar-item">
+            <router-link to="/login">Login</router-link>
+          </a>
+          <a class="navbar-item">
+            <router-link to="/register">Register</router-link>
+          </a>
         </div>
       </div>
     </nav>
