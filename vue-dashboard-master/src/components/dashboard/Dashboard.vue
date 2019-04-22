@@ -1,17 +1,17 @@
 <template>
-  
+
   <div class="charts-page">
     <br/><br/><br/>
     <div class="row">
       <div class="col-md-8 offset-md-2">
-      <vuestic-card theme="dark">
+      <vuestic-card theme="light">
         <p slot="title">{{ $t('Search for the latest information about the diseases') }}</p>
         <br/>
       <div class="form-group">
         <div class="input-group">
           <vuestic-date-picker
             id="date-picker-basic"
-            v-model="datepicker.simple"
+            v-model="start_date"
           />
           <label class="control-label" for="date-picker-basic">
             {{ $t('start date') }}
@@ -25,7 +25,7 @@
         <div class="input-group">
           <vuestic-date-picker
             id="date-picker-basic"
-            v-model="datepicker.simple"
+            v-model="end_date"
           />
           <label class="control-label" for="date-picker-basic">
             {{ $t('end date') }}
@@ -37,9 +37,9 @@
 
       <div class="form-group with-icon-right">
               <div class="input-group">
-                
-                <input v-model="clearableText" id="clear-input"
-                        name="clear-input" required/>
+
+                <input v-model="form_location" id="clear-input"
+                        name="clear-input" >
                 <i class="fa fa-times icon-right input-icon pointer"
                     @click="clear('clearableText')"></i>
                 <label class="control-label" for="clear-input"
@@ -51,8 +51,8 @@
 
       <div class="form-group with-icon-right">
               <div class="input-group">
-                <input v-model="clearableText" id="clear-input"
-                        name="clear-input" required/>
+                <input v-model="keywords" id="clear-input"
+                        name="clear-input" >
                 <i class="fa fa-times icon-right input-icon pointer"
                     @click="clear('clearableText')"></i>
                 <label class="control-label" for="clear-input"
@@ -61,7 +61,7 @@
               </div>
             </div>
 
-      <button class="btn btn-search">Search</button>
+      <button class="btn btn-search" @click="search">Search</button>
       </vuestic-card>
     </div>
     </div>
@@ -192,7 +192,7 @@
                 </vuestic-modal>
 
               </div>
-       
+
     <br/><br/><br/>
   </div>
 
@@ -202,6 +202,9 @@
 import CountriesList from 'data/CountriesList'
 import VuesticCard from '../../vuestic-theme/vuestic-components/vuestic-card/VuesticCard'
 
+//import WhoAPI from '@/WhoAPI'
+//import CidrapAPI from '@/CidrapAPI'
+//import GoogleNewsAPI from '@/GoogleNewsAPI'
 
 export default {
   name: 'charts',
@@ -210,14 +213,17 @@ export default {
   },
   data(){
     return{
-      clearableText: '',
-       datepicker: {
-        simple: '2018-05-09',
-        time: '2018-05-08 14:10',
-        range: '2018-05-08 to 2018-05-23',
-        disabled: '2018-05-09',
-        multiple: '2018-04-25, 2018-04-27',
-      },
+      who_res: [],
+      cidrap_res: [],
+      search_result: [],
+      news_res: [],
+      start_date: '',
+      start_time: '',
+      end_date: '',
+      end_time: '',
+      keywords: null,
+      form_location: null,
+      errorDates: null,
     }
   },
   methods: {
@@ -234,6 +240,29 @@ export default {
         ++this.listLoops
       }, 1000)
     },
+    checkDates: function () {
+      if (this.start_date > this.end_date) {
+        this.errorDates = 'Error: Start date and time can\'t be after End date and time'
+        return true
+      } else {
+        this.errorDates = ''
+        return false
+      }
+    },
+    search(){
+      this.$router.push({
+        name:'collapse',
+        params: {
+          items: {
+          start_date: this.start_date,
+          end_date: this.end_date,
+          keywords: this.keywords,
+          location: this.form_location
+          }
+        }
+    });
+    }
+
   }
 }
 </script>

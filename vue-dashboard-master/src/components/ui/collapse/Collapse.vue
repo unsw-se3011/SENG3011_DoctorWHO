@@ -30,6 +30,10 @@
                 -->
               </div>
             </vuestic-collapse>
+            <p> startDate: {{ items.start_date }} </p>
+            <p> endDate: {{ items.end_date }} </p>
+            <p> keywords: {{items.keywords }} </p>
+            <p> location: {{items.location}} </p>
             <vuestic-collapse>
               <span slot="header"> Articles </span>
               <div slot="body">
@@ -175,7 +179,8 @@ import SidebarLink from '../../admin/app-sidebar/components/SidebarLink'
 
 export default {
   name: 'collapse',
-  components: { 
+  props: ['items'],
+  components: {
     VuesticCard,
     SidebarLink,
    },
