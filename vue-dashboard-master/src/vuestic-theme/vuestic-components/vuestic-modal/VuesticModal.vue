@@ -23,7 +23,7 @@
               <div class="modal-body">
                 <slot></slot>
               </div>
-              <!--Footer-->
+              <!--Footer
               <div class="modal-footer">
                 <slot name="footer">
                   <button type="button" v-if="!noButtons" :class="okClass" @click="ok" :disabled="okDisabled">
@@ -34,6 +34,7 @@
                   </button>
                 </slot>
               </div>
+              -->
             </div>
           </div>
         </div>

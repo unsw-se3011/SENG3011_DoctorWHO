@@ -4,7 +4,7 @@
     <br/><br/><br/>
     <div class="row">
       <div class="col-md-8 offset-md-2">
-      <vuestic-card theme="dark">
+      <vuestic-card theme="light">
         <p slot="title">{{ $t('Search for the latest information about the diseases') }}</p>
         <br/>
       <div class="form-group">
@@ -183,11 +183,14 @@
                   </div>
                 </div>
 
-                <vuestic-modal :show.sync="show" v-bind:large="true" ref="largeModal" :okText="'Save' | translate"
-                :cancelText="'Subscribe' | translate">
+                <vuestic-modal :show.sync="show" v-bind:large="true" ref="largeModal">
                   <div slot="title">{{'modal.largeTitle' | translate}}</div>
                   <div>
-                    Main Text of the Article
+                    Main Text.
+                  </div>
+                  <div class="col-md-12 offset-md-4">
+                  <button class="btn btn-primary">Save</button>
+                  <button class="btn btn-primary">Subscribe</button>
                   </div>
                 </vuestic-modal>
 

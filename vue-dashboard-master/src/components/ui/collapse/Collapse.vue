@@ -85,6 +85,10 @@
                   <div>
                     Main Text of the Article
                   </div>
+                  <div class="col-md-12 offset-md-4">
+                  <button class="btn btn-primary">Save</button>
+                  <button class="btn btn-primary">Subscribe</button>
+                  </div>
                 </vuestic-modal>
 
                 <div class="col-md-12 d-flex align-items-center justify-content-center">
