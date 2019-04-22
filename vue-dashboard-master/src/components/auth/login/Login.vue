@@ -4,8 +4,8 @@
     <form method="post" action="/auth/login" name="login">
       <div class="form-group">
         <div class="input-group">
-          <input type="text" id="email" required="required"/>
-          <label class="control-label" for="email">{{'auth.email' | translate}}</label><i class="bar"></i>
+          <input type="text" id="username" required="required"/>
+          <label class="control-label" for="username">{{'Username' | translate}}</label><i class="bar"></i>
         </div>
       </div>
       <div class="form-group">

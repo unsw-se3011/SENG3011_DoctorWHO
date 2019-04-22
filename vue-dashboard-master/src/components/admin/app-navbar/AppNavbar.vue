@@ -15,7 +15,7 @@
     ></menu-dropdown>
 
     <profile-dropdown slot="profile" class="col-xs-1 nav-item">
-      <img src="http://www.synapse-developpement.fr/wp-content/uploads/2017/01/mathilde-lannes-e1541168117479.png"/>
+      <img src="https://png2.kisspng.com/sh/a5baf9ff32dc32d008e8ce4cb23a230b/L0KzQYm3VsI3N6Z8i5H0aYP2gLBuTfF3aaVmip9Ac3X1PbT2jgB2fJZ3Rdtsb372PcT2hwR4aaNqRdZudnXvf8Hskr02amQ3T9VsOXPmQYbtV745P2M8SqkDMEG4Q4G3U8U1OGI9S6g3cH7q/kisspng-avatar-user-computer-icons-software-developer-5b327cc9cc15f7.872727801530035401836.png"/>
     </profile-dropdown>
   </vuestic-navbar>
 
@@ -44,71 +44,12 @@ export default {
   data () {
     return {
       pages: [
-        /*{
-          name: this.$t('Search'),
-          logo: 'vuestic-icon-forms',
-          link: 'form-elements',
-          options: []
-        },*/
         {
           name: this.$t('Results'),
-          logo: 'vuestic-icon-tables',
-          link: 'tables',
-          options: []
-        },
-        /*{
-          name: this.$t('menu.statistics'),
-          logo: 'vuestic-icon-statistics',
-          options: [
-            {
-              name: this.$t('menu.charts'),
-              link: 'charts'
-            }
-          ]
-        },*/
-        
-       /* {
-          name: this.$t('menu.uiElements'),
+          link: 'collapse',
           logo: 'vuestic-icon-ui-elements',
-          options: [
-            {
-              name: this.$t('menu.typography'),
-              link: 'typography'
-            },
-            {
-              name: this.$t('menu.buttons'),
-              link: 'buttons'
-            },
-            {
-              name: this.$t('menu.collapse'),
-              link: 'collapse'
-            },
-            {
-              name: this.$t('menu.notifications'),
-              link: 'notifications'
-            },
-            {
-              name: this.$t('menu.spinners'),
-              link: 'spinners'
-            },
-            {
-              name: this.$t('menu.grid'),
-              link: 'grid'
-            },
-            {
-              name: this.$t('menu.modals'),
-              link: 'modals'
-            },
-            {
-              name: this.$t('menu.tags'),
-              link: 'tags'
-            },
-            {
-              name: this.$t('menu.treeView'),
-              link: 'tree-view'
-            }
-          ]
-        }*/
+          options: []
+        }
       ]
     }
   }

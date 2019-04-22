@@ -10,17 +10,16 @@
       </div>
       <div class="form-group">
         <div class="input-group">
+          <input type="text" id="username" required="required"/>
+          <label class="control-label" for="username">{{'Username' | translate}}</label><i class="bar"></i>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
           <input type="password" id="password" required="required"/>
           <label class="control-label" for="password">{{'auth.password' | translate}}</label><i class="bar"></i>
         </div>
       </div>
-      <vuestic-checkbox
-        :id="'checkbox1'"
-        v-model="checkboxOneModel">
-        <template slot="label">{{'auth.agree' | translate}}
-          <router-link to="">{{'auth.termsOfUse' | translate}}</router-link>
-        </template>
-      </vuestic-checkbox>
       <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between down-container">
         <button class="btn btn-primary" type="submit">
           {{'auth.signUp' | translate}}

@@ -12,6 +12,7 @@
         :key="option.name"
         class="dropdown-item plain-link-item"
       >
+      
         <router-link :to="{name: option.redirectTo}" class="plain-link" href="#">
           {{ $t(`user.${option.name}`) }}
         </router-link>
@@ -34,7 +35,7 @@ export default {
       default: () => [
         {
           name: 'profile',
-          redirectTo: '',
+          redirectTo: 'cards',
         },
         {
           name: 'logout',

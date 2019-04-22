@@ -1,135 +1,207 @@
 <template>
   <div class="collapse-page row">
       <div class="col-12">
-        <vuestic-widget :headerText="$t('collapse.accordion')">
+        <vuestic-widget :headerText="$t('Results')">
           <vuestic-accordion>
             <vuestic-collapse>
-              <span slot="header"> Expand This Block </span>
+              <span slot="header"> Graph </span>
               <div slot="body">
                 <div class="row">
-                  <div class="col-md-6">
-                    <div class="collapse-page__content">
-                      <h4 class="collapse-page__content__title">February 2018</h4>
-                      <div>
-                        The unique stripes of zebras make them one of the animals
-                        most familiar to people. They occur in a variety of habitats,
-                        such as grasslands, savannas, woodlands, thorny scrublands.
-                      </div>
-                    </div>
+                  <div class="col-md-12">
+                    <vuestic-widget
+                      class="chart-widget"
+                      :headerText="$t('charts.lineChart')"
+                    >
+                      <vuestic-chart :data="lineChartData" type="line"/>
+                    </vuestic-widget>
                   </div>
+                </div>
+                <!--
+                <div class="row">
                   <div class="col-md-6">
-                    <div class="collapse-page__content">
-                      <h4 class="collapse-page__content__title">March 2018</h4>
-                      <div>
-                        They occur in a variety of habitats,
-                        such as grasslands, savannas, woodlands, thorny scrublands.
-                      </div>
+                    <vuestic-widget
+                      class="chart-widget"
+                      :headerText="$t('charts.donutChart')"
+                    >
+                      <vuestic-chart :data="donutChartData" type="donut"/>
+                    </vuestic-widget>
+                  </div>
+                </div>
+                -->
+              </div>
+            </vuestic-collapse>
+            <vuestic-collapse>
+              <span slot="header"> Articles </span>
+              <div slot="body">
+              <div class="row">
+                <div class="col-md-12">
+                  <br/>
+                  <div class="cards-container">
+                    <!-- eslint-disable vue/valid-v-for -->
+                    <template>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                    </template>
+                  </div>
+                </div>
+
+                <vuestic-modal :show.sync="show" v-bind:large="true" ref="largeModal" :okText="'Save' | translate"
+                :cancelText="'Subscribe' | translate">
+                  <div slot="title">{{'modal.largeTitle' | translate}}</div>
+                  <div>
+                    Main Text of the Article
+                  </div>
+                </vuestic-modal>
+
+                <div class="col-md-12 d-flex align-items-center justify-content-center">
+                  <div class="pre-loader-container">
+                    <vuestic-pre-loader v-show="isShown" class="pre-loader"></vuestic-pre-loader>
+                    <div v-if="!isShown">
+                      <button class="btn btn-primary" @click="addCards()">
+                        Show More
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
+              </div>
             </vuestic-collapse>
             <vuestic-collapse>
-              <span slot="header"> Another Block </span>
+              <span slot="header"> News </span>
               <div slot="body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="collapse-page__content">
-                      <h4 class="collapse-page__content__title">April 2018</h4>
-                      <div>
-                        The unique stripes of zebras make them one of the animals
-                        most familiar to people. They occur in a variety of habitats,
-                        such as grasslands, savannas, woodlands, thorny scrublands.
-                      </div>
-                    </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <br/>
+                  <div class="cards-container">
+                    <!-- eslint-disable vue/valid-v-for -->
+                    <template>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('News Title') }}</p>
+                        {{ $t('Published Time/Key term') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('News Title') }}</p>
+                        {{ $t('Published Time/Key term') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('News Title') }}</p>
+                        {{ $t('Published Time/Key term') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('News Title') }}</p>
+                        {{ $t('Published Time/Key term') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                    </template>
                   </div>
-                  <div class="col-md-6">
-                    <div class="collapse-page__content">
-                      <h4 class="collapse-page__content__title">May 2018</h4>
-                      <div>
-                        They occur in a variety of habitats,
-                        such as grasslands, savannas, woodlands, thorny scrublands.
-                      </div>
+                </div>
+                <div class="col-md-12 d-flex align-items-center justify-content-center">
+                  <div class="pre-loader-container">
+                    <vuestic-pre-loader v-show="isShown" class="pre-loader"></vuestic-pre-loader>
+                    <div v-if="!isShown">
+                      <button class="btn btn-primary" @click="addCards()">
+                        Show More
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
-            </vuestic-collapse>
-            <vuestic-collapse>
-              <span slot="header"> Let's Go </span>
-              <div slot="body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="collapse-page__content">
-                      <h4 class="collapse-page__content__title">June 2018</h4>
-                      <div>
-                        The unique stripes of zebras make them one of the animals
-                        most familiar to people. They occur in a variety of habitats,
-                        such as grasslands, savannas, woodlands, thorny scrublands.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="collapse-page__content">
-                      <h4 class="collapse-page__content__title">July 2018</h4>
-                      <div>
-                        They occur in a variety of habitats,
-                        such as grasslands, savannas, woodlands, thorny scrublands.
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </vuestic-collapse>
           </vuestic-accordion>
-        </vuestic-widget>
-      </div>
-      <div class="col-md-12">
-        <vuestic-widget :headerText="$t('collapse.buttons')">
-          <div class="row">
-            <div class="col-md-12">
-              <vuestic-collapse noHeader>
-                <div class="row" slot="header">
-                  <div class="col-md-4">
-                    <button class="btn btn-primary">
-                      <span> Expand Button </span>
-                    </button>
-                  </div>
-                </div>
-                <div slot="body">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="collapse-page__content">
-                        <h4 class="collapse-page__content__title">February 2018</h4>
-                        <div>
-                          The unique stripes of zebras make them one of the animals
-                          most familiar to people. They occur in a variety of habitats,
-                          such as grasslands, savannas, woodlands, thorny scrublands.
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="collapse-page__content">
-                        <h4 class="collapse-page__content__title">March 2018</h4>
-                        <div>
-                          They occur in a variety of habitats,
-                          such as grasslands, savannas, woodlands, thorny scrublands.
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </vuestic-collapse>
-            </div>
-          </div>
         </vuestic-widget>
       </div>
     </div>
 </template>
 
 <script>
+import VuesticCard from '../../../vuestic-theme/vuestic-components/vuestic-card/VuesticCard'
+import { getLineChartData } from '../../../data/charts/LineChartData'
+import DonutChartData from '../../../data/charts/DonutChartData'
+import SidebarLink from '../../admin/app-sidebar/components/SidebarLink'
+
 export default {
   name: 'collapse',
+  components: { 
+    VuesticCard,
+    SidebarLink,
+   },
+  data () {
+    return {
+      listLoops: 1,
+      isShown: false,
+      lineChartData: getLineChartData(),
+      donutChartData: DonutChartData,
+    }
+  },
+  methods: {
+    refreshData () {
+      this.lineChartData = getLineChartData()
+    },
+    addCards () {
+      this.isShown = true
+      setTimeout(() => {
+        this.isShown = false
+        ++this.listLoops
+      }, 1000)
+    },
+    showLargeModal () {
+      this.$refs.largeModal.open()
+    },
+  }
 }
 </script>
 
@@ -146,4 +218,44 @@ export default {
     }
   }
 }
+$singleGutter: #{(19/16)}rem;
+
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -$singleGutter;
+    align-items: flex-start;
+    .vuestic-card {
+      margin: $singleGutter;
+
+      width: calc(33% - #{$singleGutter} * 2);
+
+      @include media-breakpoint-only(xl) {
+        width: calc(25% - #{$singleGutter} * 2);
+      }
+
+      @include media-breakpoint-only(lg) {
+        width: calc(33.3% - #{$singleGutter} * 2);
+      }
+
+      @include media-breakpoint-only(sm) {
+        width: calc(50% - #{$singleGutter} * 2);
+      }
+
+      @include media-breakpoint-only(xs) {
+        width: calc(100% - #{$singleGutter} * 2);
+      }
+    }
+  }
+
+  .pre-loader-container {
+    height: 50px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+  .widget.chart-widget {
+    .widget-body {
+      height: 550px;
+    }
+  }
 </style>

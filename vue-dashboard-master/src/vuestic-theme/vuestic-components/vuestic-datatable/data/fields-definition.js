@@ -7,31 +7,25 @@ export default {
       width: '4%'
     },
     {
-      name: 'email',
-      title: 'title',
-      dataClass: 'btn',
-      width: '15%'
+      name: 'name',
+      sortField: 'name',
+      width: '24%'
     },
     {
-      name: 'name',
-      title: 'disease',
-      width: '15%'
+      name: 'email',
+      sortField: 'email',
+      width: '24%'
     },
     {
       name: 'address.line2',
-      title: 'location',
-      width: '15%'
+      title: 'city',
+      width: '24%'
     },
     {
       name: 'salary',
-      title: 'published date',
-      width: '15%'
-    },
-    {
-      name: 'salary',
-      title: 'number affected',
-      width: '15%'
-    },
+      title: 'score',
+      width: '24%'
+    }
   ],
   sortFunctions: {
     'name': function (item1, item2) {

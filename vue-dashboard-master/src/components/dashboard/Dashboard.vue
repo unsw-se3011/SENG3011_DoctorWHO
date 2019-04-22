@@ -1,9 +1,12 @@
 <template>
   
   <div class="charts-page">
-
+    <br/><br/><br/>
     <div class="row">
-      <div class="col-md-3 offset-md-1">
+      <div class="col-md-8 offset-md-2">
+      <vuestic-card theme="dark">
+        <p slot="title">{{ $t('Search for the latest information about the diseases') }}</p>
+        <br/>
       <div class="form-group">
         <div class="input-group">
           <vuestic-date-picker
@@ -11,15 +14,30 @@
             v-model="datepicker.simple"
           />
           <label class="control-label" for="date-picker-basic">
-            {{ $t('time period') }}
+            {{ $t('start date') }}
           </label>
           <i class="bar"></i>
         </div>
       </div>
+
+
+      <div class="form-group">
+        <div class="input-group">
+          <vuestic-date-picker
+            id="date-picker-basic"
+            v-model="datepicker.simple"
+          />
+          <label class="control-label" for="date-picker-basic">
+            {{ $t('end date') }}
+          </label>
+          <i class="bar"></i>
+        </div>
       </div>
-      <div class="col-md-3">
+
+
       <div class="form-group with-icon-right">
               <div class="input-group">
+                
                 <input v-model="clearableText" id="clear-input"
                         name="clear-input" required/>
                 <i class="fa fa-times icon-right input-icon pointer"
@@ -29,8 +47,8 @@
                 class="bar"></i>
               </div>
             </div>
-      </div>
-      <div class="col-md-3">
+
+
       <div class="form-group with-icon-right">
               <div class="input-group">
                 <input v-model="clearableText" id="clear-input"
@@ -42,111 +60,154 @@
                 class="bar"></i>
               </div>
             </div>
-      </div>
-      <button class="btn">Search</button>
+
+      <button class="btn btn-search">Search</button>
+      </vuestic-card>
     </div>
+    </div>
+<br/><br/><br/><br/><br/><br/>
     <div class="row">
-      <div class="col-md-12">
-        <vuestic-widget :headerText="$t('Latest Articles')">
-          <div class="table-responsive">
-            <table class="table table-striped first-td-padding" >
-              <thead>
-              <tr>
-                <td>Title</td>
-                <td>Disease</td>
-                <td>Location</td>
-                <td>Published Date</td>
-                <td> </td>
-                <td></td>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>Matthew McCormick</td>
-                <td>Flu</td>
-                <td>Vancouver</td>
-                <td>13/04/2019</td>
-                <button class="btn btn-warning" @click="showLargeModal()">More</button>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Nancy Bo</td>
-                <td>Flu</td>
-                <td>Washington</td>
-                <td>13/04/2019</td>
-                <button class="btn btn-warning" @click="showLargeModal()">More</button>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Frederiko Lopez</td>
-                <td>Flu</td>
-                <td>Barcelona</td>
-                <td>13/04/2019</td>
-                <button class="btn btn-warning" @click="showLargeModal()">More</button>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Stanley Hummer</td>
-                <td>Flu</td>
-                <td>Manchester</td>
-                <td>03/01/2019</td>
-                <button class="btn btn-warning" @click="showLargeModal()">More</button>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Lendley Wintz</td>
-                <td>Flu</td>
-                <td>Wien</td>
-                <td>13/03/2019</td>
-                <button class="btn btn-warning" @click="showLargeModal()">More</button>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Barbara Noz</td>
-                <td>Flu</td>
-                <td>Brussels</td>
-                <td>07/04/2019</td>
-                <button class="btn btn-warning" @click="showLargeModal()">More</button>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Matthew McCormick</td>
-                <td>Flu</td>
-                <td>Vancouver</td>
-                <td>23/04/2019</td>
-                <button class="btn btn-warning" @click="showLargeModal()">More</button>
-                <td></td>
-              </tr>
-              
-              </tbody>
-            </table>
-          </div>
-        </vuestic-widget>
-      </div>
+                <div class="col-md-10 offset-md-1">
+                  <br/>
+                  <div class="cards-container">
+                    <template>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                      <vuestic-card theme="dark">
+                        <p slot="title">{{ $t('Article Title') }}</p>
+                        {{ $t('Summary Report') }}
+                        <p class="pt-3 mb-0">
+                          <button class="btn btn-warning" @click="showLargeModal()">
+                        {{'More Info' | translate }}
+                      </button>
+                        </p>
+                      </vuestic-card>
+                    </template>
+                  </div>
+                </div>
 
-    </div>
+                <vuestic-modal :show.sync="show" v-bind:large="true" ref="largeModal" :okText="'Save' | translate"
+                :cancelText="'Subscribe' | translate">
+                  <div slot="title">{{'modal.largeTitle' | translate}}</div>
+                  <div>
+                    Main Text of the Article
+                  </div>
+                </vuestic-modal>
 
-  <vuestic-modal :show.sync="show" v-bind:large="true" ref="largeModal" :okText="'modal.confirm' | translate"
-                   :cancelText="'modal.cancel' | translate">
-      <div slot="title">Title</div>
-      <div>
-        There are three species of zebras: the plains zebra, the mountain zebra and the Grévy's zebra. The plains zebra
-        and the mountain zebra belong to the subgenus Hippotigris, but Grévy's zebra is the sole species of subgenus
-        Dolichohippus. The latter resembles an ass, to which it is closely related, while the former two are more
-        horse-like. All three belong to the genus Equus, along with other living equids.
-      </div>
-    </vuestic-modal>
-    
+              </div>
+       
+    <br/><br/><br/>
   </div>
 
 </template>
 
 <script>
 import CountriesList from 'data/CountriesList'
+import VuesticCard from '../../vuestic-theme/vuestic-components/vuestic-card/VuesticCard'
 
 
 export default {
   name: 'charts',
+  components:{
+    VuesticCard,
+  },
   data(){
     return{
       clearableText: '',
@@ -166,8 +227,14 @@ export default {
     clear (field) {
       this[field] = ''
     },
-
-  },
+    addCards () {
+      this.isShown = true
+      setTimeout(() => {
+        this.isShown = false
+        ++this.listLoops
+      }, 1000)
+    },
+  }
 }
 </script>
 
@@ -182,10 +249,52 @@ export default {
     width: 1rem;
   }
 }
-.btn {
+.btn{
   margin-bottom: 10px;
-  margin-top: 10px;
-  padding: 5px 10px;
-  font-size: 10px;
+  margin-top: 5px;
+  padding: 10px 30px;
+  font-size: 15px;
 }
+.btn-search{
+  margin-bottom: 2px;
+  margin-top: 2px;
+  margin-left: 300px;
+  padding: 10px 50px;
+  font-size: 20px;
+}
+$singleGutter: #{(25/16)}rem;
+
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -$singleGutter;
+    align-items: flex-start;
+    .vuestic-card {
+      margin: $singleGutter;
+
+      width: calc(33% - #{$singleGutter} * 2);
+
+      @include media-breakpoint-only(xl) {
+        width: calc(25% - #{$singleGutter} * 2);
+      }
+
+      @include media-breakpoint-only(lg) {
+        width: calc(33.3% - #{$singleGutter} * 2);
+      }
+
+      @include media-breakpoint-only(sm) {
+        width: calc(50% - #{$singleGutter} * 2);
+      }
+
+      @include media-breakpoint-only(xs) {
+        width: calc(100% - #{$singleGutter} * 2);
+      }
+    }
+  }
+
+  .pre-loader-container {
+    height: 50px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
 </style>

@@ -1,39 +1,5 @@
 <template>
-  <div class="vuestic-data-table table-responsive"
-       :class="{'data-loading': loading}">
-    <!--
-    <div class="d-flex flex-md-row flex-column align-items-center" :class="controlsAlignmentClass">
-      
-      <filter-bar
-        @filter="onFilterSet"
-        :label="filterInputLabel"
-        v-show="filterInputShown"
-      />
-      
-      <div class="datatable-controls d-flex flex-row">
-        <div class="form-group">
-          <slot name="additionalTableControl"></slot>
-        </div>
-        <items-per-page
-          :options="itemsPerPage"
-          :label="itemsPerPageLabel"
-          :defaultPerPage="defaultPerPageComputed"
-          @items-per-page="onItemsPerPage"
-          v-show="perPageSelectorShown"
-        />
-      </div>
-    </div>
-    -->
-    <div v-show="loading" class="data-table-loading">
-      <slot name="loading">
-        <spring-spinner
-          slot="loading"
-          :animation-duration="2500"
-          :size="70"
-          color="#4ae387"
-        />
-      </slot>
-    </div>
+  <div class="vuestic-data-table table-responsive">
     <vuetable
       ref="vuetable"
       :apiUrl="apiUrl"
@@ -50,8 +16,6 @@
       :queryParams="queryParams"
       :noDataTemplate="noDataTemplate"
       @vuetable:pagination-data="onPaginationData"
-      @vuetable:loading="onLoading"
-      @vuetable:loaded="onLoaded"
     />
     <div class="d-flex justify-content-center mb-4">
       <vuetable-pagination
@@ -67,19 +31,15 @@
 <script>
 import Vuetable from 'vuetable-2/src/components/Vuetable'
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination'
-import FilterBar from './datatable-components/FilterBar.vue'
 import ItemsPerPage from './datatable-components/ItemsPerPage.vue'
 import DefaultPerPageDefinition from './data/items-per-page-definition'
 import QueryParams from './data/query-params'
 import Vue from 'vue'
 import DataTableStyles from '../vuestic-datatable/data/data-table-styles'
-import SpringSpinner from 'epic-spinners/src/components/lib/SpringSpinner'
 
 export default {
   name: 'vuestic-data-table',
   components: {
-    SpringSpinner,
-    FilterBar,
     Vuetable,
     VuetablePagination,
     ItemsPerPage
@@ -97,10 +57,6 @@ export default {
       default: () => {
       }
     },
-    filterQuery: {
-      type: String,
-      default: 'filter'
-    },
     tableFields: {
       type: Array,
       required: true
@@ -112,14 +68,6 @@ export default {
     perPageSelectorShown: {
       type: Boolean,
       default: true
-    },
-    filterInputShown: {
-      type: Boolean,
-      default: true
-    },
-    filterInputLabel: {
-      type: String,
-      default: 'Search'
     },
     itemsPerPageLabel: {
       type: String,
@@ -145,10 +93,6 @@ export default {
         }
       }
     },
-    dataModeFilterableFields: {
-      type: Array,
-      default: () => []
-    },
     sortFunctions: {
       type: Object
     },
@@ -171,57 +115,12 @@ export default {
     return {
       perPage: 0,
       colorClasses: {},
-      filterText: '',
       dataCount: 0,
       css: DataTableStyles,
-      loading: false,
       noDataTemplate: ''
     }
   },
   computed: {
-    controlsAlignmentClass () {
-      return {
-        'justify-content-md-between': this.filterInputShown,
-        'justify-content-md-end': !this.filterInputShown
-      }
-    },
-    moreParams () {
-      // HACK
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.appendParams[this.filterQuery] = this.filterText
-      return this.appendParams
-    },
-    dataModeFilterableFieldsComputed () {
-      const dataItem = this.tableData.data[0] || {}
-      const filterableFields = this.dataModeFilterableFields
-
-      if (!filterableFields.length) {
-        const itemFields = Object.keys(dataItem)
-        itemFields.forEach(field => {
-          if (typeof dataItem[field] !== 'object') {
-            filterableFields.push(field)
-          }
-        })
-      }
-
-      return filterableFields
-    },
-    filteredTableData () {
-      const txt = new RegExp(this.filterText, 'i')
-
-      let filteredData = this.tableData.data.slice()
-
-      filteredData = this.tableData.data.filter((item) => {
-        return this.dataModeFilterableFieldsComputed.some(field => {
-          const val = item[field] + ''
-          return val.search(txt) >= 0
-        })
-      })
-
-      return {
-        data: filteredData
-      }
-    },
     defaultPerPageComputed () {
       let defaultPerPage = DefaultPerPageDefinition.itemsPerPage[0].value
 
@@ -247,10 +146,6 @@ export default {
   },
 
   methods: {
-    onFilterSet (filterText) {
-      this.filterText = filterText
-      Vue.nextTick(() => this.$refs.vuetable.refresh())
-    },
     onItemsPerPage (itemsPerPageValue) {
       this.perPage = itemsPerPageValue
       Vue.nextTick(() => this.$refs.vuetable.refresh())
@@ -286,16 +181,6 @@ export default {
         data: data.slice(pagination.from - 1, pagination.to)
       }
     },
-    onLoading () {
-      this.noDataTemplate = ''
-      this.loading = true
-      this.$emit('vuestic:loading')
-    },
-    onLoaded () {
-      this.noDataTemplate = this.$t('tables.dataTable.noDataAvailable')
-      this.loading = false
-      this.$emit('vuestic:loaded')
-    }
   }
 }
 </script>
@@ -324,24 +209,5 @@ export default {
       }
     }
 
-    @media (max-width: 576px) {
-      .hide-not-focused-btn:not(.focus) {
-        display: none;
-      }
-    }
-
-    .data-table-loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      top: 40%;
-      left: 50%;
-    }
-  }
-
-  .data-loading {
-    opacity: .5;
-    pointer-events: none;
   }
 </style>
