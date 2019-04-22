@@ -1,22 +1,23 @@
 <template>
-  <form class="login" @submit="check"><!-- method="POST" action="/login">-->
-    <div class="form">
-      <!--<div class="input">-->
-        <i>{{ error }}</i>
-        <input v-model="username" id="username" name="username" placeholder="username" type="text"/>
-        <br>
-        <input v-model="password" id="password" name="password" placeholder="password" type="password"/>
-      <!--</div>-->
-    </div>
-    <button type="submit">Login</button>
-  </form>
+  <div class="form">
+    <!--<div class="input">-->
+      <i>{{ error }}</i>
+      <br>
+      <label>Username</label>
+      <input v-model="username" id="username" name="username" type="text"/>
+      <br>
+      <label>Password</label>
+      <input v-model="password" id="password" name="password" type="password"/>
+      <br>
+      <button type="submit" @click="check">Login</button>
+    <!--</div>-->
+  </div>
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   name: 'Login',
-  //props: ['username'],
+  props: ['username'],
   data: () => {
     return {
       error: '',
@@ -27,83 +28,33 @@ export default {
   methods: {
     check () {
       let namePattern = new RegExp('^[A-Za-z0-9_-]{1,255}$')
-      if (this.username.value.length === 0) {
+      if (this.username.length === 0) {
         this.error = 'Please enter username!'
-      } else if (this.password.value.length === 0) {
+      } else if (this.password.length === 0) {
         this.error = 'Please enter password!'
-      } else if (!namePattern.test(this.username.value)) {
+      } else if (!namePattern.test(this.username)) {
         this.error = 'Username is invalid, only contains alphabet and number, and at most 255 characters!'
       } else {
-        console.log('POSTING REQ')
-        /*
+          
         fetch('/login', {
           method: 'POST',
-          // mode: 'no-cors',
-          headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-          body: JSON.stringify({username: this.username.value, password: this.password.value})
-        })then((r) => {
-          if (r === 'TRUE') {
-            console.log('Yay')
-            this.$router.push('/home')
+          headers: new Headers({'Accept': 'application/json', 'Content-Type': 'application/json'}),
+          body: JSON.stringify({'username': this.username, 'password': this.password})
+        }).then((r) => {
+          if (r.status === 200) {
+            this.$router.push('/')
             return true
-          } else {
-            console.log('NO')
+          } else if (r.status === 404) {
             this.error = 'Username/password invalid!'
+          } else if (r.status === 500) {
+            this.error = 'Internal Server Error'
+          } else {
+            this.error = 'Something went wrong'
           }
         })
-        */
-        /*
-        axios.post('/login', {username: this.username.value, password: this.password.value})
-        .then(res => {
-          console.log(res)
-          //this.$router.push('/home')
-        }).catch(error => {
-          console.log(error)
-          this.error = 'Username/password invalid!'
-        })
-        */
-        axios({
-          method: 'POST',
-          url: '/login',
-          data: {
-            username: this.username.value,
-            password: this.password.value
-          }
-        }).then(res => { console.log(res) }).catch(error => { console.log(error) })
+        
       }
     }
   }
 }
 </script>
-<!--
-<script>
-function check () {
-  let namePattern = new RegExp('^[A-Za-z0-9_-]{1,255}$')
-  if (this.username.value.length === 0) {
-    this.error = 'Please enter username!'
-  } else if (this.password.value.length === 0) {
-    this.error = 'Please enter password!'
-  } else if (!namePattern.test(this.username.value)) {
-    this.error = 'Username is invalid, only contains alphabet and number, and at most 255 characters!'
-  } else {
-    console.log('POSTING REQ')
-    fetch('/login', {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-      body: JSON.stringify({username: this.username.value, password: this.password.value})
-    }).then((r) => {
-      console.log('After requesting')
-      if (r === 'TRUE') {
-        console.log('Yay')
-        this.$router.push('/home')
-        return true
-      } else {
-        console.log('NO')
-        this.error = 'Username/password invalid!'
-      }
-    })
-  }
-}
-</script>
--->

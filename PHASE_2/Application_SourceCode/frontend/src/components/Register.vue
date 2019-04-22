@@ -1,15 +1,24 @@
 <template>
-  <form class="register" @submit="check()" action="/register" method="POST">
-    <div class="form">
-      <i>{{ error }}</i>
-      <input v-model="username" id="username" name="username" placeholder="Enter username" type="text" required="true"/>
-      <input v-model="password" id="password" name="password" placeholder="Enter password" type="password" required="true"/>
-      <input v-model="repass" id="repass" name="repass" placeholder="Enter password again" type="password" required="true"/>
-      <input v-model="name" id="name" name="name" placeholder="Enter name" type="text"/>
-      <input v-model="email" id="email" name="email" placeholder="Enter email" type="email" required="true"/>
-    </div>
-    <button type="submit">Register</button>
-  </form>
+  <div class="form">
+    <i>{{ error }}</i>
+    <br>
+    <label>Username</label>
+    <input v-model="username" id="username" name="username" placeholder="Enter username" type="text" required="true"/>
+    <br>
+    <label>Password</label>
+    <input v-model="password" id="password" name="password" placeholder="Enter password" type="password" required="true"/>
+    <br>
+    <label>Re-enter password</label>
+    <input v-model="repass" id="repass" name="repass" placeholder="Enter password again" type="password" required="true"/>
+    <br>
+    <label>Full name</label>
+    <input v-model="name" id="name" name="name" placeholder="Enter name" type="text"/>
+    <br>
+    <label>Email</label>
+    <input v-model="email" id="email" name="email" placeholder="Enter email" type="email" required="true"/>
+    <br>
+    <button type="submit" @click="check">Register</button>
+  </div>
 </template>
 
 <script>
@@ -49,9 +58,8 @@ export default {
           headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
           body: JSON.stringify({username: this.username, password: this.password, name: this.name, email: this.email})
         }).then((r) => {
-          if (r.status === 'TRUE') {
+          if (r.status_code === 200) {
             this.$router.push('/home')
-            return True
           } else {
             this.error = 'Something went wrong, try different account information!'
           }

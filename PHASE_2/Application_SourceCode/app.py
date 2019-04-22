@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, session, jsonify
 from flask_cors import CORS
+import json
 
 app = Flask(__name__,
             static_folder = "./dist/static",
             template_folder = "./dist")
 
 # Enable CORS
-CORS(app)
+#CORS(app)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -16,23 +17,24 @@ def catch_all(path):
 @app.route('/login', methods = ['POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        body = json.loads(request.data.decode("utf-8"))
+        username = body['username']
+        password = body['password']
         # check db for account, here just check for admin for example
         if username == 'admin' and password == 'password':
-            #return render_template("index.html", login_name=username)
-            return jsonify(message='success'), 200
+            return jsonify(message='success'), 200, {'Access-Control-Allow-Origin': '*'}
         else:
-            return jsonify(message='error'), 404
+            return jsonify(message='error'), 404, {'Access-Control-Allow-Origin': '*'}
     return render_template("index.html")
 
 @app.route('/register', methods = ['POST'])
 def register():
     if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        username = request.form['username']
-        password = request.form['password']
+        body = json.loads(request.data.decode("utf-8"))
+        name = body['name']
+        email = body['email']
+        username = body['username']
+        password = body['password']
         account = {
             'name':name,
             'email':email,
@@ -40,7 +42,7 @@ def register():
             'password':password
         }
         print(account)
-        return jsonify(message='success'), 200
+        return jsonify(message='success'), 200, {'Access-Control-Allow-Origin': '*'}
     return render_template("index.html")
 
 app.run(debug=True)

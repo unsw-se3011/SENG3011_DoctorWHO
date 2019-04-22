@@ -2,7 +2,6 @@
   <div id="app">
     <Navigation/>
     <router-view/>
-    {{ info }}
   </div>
 </template>
 
@@ -11,6 +10,9 @@ import Navigation from './components/Navigation'
 // import axios from 'axios'
 export default {
   name: 'App',
+  data: () => {
+    return { username: ''}
+  },
   components: {
     'Navigation': Navigation
   }
