@@ -14,8 +14,11 @@
     "axios": "^0.18.0",
     "bulma": "^0.7.4",
     "d3": "^5.9.2",
+    "luxon": "^1.12.1",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-datetime": "^1.0.0-beta.10",
+    "vue-router": "^3.0.1",
+    "weekstart": "^1.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

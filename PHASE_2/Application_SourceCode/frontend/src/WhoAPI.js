@@ -17,14 +17,17 @@ const WhoAPI = axios.create({
 })
 
 export default {
-  Search (startDate, endDate) {
+  // arguments: Start-date, End-date, Key-terms, Location
+  Search () {
     // return axios.get('https://epiproapp.appspot.com/api/v1/reports/filter?Start-date=2018-01-01Txx%3Axx%3Axx&End-date=2018-02-01Txx%3Axx%3Axx')
     // return WhoAPI.get('/articles', { // doctorwho
     return WhoAPI.get('/reports/filter', { // epipro
     // return whoAPI.get('/api/articles', { // epiwatch
       params: {
-        'Start-date': startDate,
-        'End-date': endDate
+        'Start-date': arguments[0],
+        'End-date': arguments[1],
+        'Key-terms': arguments[2],
+        'Location': arguments[3]
       }
       /*
       headers: {

@@ -2,7 +2,6 @@
   <div id="app">
     <Navigation/>
     <router-view/>
-    {{ info }}
   </div>
 </template>
 
