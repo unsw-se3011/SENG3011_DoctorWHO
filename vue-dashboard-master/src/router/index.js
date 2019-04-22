@@ -263,7 +263,9 @@ export default new Router({
             {
               name: 'collapse',
               path: 'collapse',
-              component: lazyLoading('ui/collapse/Collapse')
+              component: lazyLoading('ui/collapse/Collapse'),
+              props: true
+
             }
           ]
         }
