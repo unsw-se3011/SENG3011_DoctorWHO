@@ -4,12 +4,14 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Datetime from 'vue-datetime'
+import { Settings } from 'luxon'
 
 // import axios from 'axios'
 import './../node_modules/bulma/css/bulma.css'
 import 'vue-datetime/dist/vue-datetime.css'
 
 Vue.config.productionTip = false
+Settings.defaultLocale = 'au'
 // axios.defaults.baseURL = 'http://www.doctorwhoseng.tk'
 // axios.defaults.baseURL = 'http://epiproapp.appspot.com/api/v1'
 
