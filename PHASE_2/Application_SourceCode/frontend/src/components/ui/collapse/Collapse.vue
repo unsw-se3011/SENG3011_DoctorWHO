@@ -240,7 +240,7 @@ export default {
       pages: 8,
       newsPages: 8,
       returnedArticles: [],
-      returnedNews: []
+      returnedNews: [],
       saveArticleMessage: ''
     }
   },
