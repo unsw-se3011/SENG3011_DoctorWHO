@@ -3,8 +3,8 @@ import json
 import db_operations as db
 
 app = Flask(__name__,
-            static_folder = "../../../vue-dashboard-master/dist/static",
-            template_folder = "../../../vue-dashboard-master/dist")
+            static_folder = "../frontend/dist/static",
+            template_folder = "../frontend/dist")
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
