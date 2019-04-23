@@ -3,41 +3,65 @@
       <div class="col-12">
         <vuestic-widget :headerText="$t('Results')">
           <vuestic-accordion>
-            <vuestic-collapse>
-              <span slot="header"> Graph </span>
-              <div slot="body">
-                <div class="row">
-                  <div class="col-md-12">
-                    <vuestic-widget
-                      class="chart-widget"
-                      :headerText="$t('charts.lineChart')"
-                    >
-                      <vuestic-chart :data="lineChartData" type="line"/>
-                    </vuestic-widget>
-                  </div>
-                </div>
-                <!--
-                <div class="row">
-                  <div class="col-md-6">
-                    <vuestic-widget
-                      class="chart-widget"
-                      :headerText="$t('charts.donutChart')"
-                    >
-                      <vuestic-chart :data="donutChartData" type="donut"/>
-                    </vuestic-widget>
-                  </div>
-                </div>
-                -->
-              </div>
-            </vuestic-collapse>
             <p> startDate: {{ items.start_date }} </p>
             <p> endDate: {{ items.end_date }} </p>
             <p> keywords: {{items.keywords }} </p>
             <p> location: {{items.location}} </p>
+            <vuestic-collapse>
+              <span slot="header"> Graph </span>
+              <div slot="body">
+                <div class="row" v-if="items.keywords&&items.location">
+                  <div class="col-md-12">
+                    <vuestic-widget
+                      class="chart-widget"
+                      :headerText="$t('Development of '+ items.keywords +' in '+items.location+' According to Time')"
+                    >
+                      <vuestic-chart :data="DiseaseDevelopmentInLocation" type="line"/>
+                    </vuestic-widget>
+                  </div>
+                </div>
+                
+                <div class="row" v-else-if="items.keywords">
+                  <div class="col-md-12">
+                    <vuestic-widget
+                      class="chart-widget"
+                      :headerText="$t('Number of People Affected by '+ items.keywords+ ' in Different Locations')"
+                    >
+                      <vuestic-chart :data="LocationDistribution" type="donut"/>
+                    </vuestic-widget>
+                  </div>
+                </div>
+
+                <div class="row" v-else-if="items.location">
+                  <div class="col-md-12">
+                    <vuestic-widget
+                      class="chart-widget"
+                      :headerText="$t('Dieseases Distribution in ' +items.location)"
+                    >
+                      <vuestic-chart :data="DiseaseDistribution" type="donut"/>
+                    </vuestic-widget>
+                  </div>
+                </div>
+
+                <div class="row" v-else>
+                  <div class="col-md-12">
+                    <vuestic-widget
+                      class="chart-widget"
+                      :headerText="$t('Development of Diseases According to Time')"
+                    >
+                      <vuestic-chart :data="DiseaseDevelopment" type="line"/>
+                    </vuestic-widget>
+                  </div>
+                </div>
+                
+              </div>
+            </vuestic-collapse>
+            
 
     <!-- div v-for="article in who_res.concat(cidrap_res)" -->
 
             <vuestic-collapse>
+
                 <span slot="header"> Articles </span>
                 <div slot="body">
                 <div class="row">
@@ -199,12 +223,15 @@
 <script>
 import VuesticCard from '../../../vuestic-theme/vuestic-components/vuestic-card/VuesticCard'
 import { getLineChartData } from '../../../data/charts/LineChartData'
-import DonutChartData from '../../../data/charts/DonutChartData'
+//import DonutChartData from '../../../data/charts/DonutChartData'
+import store from 'vuex-store'
 import SidebarLink from '../../admin/app-sidebar/components/SidebarLink'
 
 import WhoAPI from '@/WhoAPI'
 import CidrapAPI from '@/CidrapAPI'
 import GoogleNewsAPI from '@/GoogleNewsAPI'
+
+let palette = store.getters.palette
 
 export default {
   name: 'collapse',
@@ -217,8 +244,19 @@ export default {
     return {
       listLoops: 1,
       isShown: false,
-      lineChartData: getLineChartData(),
-      donutChartData: DonutChartData,
+      DiseaseDevelopmentInLocation: getDiseaseDevelopmentInLocation(),
+      LocationDistribution: getLocationDistribution(),
+      DiseaseDistribution: getDiseaseDistribution(),
+      DiseaseDevelopment: getDiseaseDevelopment(),
+      /*lineChartData: getLineChartData(),
+      donutChartData: {
+        labels: ['North America', 'South America', 'Australia'],
+        datasets: [{
+          label: 'Population (millions)',
+          backgroundColor: [palette.danger, palette.info, palette.success],
+          data: [2478, 5267, 734]
+        }]
+      },*/
       who_res: [],
       cidrap_res: [],
       search_result: [],
@@ -298,7 +336,11 @@ export default {
   },
   methods: {
     refreshData () {
-      this.lineChartData = getLineChartData()
+      //this.lineChartData = getLineChartData()
+      this.DiseaseDevelopmentInLocation = getDiseaseDevelopmentInLocation();
+      this.LocationDistribution = getLocationDistribution();
+      this.DiseaseDistribution = getDiseaseDistribution();
+      this.DiseaseDevelopment = getDiseaseDevelopment();
     },
     addCards () {
       this.isShown = true
@@ -312,6 +354,54 @@ export default {
       this.index_article = index
       this.$refs.largeModalArticles.open()
     },
+
+    getListOfLocations(){
+      var Locations= new Array();
+      for (var r in search_result){
+          var location;
+          if (r.reports.reported_events.location.country){
+            location = r.reports.reported_events.location.country;
+          }else if(r.reports.reported_events.location.location_name){
+            location = r.reports.reported_events.location.location_name;
+          }
+          if (!Locations.includes(location)){
+            Locations.push(location);
+          } 
+      }
+      return Locations;
+    },
+    getListOfDiseases(){
+      var Diseases= new Array();
+      for (var r in search_result){
+        for (var d in r.reports.disease){
+          if (!Diseases.includes(d)){
+            Diseases.push(d);
+          }
+        }
+      }
+      return Diseases;
+    },
+    getDiseaseDevelopmentInLocation(){
+      return{
+        labels: months.splice(0, size),
+        datasets: [
+          {
+            label: yLabels[0],
+            backgroundColor: utils.hex2rgb(palette.primary, 0.6).css,
+            borderColor: palette.transparent,
+            data: generateArray(size),
+          }
+        ]
+      }
+    },
+    getLocationDistribution(){
+
+    },
+    getDiseaseDistribution(){
+
+    },
+    getDiseaseDevelopment(){},
+
     showLargeModalNews (index) {
       this.index_news = index
       this.$refs.largeModalNews.open()
