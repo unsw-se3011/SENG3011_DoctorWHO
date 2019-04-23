@@ -7,7 +7,7 @@
             <p> endDate: {{ items.end_date }} </p>
             <p> keywords: {{items.keywords }} </p>
             <p> location: {{items.location}} </p>
-            
+
             <vuestic-collapse>
               <span slot="header"> Graph </span>
               <div slot="body">
@@ -21,6 +21,7 @@
                     </vuestic-widget>
                   </div>
                 </div>
+
                 <div class="row" v-else-if="items.keywords">
                   <div class="col-md-12">
                     <vuestic-widget
@@ -31,14 +32,8 @@
                     </vuestic-widget>
                   </div>
                 </div>
-                
-
-                
-
-                
               </div>
             </vuestic-collapse>
-            
 
     <!-- div v-for="article in who_res.concat(cidrap_res)" -->
 
@@ -51,7 +46,7 @@
                     <br/>
                     <div class="cards-container">
                       <!-- eslint-disable vue/valid-v-for -->
-                      <template>
+                      <template v-if="filtedArticles.length > 0">
                         <vuestic-card theme="dark" v-for="(article, index) in filtedArticles">
 
                           <p slot="title">{{ $t(article.headline) }}</p>
@@ -119,8 +114,9 @@
 
                   </div>
                   <div class="col-md-12 offset-md-4">
-                  <button class="btn btn-primary">Save</button>
-                  <button class="btn btn-primary">Subscribe</button>
+                  <button class="btn btn-primary" @click="saveArticle(search_result[index_article].url, search_result[index_article].headline)">Save</button>
+                  <button class="btn btn-primary" >Subscribe</button>
+                  <p> {{ saveArticleMessage }} </p>
                   </div>
                 </div>
                 </vuestic-modal>
@@ -144,19 +140,21 @@
               <span slot="header" > News </span>
               <div slot="body">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12" >
                   <br/>
-                  <div class="cards-container">
+                  <div class="cards-container" >
                     <!-- eslint-disable vue/valid-v-for -->
-                    <template>
-                      <vuestic-card theme="dark" v-for="index_news in 8">
-                        <p slot="title">{{ $t(news_res[index_news].title) }}</p>
-                        {{ $t(news_res[index_news].publishedAt.split('T')[0]) }}
+                    <template >
+                      <vuestic-card theme="dark" v-for="(news, index_news) in filtedNews">
+
+                        <p slot="title">{{ $t(news.title) }}</p>
+                        {{ $t(news.publishedAt.split('T')[0]) }}
                         <p class="pt-3 mb-0">
                           <button class="btn btn-warning" @click="showLargeModalNews(index_news)">
                         {{'More Info' | translate }}
                       </button>
                         </p>
+
                       </vuestic-card>
                     </template>
                   </div>
@@ -231,7 +229,6 @@ export default {
       DiseaseDevelopmentInLocation: null,
       DiseaseDistribution: null,
       DiseaseList: [],
-      DonutChartData,
 
       who_res: [],
       cidrap_res: [],
@@ -241,7 +238,10 @@ export default {
       index_news: 0,
       numArticles: 0,
       pages: 8,
-      returnedArticles: []
+      newsPages: 8,
+      returnedArticles: [],
+      returnedNews: []
+      saveArticleMessage: ''
     }
   },
   computed: {
@@ -256,6 +256,24 @@ export default {
          this.returnedArticles.push(this.search_result[i])
        }
        return this.returnedArticles
+     },
+     filtedNews: function(){
+       this.returnedNews = []
+       let j;
+       let counter = this.newsPages
+       if (counter > this.news_res.length){
+         counter = this.news_res.length
+       }
+       console.log("counter is")
+       console.log(counter)
+       for(j = 0;j < counter;j++){
+         this.returnedNews.push(this.news_res[j])
+       }
+       console.log("returnedNews is")
+       console.log(this.returnedNews)
+       console.log("this.returnedNews.length is")
+       console.log(this.returnedNews.length)
+       return this.returnedNews
      }
   },
   created() {
@@ -320,6 +338,7 @@ export default {
         ++this.listLoops
       }, 1000)
       this.pages = this.pages + 8
+      this.newsPages = this.newsPages + 8
     },
     showLargeModalArticles (index) {
       this.index_article = index
@@ -341,7 +360,7 @@ export default {
           }
           if (!Locations.includes(location)){
             Locations.push(location);
-          } 
+          }
       }
       return Locations;
     },
@@ -471,6 +490,31 @@ export default {
     },
 
 
+
+    showLargeModalNews (index) {
+      this.index_news = index
+      this.$refs.largeModalNews.open()
+    },
+    saveArticle (url, headline) {
+      let user_id = 1 // get user id cookie
+      // if not logged in, return error message
+      fetch('/saveArticle', {
+        method: 'POST',
+        headers: new Headers({'Accept': 'application/json', 'Content-Type': 'application/json'}),
+        body: JSON.stringify({'user_id': user_id, 'url': url, 'headline': headline})
+      }).then((r) => {
+        if (r.status === 200) {
+          this.saveArticleMessage = 'Article saved'
+        } else if (r.status === 404) {
+          this.saveArticleMessage = 'Error saving article'
+        } else if (r.status === 500) {
+          this.saveArticleMessage = 'Internal Server Error'
+        } else {
+          this.saveArticleMessage = 'Something went wrong'
+        }
+      })
+
+    }
   }
 }
 </script>

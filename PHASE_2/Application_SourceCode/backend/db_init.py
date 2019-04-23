@@ -4,7 +4,7 @@ def create_database():
 	init_db = mysql.connector.connect(
 		host="localhost",
 		user="root",
-		password="password"
+		password=""
 	)
 
 	init_cursor = init_db.cursor()
@@ -19,8 +19,8 @@ def create_tables():
 	mydb = mysql.connector.connect(
 		host="localhost",
 		user="root",
-		password="password",
-        database="SIDRAT"
+		password="",
+                database="SIDRAT"
 	)
 
 	mycursor = mydb.cursor()
@@ -47,6 +47,8 @@ def create_tables():
 		" (id INT AUTO_INCREMENT PRIMARY KEY,"
 		" user_id INT,"
 		" url VARCHAR(255),"
+		" headline VARCHAR(255),"
+                " UNIQUE(url,headline),"
 		" FOREIGN KEY (user_id) REFERENCES Users(user_id))")
 	print("created Articles table")
 

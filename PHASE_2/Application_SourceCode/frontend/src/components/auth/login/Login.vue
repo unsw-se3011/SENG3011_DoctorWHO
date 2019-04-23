@@ -1,7 +1,9 @@
 <template>
   <div class="login">
     <h2>{{'auth.welcome' | translate}}</h2>
+
     <i>{{ error }}</i>
+
     <div class="form" name="login">
       <div class="form-group">
         <div class="input-group">

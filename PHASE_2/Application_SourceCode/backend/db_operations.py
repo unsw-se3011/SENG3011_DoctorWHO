@@ -4,7 +4,7 @@ def db_connect():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="password",
+        password="",
         database="SIDRAT"
     )
     return conn
@@ -25,7 +25,7 @@ def add_user(user):
     except Exception as ex:
         print(ex)
         return -1
-    finally: 
+    finally:
         cursor.close()
         conn.close()
 
@@ -45,17 +45,17 @@ def check_login(username, password):
     except Exception as ex:
         print(ex)
         return -1
-    finally: 
+    finally:
         cursor.close()
         conn.close()
 
-# article = { user_id, url }
-def add_saved_article(article):
+# article = { user_id, url, headline }
+def save_article(article):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
     query  = ("INSERT INTO Articles "
-            "(user_id, url) "
-            "VALUES (%(user_id)s, %(url)s) ")
+            "(user_id, url, headline) "
+            "VALUES (%(user_id)s, %(url)s, %(headline)s) ")
     try:
         cursor.execute(query, article)
         insert_id = cursor.lastrowid
@@ -72,7 +72,7 @@ def add_saved_article(article):
 def remove_saved_article(article):
     pass
 
-# subscription = { user_id, start_date, key_terms, location } 
+# subscription = { user_id, start_date, key_terms, location }
 def add_subscription(subscription):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
