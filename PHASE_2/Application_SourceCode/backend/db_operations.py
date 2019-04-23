@@ -9,6 +9,7 @@ def db_connect():
     )
     return conn
 
+# user = { username, password, email, name }
 def add_user(user):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
@@ -20,15 +21,35 @@ def add_user(user):
         insert_id = cursor.lastrowid
         print("Inserted user with id: " + str(insert_id))
         conn.commit()
-        cursor.close()
-        conn.close()
         return insert_id
     except Exception as ex:
         print(ex)
+        return -1
+    finally: 
         cursor.close()
         conn.close()
-        return -1
 
+# login = { username, password }
+def check_login(username, password):
+    conn   = db_connect()
+    cursor = conn.cursor(buffered=True)
+    query  = ("SELECT * from Users "
+            "WHERE username=%s AND password=%s ")
+    try:
+        cursor.execute(query, (username, password))
+        rows = cursor.fetchone()
+        if rows:
+            return 0
+        else:
+            return -1
+    except Exception as ex:
+        print(ex)
+        return -1
+    finally: 
+        cursor.close()
+        conn.close()
+
+# article = { user_id, url }
 def add_saved_article(article):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
@@ -40,37 +61,36 @@ def add_saved_article(article):
         insert_id = cursor.lastrowid
         print("Inserted user with id: " + str(insert_id))
         conn.commit()
-        cursor.close()
-        conn.close()
         return insert_id
     except Exception as ex:
         print(ex)
+        return -1
+    finally:
         cursor.close()
         conn.close()
-        return -1
 
 def remove_saved_article(article):
     pass
 
+# subscription = { user_id, start_date, key_terms, location } 
 def add_subscription(subscription):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
     query  = ("INSERT INTO Subscriptions "
-            "(user_id, url) "
+            "(user_id, start_date, key_terms, location) "
             "VALUES (%(user_id)s, %(start_date)s, %(key_terms)s, %(location)s) ")
     try:
         cursor.execute(query, subscription)
         insert_id = cursor.lastrowid
         print("Inserted user with id: " + str(insert_id))
         conn.commit()
-        cursor.close()
-        conn.close()
         return insert_id
     except Exception as ex:
         print(ex)
+        return -1
+    finally:
         cursor.close()
         conn.close()
-        return -1
 
 #####
 def update_subscription():
@@ -87,14 +107,13 @@ def add_notification(article):
         insert_id = cursor.lastrowid
         print("Inserted user with id: " + str(insert_id))
         conn.commit()
-        cursor.close()
-        conn.close()
         return insert_id
     except Exception as ex:
         print(ex)
+        return -1
+    finally:
         cursor.close()
         conn.close()
-        return -1
 
 def update_notification():
     pass
