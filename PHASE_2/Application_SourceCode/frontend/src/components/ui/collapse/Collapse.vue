@@ -3,10 +3,6 @@
       <div class="col-12">
         <vuestic-widget :headerText="$t('Results')">
           <vuestic-accordion>
-            <p> startDate: {{ items.start_date }} </p>
-            <p> endDate: {{ items.end_date }} </p>
-            <p> keywords: {{items.keywords }} </p>
-            <p> location: {{items.location}} </p>
 
             <vuestic-collapse>
               <span slot="header"> Graph </span>
@@ -328,10 +324,10 @@ export default {
             console.log(this.news_res[1])
           })
           .catch(err => console.log(err))
- 
+
   },
   methods: {
-    
+
     addCards () {
       this.isShown = true
       setTimeout(() => {
@@ -378,10 +374,10 @@ export default {
                 }
             });
             }
-            
+
         });
        }
-       
+
 
       });
       return Diseases;
@@ -393,7 +389,7 @@ export default {
         addDays = function(days) {
           var date = new Date(this.valueOf());
           date.setDate(date.getDate() + days);
-          
+
           return date;
         };
         while (currentDate <= endDate) {
@@ -412,16 +408,16 @@ export default {
           let cd = yyyy + '-' + mm + '-' + dd
           dates.push(cd);
           currentDate = addDays.call(currentDate, 1);
-       
+
         }
         return dates;
       };
       var start = new Date(this.items.start_date);
       var end = new Date(this.items.end_date);
-    
-      
-      var dates = getDates(start, end);                                                                                                           
-       
+
+
+      var dates = getDates(start, end);
+
       return dates;
     },
     getDiseaseDevelopmentInLocation(results){
@@ -430,18 +426,18 @@ export default {
       var num_of_reports = new Array(Dates.length).fill(0);
       var i = 0;
       Dates.forEach(function(date) {
-        
+
           results.forEach(function(result){
               if (result != null){
                   if (result.date_of_publication.split('T')[0] == date){
-                    num_of_reports[i]++;       
+                    num_of_reports[i]++;
                   }
               }
-              
+
           });
           i++;
       });
-          
+
       return {
         labels: Dates,
         datasets: [
@@ -460,7 +456,7 @@ export default {
       var Diseases = this.DiseaseList;
       var num_of_reports = new Array(Diseases.length).fill(0);
       var i = 0;
-      Diseases.forEach(function(disease) { 
+      Diseases.forEach(function(disease) {
           results.forEach(function(result){
             if (result != null){
                 result.reports.forEach(function(report){
@@ -470,12 +466,12 @@ export default {
                           num_of_reports[i]++;
                         }
                     });
-                      
+
                   }
-                  
-              }); 
+
+              });
             }
-               
+
           });
           i++;
       });
