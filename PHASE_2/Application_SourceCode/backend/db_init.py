@@ -28,8 +28,10 @@ def create_tables():
 	print("Old Users table removed (if it existed)")
 	mycursor.execute("DROP TABLE IF EXISTS Articles")
 	print("Old Articles table removed (if it existed)")
-	mycursor.execute("DROP TABLE IF EXISTS Searches")
-	print("Old Searches table removed (if it existed)")
+	mycursor.execute("DROP TABLE IF EXISTS Subscriptions")
+	print("Old Subscriptions table removed (if it existed)")
+	mycursor.execute("DROP TABLE IF EXISTS Notifications")
+	print("Old Notifications table removed (if it existed)")
 
 	mycursor.execute("CREATE TABLE Users"
 		" (user_id INT AUTO_INCREMENT PRIMARY KEY,"
@@ -42,19 +44,26 @@ def create_tables():
 	mycursor.execute("CREATE TABLE Articles"
 		" (id INT AUTO_INCREMENT PRIMARY KEY,"
 		" user_id INT,"
-		" article_id INT,"
+		" url VARCHAR(255),"
 		" FOREIGN KEY (user_id) REFERENCES Users(user_id))")
 	print("created Articles table")
 
-	mycursor.execute("CREATE TABLE Searches"
+	mycursor.execute("CREATE TABLE Subscriptions"
 		" (id INT AUTO_INCREMENT PRIMARY KEY,"
 		" user_id INT,"
 		" start_date VARCHAR(255),"
-		" end_date VARCHAR(255),"
 		" key_term VARCHAR(255),"
 		" location VARCHAR(255),"
 		" FOREIGN KEY (user_id) REFERENCES Users(user_id))")
-	print("created Searches table")
+	print("created Subscriptions table")
+
+	mycursor.execute("CREATE TABLE Notifications"
+		" (id INT AUTO_INCREMENT PRIMARY KEY,"
+		" user_id INT,"
+		" url VARCHAR(255),"
+		" viewed BOOLEAN,"
+		" FOREIGN KEY (user_id) REFERENCES Users(user_id))")
+	print("created Notifications table")
 
 create_database()
 create_tables()
