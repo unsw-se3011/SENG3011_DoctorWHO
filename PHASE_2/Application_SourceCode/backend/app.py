@@ -20,10 +20,11 @@ def login():
         # check db for account, here just check for admin for example
         # login_obj = { 'username': username, 'password': password }
         # print(login_obj)
-        if db.check_login(username, password) < 0:
+        user_id = db.check_login(username, password)
+        if user_id < 0:
             return jsonify(message='error'), 404, {'Access-Control-Allow-Origin': '*'}
         else:
-            return jsonify(message='success'), 200, {'Access-Control-Allow-Origin': '*'}
+            return jsonify(message='success', userID=user_id), 200, {'Access-Control-Allow-Origin': '*'}
         '''
         if username == 'admin' and password == 'password':
             return jsonify(message='success'), 200, {'Access-Control-Allow-Origin': '*'}

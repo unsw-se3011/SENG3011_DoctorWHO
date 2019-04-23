@@ -257,11 +257,12 @@ export default {
         name:'collapse',
         params: {
           items: {
-          start_date: this.start_date,
-          end_date: this.end_date,
-          keywords: this.keywords,
-          location: this.form_location
-          }
+            start_date: this.start_date,
+            end_date: this.end_date,
+            keywords: this.keywords,
+            location: this.form_location
+          },
+          username: this.username 
         }
     });
     }

@@ -124,13 +124,24 @@ export default {
     }
   },
   methods: {
+    /*
+    clearFields () {
+      this.username= ''
+      this.name= ''
+      this.email= ''
+      this.password= ''
+      this.error= ''
+    },
+    */
     showLogInModal () {
+      // clearFields()
       if (this.$refs.SignUpModal){
         this.$refs.SignUpModal.close()
       }
       this.$refs.LogInModal.open()
     },
     showSignUpModal() {
+      // clearFields()
       if (this.$refs.LogInModal){
         this.$refs.LogInModal.close()
       }
@@ -155,6 +166,7 @@ export default {
           if (r.status === 200) {
             //this.$router.push({name: 'dashboard', params: {username: this.username}})
             this.user = this.username
+            // clearFields()
             this.$refs.LogInModal.close()
             this.$refs.SignUpModal.close()
           } else if (r.status === 404) {
@@ -191,6 +203,7 @@ export default {
           body: JSON.stringify({username: this.username, password: this.password, name: this.name, email: this.email})
         }).then((r) => {
           if (r.status === 200) {
+            // clearFields()
             this.$refs.LogInModal.close()
             this.$refs.SignUpModal.close()
             this.$router.push('/')
