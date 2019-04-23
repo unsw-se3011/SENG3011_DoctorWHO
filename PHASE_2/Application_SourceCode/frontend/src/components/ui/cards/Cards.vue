@@ -27,9 +27,7 @@
             <template v-if="saved.length > 0">
               <vuestic-card theme="dark" v-for="(article, index) in saved">
                 <p slot="title">{{ $t(article.headline) }}</p>
-                <p>url: </p><a v-bind:href="article.url"><p> {{article.url}} </p></a>
-                <p> date published: {{ article.date }} </p>
-                <p v-if="article.text"> content: <br>{{article.text}}</p>
+                <p> {{ article.date }} </p>
                 <p class="pt-3 mb-0">
                   <button class="btn btn-warning" @click="showLargeModalArticles(index)">
                 {{'More Info' | translate }}
@@ -42,22 +40,22 @@
       </div>
       </div>
     </vuestic-collapse>
+    <vuestic-modal :show.sync="show" v-bind:large="true" ref="largeModalArticles" :okText="'Save' | translate"
+    :cancelText="'Subscribe' | translate">
+      <div slot="title">{{ saved[index].headline }}</div>
+      <div>
+        <p>URL: <a v-bind:href="saved[index].url"> {{saved[index].url}} </a></p>
+        <p>Date Published: {{ saved[index].date }} </p>
+        <p> {{ saved[index].text }} </p>
+        </div>
+      </div>
+      <br>
+    </vuestic-modal>
     <div class="col-md-12 d-flex align-items-center justify-content-center">
       <div class="pre-loader-container">
-        <vuestic-pre-loader v-show="isShown" class="pre-loader"></vuestic-pre-loader>
-        <div v-if="!isShown">
-          <button class="btn btn-primary" @click="addCards()">
-            Show More
-          </button>
-        </div>
       </div>
     </div>
 
-    <vuestic-modal :show.sync="show" v-bind:large="true" ref="largeModal" :okText="'Confirm' | translate"
-                   :cancelText="'Cancel' | translate">
-      <div slot="title">{{'modal.largeTitle' | translate}}</div>
-      
-    </vuestic-modal>
   </div>
 </template>
 
@@ -71,7 +69,8 @@ export default {
     return {
       listLoops: 1,
       isShown: false,
-      saved: []
+      saved: [],
+      index: 0
     }
   },
   created () {
@@ -89,8 +88,9 @@ export default {
         ++this.listLoops
       }, 1000)
     },
-    showLargeModal () {
-      this.$refs.largeModal.open()
+    showLargeModalArticles (index) {
+      this.index = index
+      this.$refs.largeModalArticles.open()
     },
   }
 }

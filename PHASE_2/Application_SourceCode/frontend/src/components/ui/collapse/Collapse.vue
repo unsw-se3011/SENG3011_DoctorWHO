@@ -89,9 +89,9 @@
                 <vuestic-modal :show.sync="show" v-bind:large="true" ref="largeModalArticles" :okText="'Save' | translate"
                 :cancelText="'Subscribe' | translate">
                  <div v-if="search_result.length > 0">
-                  <div slot="title">{{search_result[index_article].headline }}</div>
+                  <div slot="title">{{ $t(search_result[index_article].headline) }}</div>
                   <div>
-                    <p> URL: {{ search_result[index_article].url }} </p>
+                    <p> URL: <a v-bind:href="search_result[index_article].url"> {{search_result[index_article].url}} </a></p>
                     <p> Date published: {{ search_result[index_article].date_of_publication.split('T')[0] }} </p>
                     <p> {{ search_result[index_article].main_text }} </p>
                     <h3> Reports </h3>
@@ -186,13 +186,13 @@
 
                 <vuestic-modal :show.sync="show" v-bind:large="true" ref="largeModalNews" :okText="'Save' | translate"
                 :cancelText="'Subscribe' | translate">
-                  <div slot="title">{{news_res[index_news].title }}</div>
+                  <div slot="title">{{ $t(news_res[index_news].title) }}</div>
                   <div>
-                    <p> author: {{ news_res[index_news].author}} </p>
-                    <p> date published: {{ news_res[index_news].publishedAt.split('T')[0] }} </p>
-                    <a v-bind:href="news_res[index_news].url"><p> url: {{news_res[index_news].url}} </p></a>
-                    <p> description: <br>{{ news_res[index_news].description }} </p>
-                    <p> content: <br>{{news_res[index_news].content}}</p>
+                    <p>URL: <a v-bind:href="news_res[index_news].url"> {{news_res[index_news].url}} </a></p>
+                    <p>Author: {{ news_res[index_news].author}} </p>
+                    <p>Date Published: {{ news_res[index_news].publishedAt.split('T')[0] }} </p>
+                    <p>Description:<br>{{ news_res[index_news].description }} </p>
+                    <p>Content: <br>{{news_res[index_news].content}}</p>
 
 
                   <br>
