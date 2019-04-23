@@ -4,7 +4,7 @@ def db_connect():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="password",
+        password="",
         database="SIDRAT"
     )
     return conn
@@ -25,7 +25,7 @@ def add_user(user):
     except Exception as ex:
         print(ex)
         return -1
-    finally: 
+    finally:
         cursor.close()
         conn.close()
 
@@ -45,7 +45,7 @@ def check_login(username, password):
     except Exception as ex:
         print(ex)
         return -1
-    finally: 
+    finally:
         cursor.close()
         conn.close()
 
@@ -91,7 +91,7 @@ def get_articles(user_id):
 def remove_saved_article(article):
     pass
 
-# subscription = { user_id, start_date, key_terms, location } 
+# subscription = { user_id, start_date, key_terms, location }
 def add_subscription(subscription):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
