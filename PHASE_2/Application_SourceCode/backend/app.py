@@ -54,4 +54,23 @@ def register():
             return jsonify(message='error: username or email is taken'), 404, {'Access-Control-Allow-Origin': '*'}
     return render_template("index.html")
 
+@app.route('/saveArticle', methods = ['POST'])
+def save_article():
+    if request.method == 'POST':
+        body = json.loads(request.data.decode("utf-8"))
+        user_id = body['user_id']
+        url = body['url']
+        headline = body['headline']
+        article = {
+            'user_id': user_id,
+            'url': url,
+            'headline': headline
+        }
+        print(article)
+        if db.save_article(article) > 0:
+            return jsonify(message='success'), 200, {'Access-Control-Allow-Origin': '*'}
+        else:
+            return jsonify(message='error'), 404, {'Access-Control-Allow-Origin': '*'}
+
+
 app.run(debug=True)

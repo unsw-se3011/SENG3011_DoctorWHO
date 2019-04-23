@@ -20,7 +20,7 @@ def create_tables():
 		host="localhost",
 		user="root",
 		password="password",
-        database="SIDRAT"
+                database="SIDRAT"
 	)
 
 	mycursor = mydb.cursor()
@@ -47,6 +47,8 @@ def create_tables():
 		" (id INT AUTO_INCREMENT PRIMARY KEY,"
 		" user_id INT,"
 		" url VARCHAR(255),"
+		" headline VARCHAR(255),"
+                " UNIQUE(url,headline),"
 		" FOREIGN KEY (user_id) REFERENCES Users(user_id))")
 	print("created Articles table")
 
