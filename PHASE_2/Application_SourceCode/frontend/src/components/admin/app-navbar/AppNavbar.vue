@@ -175,9 +175,9 @@ export default {
           } else if (res.status === 404) {
             this.error = 'Username/password invalid!'
           } else if (res.status === 500) {
-            this.error = 'Internal Server Error'
+            this.error = 'Internal Server Error, please contact admin'
           } else {
-            this.error = 'Something went wrong'
+            this.error = 'Something went wrong, please contact admin'
           }
         })
       }

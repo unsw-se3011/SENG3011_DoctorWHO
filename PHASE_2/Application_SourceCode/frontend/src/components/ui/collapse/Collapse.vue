@@ -138,7 +138,7 @@
 
                   </div>
                   <div class="col-md-12 offset-md-4">
-                  <button class="btn btn-primary" @click="saveArticle(search_result[index_article].url, search_result[index_article].headline)">Save</button>
+                  <button class="btn btn-primary" @click="saveArticle(search_result[index_article].url, search_result[index_article].headline, search_result[index_article].main_text)">Save</button>
                   <button class="btn btn-primary" >Subscribe</button>
                   <p> {{ saveArticleMessage }} </p>
                   </div>
@@ -200,8 +200,9 @@
 
                   </div>
                   <div class="col-md-12 offset-md-4">
-                  <button class="btn btn-primary">Save</button>
+                  <button class="btn btn-primary" @click="saveArticle(news_res[index_news].url, news_res[index_news].title, news_res[index_news].description)">Save</button>
                   <button class="btn btn-primary">Subscribe</button>
+                  <p> {{ saveArticleMessage }} </p>
                   </div>
                 </vuestic-modal>
 
@@ -431,21 +432,25 @@ export default {
       this.index_news = index
       this.$refs.largeModalNews.open()
     },
-    saveArticle (url, headline) {
+    saveArticle (url, headline, text) {
       // if not logged in, return error message
       fetch('/saveArticle', {
         method: 'POST',
         headers: new Headers({'Accept': 'application/json', 'Content-Type': 'application/json'}),
-       body: JSON.stringify({'user_id': document.cookie, 'url': url, 'headline': headline})
+       body: JSON.stringify({'user_id': document.cookie, 'url': url, 'headline': headline, 'text': text})
       }).then((r) => {
         if (r.status === 200) {
-          this.saveArticleMessage = 'Article saved'
+          //this.saveArticleMessage = 'Article saved'
+          alert('Article saved!')
         } else if (r.status === 404) {
-          this.saveArticleMessage = 'Error saving article'
+          //this.saveArticleMessage = 'Error saving article'
+          alert('Error saving article')
         } else if (r.status === 500) {
-          this.saveArticleMessage = 'Internal Server Error'
+          //this.saveArticleMessage = 'Internal Server Error'
+          alert('Internal Server Error, please contact admin')
         } else {
-          this.saveArticleMessage = 'Something went wrong'
+          //this.saveArticleMessage = 'Something went wrong'
+          alert('Something went wrong, please contact admin')
         }
       })
 

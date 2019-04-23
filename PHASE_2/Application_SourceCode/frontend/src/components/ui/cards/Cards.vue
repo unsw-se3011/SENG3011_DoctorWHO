@@ -27,7 +27,8 @@
             <template v-if="saved.length > 0">
               <vuestic-card theme="dark" v-for="(article, index) in saved">
                 <p slot="title">{{ $t(article.headline) }}</p>
-                {{ $t(article.url) }}
+                <p>url: </p><a v-bind:href="article.url"><p> {{article.url}} </p></a>
+                <p v-if="article.text"> content: <br>{{article.text}}</p>
                 <p class="pt-3 mb-0">
                   <button class="btn btn-warning" @click="showLargeModalArticles(index)">
                 {{'More Info' | translate }}
