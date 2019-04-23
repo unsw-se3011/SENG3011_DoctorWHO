@@ -2,8 +2,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import Home from '@/components/Home.vue'
+import Login from '@/components/Login.vue'
+import Register from '@/components/Register.vue'
+import Article from '@/components/Article.vue'
+import Graphs from '@/components/Graphs.vue'
+import Search from '@/components/Search.vue'
+import NotFound from '@/components/NotFound.vue'
+
+/*
 const routerOptions = [
     { path: '/', name: 'Home', component: 'Home' },
+    { path: '/Login', name: 'Login', component: 'Login' },
+    { path: '/Register', name: 'Register', component: 'Register' },
     { path: '/Search', name: 'Search', component: 'Search' },
     { path: '/Graphs', name: 'Graphs', component: 'LineGraph' },
     { path: '/News', name: 'News', component: 'News' },
@@ -16,10 +27,48 @@ const routes = routerOptions.map(route => {
         component: () => import(`@/components/${route.component}.vue`)
     }
 })
-
+*/
 Vue.use(Router)
 
-export default new Router({
-    routes,
+const router = new Router({
+    routes: [
+        {
+          path: '/',
+          name: 'Home',
+          component: Home
+        },
+        {
+          path: '/Login',
+          name: 'Login',
+          component: Login
+        },
+        {
+          path: '/Register',
+          name: 'Register',
+          component: Register
+        },
+        {
+          path: '/Article',
+          name: 'Article',
+          component: Article
+        },
+        {
+          path: '/Graphs',
+          name: 'Graphs',
+          component: Graphs
+        },
+        {
+          path: '/Search',
+          name: 'Search',
+          component: Search
+        },
+        {
+          path: '*',
+          name: 'NotFound',
+          component: NotFound
+        }
+    ],
     mode: 'history'
-})
+});
+
+export default router;
