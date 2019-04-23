@@ -39,7 +39,8 @@ export default {
         },
         {
           name: 'logout',
-          redirectTo: 'login',
+          redirectTo: 'app-navbar',
+          params: {user: ''},
         },
       ],
     },
