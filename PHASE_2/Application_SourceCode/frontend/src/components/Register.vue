@@ -37,7 +37,8 @@ export default {
   methods: {
     check () {
       let namePattern = new RegExp('^[A-Za-z0-9_-]{1,255}$')
-      let emailPattern = new RegExp('\S+@\S+\.\S+')
+      // let emailPattern = new RegExp('\S+@\S+\.\S+')
+      let emailPattern = /^\S+@\S+\.\S+$/
       if (this.username.length === 0) {
         this.error = 'Please enter username!'
       } else if (this.password.length === 0) {
@@ -53,6 +54,7 @@ export default {
       } else if (!emailPattern.test(this.email)) {
         this.error = 'Email invalid'
       } else {
+        /*
         fetch('/register', {
           method: 'POST',
           headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
@@ -64,6 +66,8 @@ export default {
             this.error = 'Something went wrong, try different account information!'
           }
         })
+        */
+        this.error = 'Success'
       }
     }
   }

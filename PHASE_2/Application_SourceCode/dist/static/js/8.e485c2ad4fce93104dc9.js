@@ -1,0 +1,2 @@
+webpackJsonp([8],{EZvQ:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var s={render:function(){this.$createElement;this._self._c;return this._m(0)},staticRenderFns:[function(){var e=this.$createElement,t=this._self._c||e;return t("div",[t("h1",[this._v("News")])])}]},r=n("VU/8")({name:"News"},s,!1,null,null,null);t.default=r.exports}});
+//# sourceMappingURL=8.e485c2ad4fce93104dc9.js.map

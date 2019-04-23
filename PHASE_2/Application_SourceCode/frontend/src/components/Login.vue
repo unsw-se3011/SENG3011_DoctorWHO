@@ -35,7 +35,7 @@ export default {
       } else if (!namePattern.test(this.username)) {
         this.error = 'Username is invalid, only contains alphabet and number, and at most 255 characters!'
       } else {
-          
+        /*
         fetch('/login', {
           method: 'POST',
           headers: new Headers({'Accept': 'application/json', 'Content-Type': 'application/json'}),
@@ -52,7 +52,8 @@ export default {
             this.error = 'Something went wrong'
           }
         })
-        
+        */
+        this.error = 'Success'
       }
     }
   }

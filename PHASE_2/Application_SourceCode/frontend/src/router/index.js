@@ -5,9 +5,9 @@ import Router from 'vue-router'
 import Home from '@/components/Home.vue'
 import Login from '@/components/Login.vue'
 import Register from '@/components/Register.vue'
-import Article from '@/components/Article.vue'
-import Graphs from '@/components/Graphs.vue'
 import Search from '@/components/Search.vue'
+import Graphs from '@/components/Graphs.vue'
+import News from '@/components/News.vue'
 import NotFound from '@/components/NotFound.vue'
 
 /*
@@ -28,6 +28,7 @@ const routes = routerOptions.map(route => {
     }
 })
 */
+
 Vue.use(Router)
 
 const router = new Router({
@@ -48,11 +49,6 @@ const router = new Router({
           component: Register
         },
         {
-          path: '/Article',
-          name: 'Article',
-          component: Article
-        },
-        {
           path: '/Graphs',
           name: 'Graphs',
           component: Graphs
@@ -61,6 +57,11 @@ const router = new Router({
           path: '/Search',
           name: 'Search',
           component: Search
+        },
+        {
+          path: '/News',
+          name: 'News',
+          component: News
         },
         {
           path: '*',
