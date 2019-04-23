@@ -76,5 +76,11 @@ def save_article():
         else:
             return jsonify(message='error'), 404, {'Access-Control-Allow-Origin': '*'}
 
+@app.route('/getSavedArticles', methods = ['GET'])
+def get_saved_articles():
+    if request.method == 'GET':
+        # db, return json
+        pass
+
 
 app.run(debug=True)
