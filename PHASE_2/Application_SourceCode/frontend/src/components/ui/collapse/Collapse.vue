@@ -45,7 +45,7 @@
                     <br/>
                     <div class="cards-container">
                       <!-- eslint-disable vue/valid-v-for -->
-                      <template>
+                      <template v-if="filtedArticles.length > 0">
                         <vuestic-card theme="dark" v-for="(article, index) in filtedArticles">
 
                           <p slot="title">{{ $t(article.headline) }}</p>
@@ -138,19 +138,21 @@
               <span slot="header" > News </span>
               <div slot="body">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12" >
                   <br/>
-                  <div class="cards-container">
+                  <div class="cards-container" >
                     <!-- eslint-disable vue/valid-v-for -->
-                    <template>
-                      <vuestic-card theme="dark" v-for="index_news in 8">
-                        <p slot="title">{{ $t(news_res[index_news].title) }}</p>
-                        {{ $t(news_res[index_news].publishedAt.split('T')[0]) }}
+                    <template >
+                      <vuestic-card theme="dark" v-for="(news, index_news) in filtedNews">
+
+                        <p slot="title">{{ $t(news.title) }}</p>
+                        {{ $t(news.publishedAt.split('T')[0]) }}
                         <p class="pt-3 mb-0">
                           <button class="btn btn-warning" @click="showLargeModalNews(index_news)">
                         {{'More Info' | translate }}
                       </button>
                         </p>
+
                       </vuestic-card>
                     </template>
                   </div>
@@ -227,7 +229,9 @@ export default {
       index_news: 0,
       numArticles: 0,
       pages: 8,
-      returnedArticles: []
+      newsPages: 8,
+      returnedArticles: [],
+      returnedNews: []
     }
   },
   computed: {
@@ -242,6 +246,24 @@ export default {
          this.returnedArticles.push(this.search_result[i])
        }
        return this.returnedArticles
+     },
+     filtedNews: function(){
+       this.returnedNews = []
+       let j;
+       let counter = this.newsPages
+       if (counter > this.news_res.length){
+         counter = this.news_res.length
+       }
+       console.log("counter is")
+       console.log(counter)
+       for(j = 0;j < counter;j++){
+         this.returnedNews.push(this.news_res[j])
+       }
+       console.log("returnedNews is")
+       console.log(this.returnedNews)
+       console.log("this.returnedNews.length is")
+       console.log(this.returnedNews.length)
+       return this.returnedNews
      }
   },
   created() {
@@ -287,6 +309,9 @@ export default {
     }
     console.log("keywords are")
     console.log(this.items.keywords)
+    if (!this.items.keywords){
+      this.items.keywords = 'outbreak'
+    }
     GoogleNewsAPI.Search(startDateTime, endDateTime, this.items.keywords, this.items.location)
           .then(results => {
             this.news_res = results.articles
@@ -307,6 +332,7 @@ export default {
         ++this.listLoops
       }, 1000)
       this.pages = this.pages + 8
+      this.newsPages = this.newsPages + 8
     },
     showLargeModalArticles (index) {
       this.index_article = index
