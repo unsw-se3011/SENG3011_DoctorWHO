@@ -432,12 +432,11 @@ export default {
       this.$refs.largeModalNews.open()
     },
     saveArticle (url, headline) {
-      // let user_id = 1 // get user id cookie
       // if not logged in, return error message
       fetch('/saveArticle', {
         method: 'POST',
         headers: new Headers({'Accept': 'application/json', 'Content-Type': 'application/json'}),
-        body: JSON.stringify({'user_id': this.$cookie.get('session'), 'url': url, 'headline': headline})
+       body: JSON.stringify({'user_id': document.cookie, 'url': url, 'headline': headline})
       }).then((r) => {
         if (r.status === 200) {
           this.saveArticleMessage = 'Article saved'

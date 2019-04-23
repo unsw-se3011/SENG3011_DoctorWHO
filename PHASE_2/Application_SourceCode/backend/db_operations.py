@@ -39,7 +39,7 @@ def check_login(username, password):
         cursor.execute(query, (username, password))
         rows = cursor.fetchone()
         if rows:
-            return 0
+            return rows[0]
         else:
             return -1
     except Exception as ex:

@@ -22,6 +22,7 @@ def login():
         # login_obj = { 'username': username, 'password': password }
         # print(login_obj)
         user_id = db.check_login(username, password)
+        print("login with " + str(user_id))
         if user_id < 0:
             return jsonify(message='error'), 404, {'Access-Control-Allow-Origin': '*'}
         else:
@@ -63,8 +64,7 @@ def save_article():
         user_id = body['user_id']
         url = body['url']
         headline = body['headline']
-        print(user_id)
-        sess = json.loads(cookieSession.decodeFlaskCookie(user_id))['userId']
+        sess = cookieSession.decodeFlaskCookie(user_id[len('session='):])['userId']
         article = {
             'user_id': sess, 
             'url': url,

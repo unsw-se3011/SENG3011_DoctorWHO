@@ -116,7 +116,7 @@ export default {
   data () {
     return {
       username: '',
-      user: this.$cookie.get('session'),
+      user: document.cookie,
       name: '',
       email: '',
       password: '',
@@ -171,8 +171,7 @@ export default {
             this.error = ''
             this.$refs.LogInModal.close()
             this.$refs.SignUpModal.close()
-            console.log(res.cookie)
-            this.$cookie.set('session', res.cookie, {expires: 3600, domain: document.location})
+            document.cookie = 'session=' + res.cookie + '; path=/'
           } else if (res.status === 404) {
             this.error = 'Username/password invalid!'
           } else if (res.status === 500) {
