@@ -47,7 +47,6 @@
         <p>URL: <a v-bind:href="saved[index].url"> {{saved[index].url}} </a></p>
         <p>Date Published: {{ saved[index].date }} </p>
         <p> {{ saved[index].text }} </p>
-        </div>
       </div>
       <br>
     </vuestic-modal>
