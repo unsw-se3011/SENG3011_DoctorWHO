@@ -69,6 +69,25 @@ def save_article(article):
         cursor.close()
         conn.close()
 
+def get_articles(user_id):
+    conn   = db_connect()
+    cursor = conn.cursor(dictionary=True, buffered=True)
+    query  = ("SELECT * FROM Articles WHERE user_id=%(user_id)s")
+    articles = []
+    
+    try:
+        cursor.execute(query, user_id)
+        for row in cursor:
+            articles.append(row.copy())
+    except Exception as ex:
+        print(ex)
+        return -1
+    finally:
+        cursor.close()
+        conn.close()
+    
+    return articles
+
 def remove_saved_article(article):
     pass
 

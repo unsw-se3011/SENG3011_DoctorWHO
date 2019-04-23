@@ -55,12 +55,12 @@ def register():
 def save_article():
     if request.method == 'POST':
         body = json.loads(request.data.decode("utf-8"))
-        user_id = body['user_id']
+        sess = body['user_id']
         url = body['url']
         headline = body['headline']
-        sess = cookieSession.decodeFlaskCookie(user_id[len('session='):])['userId']
+        user_id = cookieSession.decodeFlaskCookie(sess[len('session='):])['userId']
         article = {
-            'user_id': sess, 
+            'user_id': user_id, 
             'url': url,
             'headline': headline
         }
@@ -73,8 +73,10 @@ def save_article():
 @app.route('/getSavedArticles', methods = ['GET'])
 def get_saved_articles():
     if request.method == 'GET':
-        # db, return json
-        pass
+        sess = request.args['session']
+        user_id = cookieSession.decodeFlaskCookie(sess)['userId']
+        articles = db.get_articles({'user_id': user_id})
+        return jsonify(articles=articles), 200
 
 
 app.run(debug=True)

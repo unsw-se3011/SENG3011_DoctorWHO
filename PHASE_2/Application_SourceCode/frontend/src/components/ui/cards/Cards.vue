@@ -1,9 +1,9 @@
 <template>
   <div class="row">
-    <div class="col-md-12">
-      <div class="cards-container">
+    <!-- <div class="col-md-12">
+      <div class="cards-container"> -->
         <!-- eslint-disable vue/valid-v-for -->
-        <template>
+        <!-- <template>
           <vuestic-card theme="dark">
             <p slot="title">{{ $t('cards.title.dark') }}</p>
             {{ $t('cards.contentText') }}
@@ -15,7 +15,31 @@
           </vuestic-card>
         </template>
       </div>
-    </div>
+    </div> -->
+    <vuestic-collapse>
+      <span slot="header"> Saved Articles </span>
+      <div slot="body">
+      <div class="row">
+        <div class="col-md-12">
+          <br/>
+          <div class="cards-container">
+            <!-- eslint-disable vue/valid-v-for -->
+            <template v-if="saved.length > 0">
+              <vuestic-card theme="dark" v-for="(article, index) in saved">
+                <p slot="title">{{ $t(article.headline) }}</p>
+                {{ $t(article.url) }}
+                <p class="pt-3 mb-0">
+                  <button class="btn btn-warning" @click="showLargeModalArticles(index)">
+                {{'More Info' | translate }}
+                  </button>
+                </p>
+              </vuestic-card>
+            </template>
+          </div>
+        </div>
+      </div>
+      </div>
+    </vuestic-collapse>
     <div class="col-md-12 d-flex align-items-center justify-content-center">
       <div class="pre-loader-container">
         <vuestic-pre-loader v-show="isShown" class="pre-loader"></vuestic-pre-loader>
@@ -30,12 +54,7 @@
     <vuestic-modal :show.sync="show" v-bind:large="true" ref="largeModal" :okText="'Confirm' | translate"
                    :cancelText="'Cancel' | translate">
       <div slot="title">{{'modal.largeTitle' | translate}}</div>
-      <div>
-        There are three species of zebras: the plains zebra, the mountain zebra and the Grévy's zebra. The plains zebra
-        and the mountain zebra belong to the subgenus Hippotigris, but Grévy's zebra is the sole species of subgenus
-        Dolichohippus. The latter resembles an ass, to which it is closely related, while the former two are more
-        horse-like. All three belong to the genus Equus, along with other living equids.
-      </div>
+      
     </vuestic-modal>
   </div>
 </template>
@@ -49,8 +68,16 @@ export default {
   data () {
     return {
       listLoops: 1,
-      isShown: false
+      isShown: false,
+      saved: []
     }
+  },
+  created () {
+    fetch('/getSavedArticles?'+document.cookie)
+    .then(r => r.json())
+    .then((res) => {
+      this.saved = res.articles
+    })
   },
   methods: {
     addCards () {
