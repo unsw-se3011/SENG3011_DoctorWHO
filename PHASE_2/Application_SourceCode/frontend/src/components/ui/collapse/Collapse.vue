@@ -118,7 +118,7 @@
 
 
                   </div>
-                  <div class="col-md-12 offset-md-4">
+                  <div class="col-md-12 offset-md-4" v-if="user">
                   <button class="btn btn-primary" @click="saveArticle(search_result[index_article].url, search_result[index_article].headline, search_result[index_article].main_text, search_result[index_article].date_of_publication.split('T')[0])">Save</button>
                   <button class="btn btn-primary" >Subscribe</button>
                   <p> {{ saveArticleMessage }} </p>
@@ -180,7 +180,7 @@
 
 
                   </div>
-                  <div class="col-md-12 offset-md-4">
+                  <div class="col-md-12 offset-md-4" v-if="user">
                   <button class="btn btn-primary" @click="saveArticle(news_res[index_news].url, news_res[index_news].title, news_res[index_news].description, news_res[index_news].publishedAt.split('T')[0])">Save</button>
                   <button class="btn btn-primary">Subscribe</button>
                   <p> {{ saveArticleMessage }} </p>
@@ -247,7 +247,8 @@ export default {
       newsPages: 8,
       returnedArticles: [],
       returnedNews: [],
-      saveArticleMessage: ''
+      saveArticleMessage: '',
+      user: document.cookie
     }
   },
   computed: {
