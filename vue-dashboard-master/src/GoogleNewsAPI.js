@@ -18,6 +18,7 @@ export default {
         'to': arguments[1],
         'q': arguments[2],
         'sortBy': 'publishedAt',
+        'language': 'en',
         'apiKey': '10c0fde8d4104133a3fcec0374729ade'
       }
       /*

@@ -2,6 +2,8 @@ const path = require('path')
 
 module.exports = {
   lintOnSave: false,
+  outputDir: path.resolve(__dirname, "./dist"),
+  assetsDir: "./static",
   pages: {
     index: {
       // entry for the page

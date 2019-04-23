@@ -61,37 +61,40 @@
     <!-- div v-for="article in who_res.concat(cidrap_res)" -->
 
             <vuestic-collapse>
-              <span slot="header"> Articles </span>
-              <div slot="body">
-              <div class="row">
-                <div class="col-md-12">
-                  <br/>
-                  <div class="cards-container">
-                    <!-- eslint-disable vue/valid-v-for -->
-                    <template>
-                      <vuestic-card theme="dark" v-if="search_result" v-for="index in 8">
-                        <p slot="title">{{ $t(search_result[index].headline) }}</p>
-                        {{ $t(search_result[index].date_of_publication.split('T')[0]) }}
-                        <p class="pt-3 mb-0">
-                          <button class="btn btn-warning" @click="showLargeModal(index)">
-                        {{'More Info' | translate }}
-                      </button>
-                        </p>
-                      </vuestic-card>
-                    </template>
+
+                <span slot="header"> Articles </span>
+                <div slot="body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <br/>
+                    <div class="cards-container">
+                      <!-- eslint-disable vue/valid-v-for -->
+                      <template>
+                        <vuestic-card theme="dark" v-for="(article, index) in filtedArticles">
+
+                          <p slot="title">{{ $t(article.headline) }}</p>
+                          {{ $t(article.date_of_publication.split('T')[0]) }}
+                          <p class="pt-3 mb-0">
+                            <button class="btn btn-warning" @click="showLargeModalArticles(index)">
+                          {{'More Info' | translate }}
+                        </button>
+                          </p>
+                        </vuestic-card>
+                      </template>
+                    </div>
                   </div>
-                </div>
 
                 <!--'modal.largeTitle'-->
-                <vuestic-modal :show.sync="show" v-bind:large="true" ref="largeModal" :okText="'Save' | translate"
+                <vuestic-modal :show.sync="show" v-bind:large="true" ref="largeModalArticles" :okText="'Save' | translate"
                 :cancelText="'Subscribe' | translate">
-                  <div slot="title">{{search_result[index].headline }}</div>
+                 <div v-if="search_result.length > 0">
+                  <div slot="title">{{search_result[index_article].headline }}</div>
                   <div>
-                    <p> URL: {{ search_result[index].url }} </p>
-                    <p> Date published: {{ search_result[index].date_of_publication.split('T')[0] }} </p>
-                    <p> {{ search_result[index].main_text }} </p>
+                    <p> URL: {{ search_result[index_article].url }} </p>
+                    <p> Date published: {{ search_result[index_article].date_of_publication.split('T')[0] }} </p>
+                    <p> {{ search_result[index_article].main_text }} </p>
                     <h3> Reports </h3>
-                    <div v-for="report in search_result[index].reports">
+                    <div v-for="report in search_result[index_article].reports">
                       <p v-if="report.disease.length"> Diseases: </p>
                       <ul style="list-style-type:disc;">
                         <li v-for="disease in report.disease" v-if="disease">
@@ -137,6 +140,7 @@
                   <button class="btn btn-primary">Save</button>
                   <button class="btn btn-primary">Subscribe</button>
                   </div>
+                </div>
                 </vuestic-modal>
 
                 <div class="col-md-12 d-flex align-items-center justify-content-center">
@@ -149,9 +153,11 @@
                     </div>
                   </div>
                 </div>
+
               </div>
               </div>
             </vuestic-collapse>
+            <!---->
             <vuestic-collapse @click="change">
               <span slot="header" > News </span>
               <div slot="body">
@@ -161,38 +167,11 @@
                   <div class="cards-container">
                     <!-- eslint-disable vue/valid-v-for -->
                     <template>
-                      <vuestic-card theme="dark">
-                        <p slot="title">{{ $t('News Title') }}</p>
-                        {{ $t('Published Time/Key term') }}
+                      <vuestic-card theme="dark" v-for="index_news in 8">
+                        <p slot="title">{{ $t(news_res[index_news].title) }}</p>
+                        {{ $t(news_res[index_news].publishedAt.split('T')[0]) }}
                         <p class="pt-3 mb-0">
-                          <button class="btn btn-warning" @click="showLargeModal()">
-                        {{'More Info' | translate }}
-                      </button>
-                        </p>
-                      </vuestic-card>
-                      <vuestic-card theme="dark">
-                        <p slot="title">{{ $t('News Title') }}</p>
-                        {{ $t('Published Time/Key term') }}
-                        <p class="pt-3 mb-0">
-                          <button class="btn btn-warning" @click="showLargeModal()">
-                        {{'More Info' | translate }}
-                      </button>
-                        </p>
-                      </vuestic-card>
-                      <vuestic-card theme="dark">
-                        <p slot="title">{{ $t('News Title') }}</p>
-                        {{ $t('Published Time/Key term') }}
-                        <p class="pt-3 mb-0">
-                          <button class="btn btn-warning" @click="showLargeModal()">
-                        {{'More Info' | translate }}
-                      </button>
-                        </p>
-                      </vuestic-card>
-                      <vuestic-card theme="dark">
-                        <p slot="title">{{ $t('News Title') }}</p>
-                        {{ $t('Published Time/Key term') }}
-                        <p class="pt-3 mb-0">
-                          <button class="btn btn-warning" @click="showLargeModal()">
+                          <button class="btn btn-warning" @click="showLargeModalNews(index_news)">
                         {{'More Info' | translate }}
                       </button>
                         </p>
@@ -200,6 +179,28 @@
                     </template>
                   </div>
                 </div>
+
+                <vuestic-modal :show.sync="show" v-bind:large="true" ref="largeModalNews" :okText="'Save' | translate"
+                :cancelText="'Subscribe' | translate">
+                  <div slot="title">{{news_res[index_news].title }}</div>
+                  <div>
+                    <p> author: {{ news_res[index_news].author}} </p>
+                    <p> date published: {{ news_res[index_news].publishedAt.split('T')[0] }} </p>
+                    <a v-bind:href="news_res[index_news].url"><p> url: {{news_res[index_news].url}} </p></a>
+                    <p> description: <br>{{ news_res[index_news].description }} </p>
+                    <p> content: <br>{{news_res[index_news].content}}</p>
+
+
+                  <br>
+
+
+                  </div>
+                  <div class="col-md-12 offset-md-4">
+                  <button class="btn btn-primary">Save</button>
+                  <button class="btn btn-primary">Subscribe</button>
+                  </div>
+                </vuestic-modal>
+
                 <div class="col-md-12 d-flex align-items-center justify-content-center">
                   <div class="pre-loader-container">
                     <vuestic-pre-loader v-show="isShown" class="pre-loader"></vuestic-pre-loader>
@@ -260,8 +261,26 @@ export default {
       cidrap_res: [],
       search_result: [],
       news_res: [],
-      index: 0
+      index_article: 0,
+      index_news: 0,
+      numArticles: 0,
+      pages: 8,
+      returnedArticles: []
     }
+  },
+  computed: {
+     filtedArticles: function(){
+       this.returnedArticles = []
+       let i;
+       let counter = this.pages
+       if (counter > this.search_result.length){
+         counter = this.search_result.length
+       }
+       for(i = 0;i < counter;i++){
+         this.returnedArticles.push(this.search_result[i])
+       }
+       return this.returnedArticles
+     }
   },
   created() {
     console.log('created is called')
@@ -284,11 +303,33 @@ export default {
           this.search_result = this.search_result.concat(this.cidrap_res)
         })
         .catch(err => console.log(err))
+
+
+    let today = new Date()
+    let dd = today.getDate()
+    let mm = today.getMonth()
+    let yyyy = today.getFullYear()
+
+    if(dd<10) {
+        dd = '0'+dd
+    }
+
+    if(mm<10) {
+      mm = '0'+mm
+    }
+
+    let lastMonth = yyyy + '-' + mm + '-' + dd + 'T00:00:00'
+    console.log(lastMonth)
+    if (startDateTime < lastMonth) {
+      startDateTime = lastMonth
+    }
+    console.log("keywords are")
+    console.log(this.items.keywords)
     GoogleNewsAPI.Search(startDateTime, endDateTime, this.items.keywords, this.items.location)
           .then(results => {
-            this.news_res = results
+            this.news_res = results.articles
             console.log("results are here")
-            console.log(this.news_res)
+            console.log(this.news_res[1])
           })
           .catch(err => console.log(err))
 
@@ -307,11 +348,13 @@ export default {
         this.isShown = false
         ++this.listLoops
       }, 1000)
+      this.pages = this.pages + 8
     },
-    showLargeModal (index) {
-      this.index = index
-      this.$refs.largeModal.open()
+    showLargeModalArticles (index) {
+      this.index_article = index
+      this.$refs.largeModalArticles.open()
     },
+
     getListOfLocations(){
       var Locations= new Array();
       for (var r in search_result){
@@ -357,8 +400,11 @@ export default {
     getDiseaseDistribution(){
 
     },
-    getDiseaseDevelopment(){
+    getDiseaseDevelopment(){},
 
+    showLargeModalNews (index) {
+      this.index_news = index
+      this.$refs.largeModalNews.open()
     }
   }
 }
