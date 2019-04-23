@@ -17,6 +17,7 @@
           {{ $t(`user.${option.name}`) }}
         </router-link>
       </div>
+      <div class="dropdown-item plain-link-item"><a class="plain-link" @click="logout">Logout</a></div>
     </vuestic-dropdown>
   </div>
 </template>
@@ -36,13 +37,15 @@ export default {
         {
           name: 'profile',
           redirectTo: 'cards',
-        },
-        {
-          name: 'logout',
-          redirectTo: 'dashboard',
-        },
+        }
       ],
     },
+  },
+  methods: {
+    logout () {
+      document.cookie = 'session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+      window.location.replace('/')
+    }
   }
 }
 </script>
