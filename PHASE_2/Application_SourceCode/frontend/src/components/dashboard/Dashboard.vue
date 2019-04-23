@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-md-8 offset-md-2">
       <vuestic-card theme="light">
-        <p slot="title">{{ $t('Search for the latest information about the diseases') }}</p>
+        <p slot="title">{{ $t('Search for the latest information about diseases') }}</p>
         <br/>
       <div class="form-group">
         <div class="input-group">
