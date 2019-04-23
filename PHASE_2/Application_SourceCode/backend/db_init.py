@@ -38,7 +38,9 @@ def create_tables():
 		" username VARCHAR(255),"
 		" password VARCHAR(255),"
 		" email VARCHAR(255),"
-		" name VARCHAR(255))")
+		" name VARCHAR(255),"
+                " UNIQUE(username),"
+                " UNIQUE(email))")
 	print("created Users table")
 
 	mycursor.execute("CREATE TABLE Articles"
@@ -52,7 +54,7 @@ def create_tables():
 		" (id INT AUTO_INCREMENT PRIMARY KEY,"
 		" user_id INT,"
 		" start_date VARCHAR(255),"
-		" key_term VARCHAR(255),"
+		" key_terms VARCHAR(255),"
 		" location VARCHAR(255),"
 		" FOREIGN KEY (user_id) REFERENCES Users(user_id))")
 	print("created Subscriptions table")
@@ -61,7 +63,7 @@ def create_tables():
 		" (id INT AUTO_INCREMENT PRIMARY KEY,"
 		" user_id INT,"
 		" url VARCHAR(255),"
-		" viewed BOOLEAN,"
+		" viewed BOOLEAN default false,"
 		" FOREIGN KEY (user_id) REFERENCES Users(user_id))")
 	print("created Notifications table")
 
