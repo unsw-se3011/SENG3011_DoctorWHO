@@ -138,8 +138,9 @@
 
                   </div>
                   <div class="col-md-12 offset-md-4">
-                  <button class="btn btn-primary">Save</button>
-                  <button class="btn btn-primary">Subscribe</button>
+                  <button class="btn btn-primary" @click="saveArticle(search_result[index_article].url, search_result[index_article].headline)">Save</button>
+                  <button class="btn btn-primary" >Subscribe</button>
+                  <p> {{ saveArticleMessage }} </p>
                   </div>
                 </div>
                 </vuestic-modal>
@@ -267,6 +268,7 @@ export default {
       newsPages: 8,
       returnedArticles: [],
       returnedNews: []
+      saveArticleMessage: ''
     }
   },
   computed: {
@@ -428,6 +430,26 @@ export default {
     showLargeModalNews (index) {
       this.index_news = index
       this.$refs.largeModalNews.open()
+    },
+    saveArticle (url, headline) {
+      let user_id = 1 // get user id cookie
+      // if not logged in, return error message
+      fetch('/saveArticle', {
+        method: 'POST',
+        headers: new Headers({'Accept': 'application/json', 'Content-Type': 'application/json'}),
+        body: JSON.stringify({'user_id': user_id, 'url': url, 'headline': headline})
+      }).then((r) => {
+        if (r.status === 200) {
+          this.saveArticleMessage = 'Article saved'
+        } else if (r.status === 404) {
+          this.saveArticleMessage = 'Error saving article'
+        } else if (r.status === 500) {
+          this.saveArticleMessage = 'Internal Server Error'
+        } else {
+          this.saveArticleMessage = 'Something went wrong'
+        }
+      })
+
     }
   }
 }

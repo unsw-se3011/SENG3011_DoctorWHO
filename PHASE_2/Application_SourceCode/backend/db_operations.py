@@ -49,13 +49,13 @@ def check_login(username, password):
         cursor.close()
         conn.close()
 
-# article = { user_id, url }
-def add_saved_article(article):
+# article = { user_id, url, headline }
+def save_article(article):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
     query  = ("INSERT INTO Articles "
-            "(user_id, url) "
-            "VALUES (%(user_id)s, %(url)s) ")
+            "(user_id, url, headline) "
+            "VALUES (%(user_id)s, %(url)s, %(headline)s) ")
     try:
         cursor.execute(query, article)
         insert_id = cursor.lastrowid
