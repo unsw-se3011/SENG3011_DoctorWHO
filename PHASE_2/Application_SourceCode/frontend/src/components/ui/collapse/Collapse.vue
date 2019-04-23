@@ -8,7 +8,7 @@
               <span slot="header"> Graph </span>
               <div slot="body">
                 <div class="row" v-if="items.location">
-                  <div class="col-md-12">
+                  <div class="col-md-12" v-if="items.keywords=='outbreak'">
                     <vuestic-widget
                       class="chart-widget"
                       :headerText="$t('Dieseases Distribution in ' +items.location)"
@@ -16,6 +16,15 @@
                       <vuestic-chart :data="DiseaseDistribution" type="donut"/>
                     </vuestic-widget>
                   </div>
+                  <div class="col-md-12" v-else>
+                    <vuestic-widget
+                      class="chart-widget"
+                      :headerText="$t('Development of '+ items.keywords + ' in ' + items.location +' According to Time')"
+                    >
+                      <vuestic-chart :data="DiseaseDevelopmentInLocation" type="line"/>
+                    </vuestic-widget>
+                  </div>
+                  
                 </div>
 
                 <div class="row" v-else-if="items.keywords">
