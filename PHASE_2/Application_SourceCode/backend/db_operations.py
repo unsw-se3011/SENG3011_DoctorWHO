@@ -4,7 +4,7 @@ def db_connect():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="",
+        password="password",
         database="SIDRAT"
     )
     return conn
