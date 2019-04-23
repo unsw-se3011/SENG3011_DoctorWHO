@@ -18,13 +18,13 @@
                     <div class="form" name="login">
                       <div class="form-group">
                         <div class="input-group">
-                          <input type="text" id="username" v-model="username" required="required"/>
+                          <input type="text" id="username" v-model="login_username" required="required"/>
                           <label class="control-label" for="username">{{'Username' | translate}}</label><i class="bar"></i>
                         </div>
                       </div>
                       <div class="form-group">
                         <div class="input-group">
-                          <input type="password" id="password" v-model="password" required="required"/>
+                          <input type="password" id="password" v-model="login_password" required="required"/>
                           <label class="control-label" for="password">{{'auth.password' | translate}}</label><i class="bar"></i>
                         </div>
                       </div>
@@ -104,7 +104,7 @@ import Login from '../../auth/login/Login'
 
 export default {
   name: 'app-navbar',
-  props: ['username', 'user'],
+  props: ['username'],
   components: {
     VuesticIconVuestic,
     VuesticNavbar,
@@ -116,62 +116,66 @@ export default {
   data () {
     return {
       username: '',
-      user: '',
+      user: this.$cookie.get('session'),
       name: '',
       email: '',
       password: '',
+      login_username: '',
+      login_password: '',
       error: ''
     }
   },
   methods: {
-    /*
-    clearFields () {
-      this.username= ''
-      this.name= ''
-      this.email= ''
-      this.password= ''
-      this.error= ''
-    },
-    */
     showLogInModal () {
-      // clearFields()
       if (this.$refs.SignUpModal){
+        this.username = ''
+        this.name = ''
+        this.email = ''
+        this.password = ''
+        this.error = ''
         this.$refs.SignUpModal.close()
       }
       this.$refs.LogInModal.open()
     },
     showSignUpModal() {
-      // clearFields()
       if (this.$refs.LogInModal){
+        this.login_username = ''
+        this.login_password = ''
+        this.error = ''
         this.$refs.LogInModal.close()
       }
       this.$refs.SignUpModal.open()
     },
     onSubmitLogin () {
       let namePattern = new RegExp('^[A-Za-z0-9_-]{1,255}$')
-      if (this.username.length === 0) {
+      if (this.login_username.length === 0) {
         this.error = 'Please enter username!'
-      } else if (this.password.length === 0) {
+      } else if (this.login_password.length === 0) {
         this.error = 'Please enter password!'
-      } else if (!namePattern.test(this.username)) {
+      } else if (!namePattern.test(this.login_username)) {
         this.error = 'Username is invalid, only contains alphabet and number, and at most 255 characters!'
-      } else if (!namePattern.test(this.password)) {
+      } else if (!namePattern.test(this.login_password)) {
         this.error = 'Password is invalid, only contains alphabet and number, and at most 255 characters!'
       } else {
         fetch('/auth/login', {
           method: 'POST',
           headers: new Headers({'Accept': 'application/json', 'Content-Type': 'application/json'}),
-          body: JSON.stringify({'username': this.username, 'password': this.password})
-        }).then((r) => {
-          if (r.status === 200) {
+          body: JSON.stringify({'username': this.login_username, 'password': this.login_password})
+        }).then(r => r.json())
+        .then((res) => {
+          if (res.status === 200) {
             //this.$router.push({name: 'dashboard', params: {username: this.username}})
-            this.user = this.username
-            // clearFields()
+            this.user = this.login_username
+            this.login_username = ''
+            this.login_password = ''
+            this.error = ''
             this.$refs.LogInModal.close()
             this.$refs.SignUpModal.close()
-          } else if (r.status === 404) {
+            console.log(res.cookie)
+            this.$cookie.set('session', res.cookie, {expires: 3600, domain: document.location})
+          } else if (res.status === 404) {
             this.error = 'Username/password invalid!'
-          } else if (r.status === 500) {
+          } else if (res.status === 500) {
             this.error = 'Internal Server Error'
           } else {
             this.error = 'Something went wrong'
@@ -203,7 +207,11 @@ export default {
           body: JSON.stringify({username: this.username, password: this.password, name: this.name, email: this.email})
         }).then((r) => {
           if (r.status === 200) {
-            // clearFields()
+            this.username = ''
+            this.name = ''
+            this.email = ''
+            this.password = ''
+            this.error = ''
             this.$refs.LogInModal.close()
             this.$refs.SignUpModal.close()
             this.$router.push('/')

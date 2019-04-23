@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, session
 import json
 import db_operations as db
+import secretSession as cookieSession
 
 app = Flask(__name__,
             static_folder = "../frontend/dist/static",
@@ -24,7 +25,8 @@ def login():
         if user_id < 0:
             return jsonify(message='error'), 404, {'Access-Control-Allow-Origin': '*'}
         else:
-            return jsonify(message='success', userID=user_id), 200, {'Access-Control-Allow-Origin': '*'}
+            cookie = cookieSession.encodeFlaskCookie({'userId': user_id})
+            return jsonify(message='success', status=200, cookie=cookie), 200, {'Access-Control-Allow-Origin': '*'}
         '''
         if username == 'admin' and password == 'password':
             return jsonify(message='success'), 200, {'Access-Control-Allow-Origin': '*'}
@@ -62,7 +64,7 @@ def save_article():
         url = body['url']
         headline = body['headline']
         article = {
-            'user_id': user_id,
+            'user_id': json.loads(cookieSession.decodeFlaskCookie(user_id))['userId'],
             'url': url,
             'headline': headline
         }

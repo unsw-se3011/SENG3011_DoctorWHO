@@ -39,12 +39,11 @@ export default {
         },
         {
           name: 'logout',
-          redirectTo: 'app-navbar',
-          params: {user: ''},
+          redirectTo: 'dashboard',
         },
       ],
     },
-  },
+  }
 }
 </script>
 
