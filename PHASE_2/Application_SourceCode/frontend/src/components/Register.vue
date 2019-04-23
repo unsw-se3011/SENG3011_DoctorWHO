@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import firebase from 'firebase'
 export default {
   name: 'Register',
   data: () => {
@@ -55,19 +56,45 @@ export default {
         this.error = 'Email invalid'
       } else {
         /*
-        fetch('/register', {
+        let database = firebase.database()
+        let userData = {
+          username: this.username,
+          password: this.password,
+          name: this.name,
+          email: this.email
+        }
+        let newUserKey = firebase.database().ref().child('users').push().key;
+        let updates = {}
+        updates['/users/' + newUserKey] = userData
+        firebase.database().ref().update(updates)
+        */
+        fetch('https://cidrat-seng3011.firebaseio.com/users.json', {
           method: 'POST',
           headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
           body: JSON.stringify({username: this.username, password: this.password, name: this.name, email: this.email})
         }).then((r) => {
-          if (r.status_code === 200) {
-            this.$router.push('/home')
+          console.log(r)
+          if (r.status === 200) {
+            this.$router.push('/')
+            this.error = 'Success'
           } else {
             this.error = 'Something went wrong, try different account information!'
           }
         })
-        */
-        this.error = 'Success'
+
+        fetch('https://cidrat-seng3011.firebaseio.com/users.json', {
+          method: 'POST',
+          headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+          body: JSON.stringify({username: this.username, password: this.password, name: this.name, email: this.email})
+        }).then((r) => {
+          console.log(r)
+          if (r.status === 200) {
+            this.$router.push('/')
+            this.error = 'Success'
+          } else {
+            this.error = 'Something went wrong, try different account information!'
+          }
+        })
       }
     }
   }

@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import Datetime from 'vue-datetime'
 import { Settings } from 'luxon'
+import firebase from 'firebase'
 
 // import axios from 'axios'
 import './../node_modules/bulma/css/bulma.css'
@@ -17,6 +18,17 @@ Settings.defaultLocale = 'au'
 
 // axios.create({ baseURL })
 // https://itnext.io/anyway-heres-how-to-do-ajax-api-calls-with-vue-js-e71e57d5cf12
+
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyBbq99bA8xxrdFMW_jLa2BzPQiFEEoAR8E",
+  authDomain: "cidrat-seng3011.firebaseapp.com",
+  databaseURL: "https://cidrat-seng3011.firebaseio.com",
+  projectId: "cidrat-seng3011",
+  storageBucket: "cidrat-seng3011.appspot.com",
+  messagingSenderId: "594653089795"
+};
+firebase.initializeApp(config);
 
 /* eslint-disable no-new */
 new Vue({
