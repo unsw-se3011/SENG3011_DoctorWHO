@@ -36,6 +36,7 @@
         Dolichohippus. The latter resembles an ass, to which it is closely related, while the former two are more
         horse-like. All three belong to the genus Equus, along with other living equids.
       </div>
+      
     </vuestic-modal>
   </div>
 </template>

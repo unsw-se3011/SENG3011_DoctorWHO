@@ -7,32 +7,11 @@
             <p> endDate: {{ items.end_date }} </p>
             <p> keywords: {{items.keywords }} </p>
             <p> location: {{items.location}} </p>
+            
             <vuestic-collapse>
               <span slot="header"> Graph </span>
               <div slot="body">
-                <div class="row" v-if="items.keywords&&items.location">
-                  <div class="col-md-12">
-                    <vuestic-widget
-                      class="chart-widget"
-                      :headerText="$t('Development of '+ items.keywords +' in '+items.location+' According to Time')"
-                    >
-                      <vuestic-chart :data="DiseaseDevelopmentInLocation" type="line"/>
-                    </vuestic-widget>
-                  </div>
-                </div>
-                
-                <div class="row" v-else-if="items.keywords">
-                  <div class="col-md-12">
-                    <vuestic-widget
-                      class="chart-widget"
-                      :headerText="$t('Number of People Affected by '+ items.keywords+ ' in Different Locations')"
-                    >
-                      <vuestic-chart :data="LocationDistribution" type="donut"/>
-                    </vuestic-widget>
-                  </div>
-                </div>
-
-                <div class="row" v-else-if="items.location">
+                <div class="row" v-if="items.location">
                   <div class="col-md-12">
                     <vuestic-widget
                       class="chart-widget"
@@ -42,17 +21,20 @@
                     </vuestic-widget>
                   </div>
                 </div>
-
-                <div class="row" v-else>
+                <div class="row" v-else-if="items.keywords">
                   <div class="col-md-12">
                     <vuestic-widget
                       class="chart-widget"
-                      :headerText="$t('Development of Diseases According to Time')"
+                      :headerText="$t('Development of '+ items.keywords +' According to Time')"
                     >
-                      <vuestic-chart :data="DiseaseDevelopment" type="line"/>
+                      <vuestic-chart :data="DiseaseDevelopmentInLocation" type="line"/>
                     </vuestic-widget>
                   </div>
                 </div>
+                
+
+                
+
                 
               </div>
             </vuestic-collapse>
@@ -223,15 +205,17 @@
 <script>
 import VuesticCard from '../../../vuestic-theme/vuestic-components/vuestic-card/VuesticCard'
 import { getLineChartData } from '../../../data/charts/LineChartData'
-//import DonutChartData from '../../../data/charts/DonutChartData'
+import DonutChartData from '../../../data/charts/DonutChartData'
+import utils from 'services/utils'
 import store from 'vuex-store'
+
 import SidebarLink from '../../admin/app-sidebar/components/SidebarLink'
 
 import WhoAPI from '@/WhoAPI'
 import CidrapAPI from '@/CidrapAPI'
 import GoogleNewsAPI from '@/GoogleNewsAPI'
 
-let palette = store.getters.palette
+
 
 export default {
   name: 'collapse',
@@ -244,19 +228,11 @@ export default {
     return {
       listLoops: 1,
       isShown: false,
-      DiseaseDevelopmentInLocation: getDiseaseDevelopmentInLocation(),
-      LocationDistribution: getLocationDistribution(),
-      DiseaseDistribution: getDiseaseDistribution(),
-      DiseaseDevelopment: getDiseaseDevelopment(),
-      /*lineChartData: getLineChartData(),
-      donutChartData: {
-        labels: ['North America', 'South America', 'Australia'],
-        datasets: [{
-          label: 'Population (millions)',
-          backgroundColor: [palette.danger, palette.info, palette.success],
-          data: [2478, 5267, 734]
-        }]
-      },*/
+      DiseaseDevelopmentInLocation: null,
+      DiseaseDistribution: null,
+      DiseaseList: [],
+      DonutChartData,
+
       who_res: [],
       cidrap_res: [],
       search_result: [],
@@ -286,11 +262,6 @@ export default {
     console.log('created is called')
     let startDateTime = this.items.start_date + 'T00:00:00'
     let endDateTime = this.items.end_date + 'T00:00:00'
-
-    console.log(startDateTime)
-    console.log(endDateTime)
-    console.log(this.items.keywords)
-    console.log(this.items.location)
     WhoAPI.Search(startDateTime, endDateTime, this.items.keywords, this.items.location)
         .then(response => {
           this.who_res = response
@@ -301,6 +272,9 @@ export default {
         .then(results => {
           this.cidrap_res = results
           this.search_result = this.search_result.concat(this.cidrap_res)
+          this.DiseaseDevelopmentInLocation = this.getDiseaseDevelopmentInLocation(this.search_result);
+          this.DiseaseList = this.getListOfDiseases(this.search_result);
+          this.DiseaseDistribution = this.getDiseaseDistribution(this.search_result);
         })
         .catch(err => console.log(err))
 
@@ -325,6 +299,9 @@ export default {
     }
     console.log("keywords are")
     console.log(this.items.keywords)
+    if (!this.items.keywords){
+      this.items.keywords = 'outbreak'
+    }
     GoogleNewsAPI.Search(startDateTime, endDateTime, this.items.keywords, this.items.location)
           .then(results => {
             this.news_res = results.articles
@@ -332,16 +309,10 @@ export default {
             console.log(this.news_res[1])
           })
           .catch(err => console.log(err))
-
+ 
   },
   methods: {
-    refreshData () {
-      //this.lineChartData = getLineChartData()
-      this.DiseaseDevelopmentInLocation = getDiseaseDevelopmentInLocation();
-      this.LocationDistribution = getLocationDistribution();
-      this.DiseaseDistribution = getDiseaseDistribution();
-      this.DiseaseDevelopment = getDiseaseDevelopment();
-    },
+    
     addCards () {
       this.isShown = true
       setTimeout(() => {
@@ -354,11 +325,15 @@ export default {
       this.index_article = index
       this.$refs.largeModalArticles.open()
     },
+    showLargeModalNews (index) {
+      this.index_news = index
+      this.$refs.largeModalNews.open()
+    },
 
     getListOfLocations(){
       var Locations= new Array();
       for (var r in search_result){
-          var location;
+          var location = null;
           if (r.reports.reported_events.location.country){
             location = r.reports.reported_events.location.country;
           }else if(r.reports.reported_events.location.location_name){
@@ -370,42 +345,132 @@ export default {
       }
       return Locations;
     },
-    getListOfDiseases(){
+    //getListOfDiseases
+    getListOfDiseases(results){
       var Diseases= new Array();
-      for (var r in search_result){
-        for (var d in r.reports.disease){
-          if (!Diseases.includes(d)){
-            Diseases.push(d);
-          }
-        }
-      }
+      results.forEach(function(result){
+       if (result != null){
+          result.reports.forEach(function(report){
+            if (report != null){
+                report.disease.forEach(function(d){
+                if (!Diseases.includes(d)){
+                  Diseases.push(d);
+                }
+            });
+            }
+            
+        });
+       }
+       
+
+      });
       return Diseases;
     },
-    getDiseaseDevelopmentInLocation(){
-      return{
-        labels: months.splice(0, size),
+    getListOfDates(){
+      var getDates = function(startDate, endDate) {
+        var dates = [],
+        currentDate = startDate,
+        addDays = function(days) {
+          var date = new Date(this.valueOf());
+          date.setDate(date.getDate() + days);
+          
+          return date;
+        };
+        while (currentDate <= endDate) {
+          let dd = currentDate.getDate()
+          let mm = currentDate.getMonth()+1
+          let yyyy = currentDate.getFullYear()
+
+          if(dd<10) {
+              dd = '0'+dd
+          }
+
+          if(mm<10) {
+            mm = '0'+mm
+          }
+
+          let cd = yyyy + '-' + mm + '-' + dd
+          dates.push(cd);
+          currentDate = addDays.call(currentDate, 1);
+       
+        }
+        return dates;
+      };
+      var start = new Date(this.items.start_date);
+      var end = new Date(this.items.end_date);
+    
+      
+      var dates = getDates(start, end);                                                                                                           
+       
+      return dates;
+    },
+    getDiseaseDevelopmentInLocation(results){
+      let palette = store.getters.palette
+      var Dates = this.getListOfDates();
+      var num_of_reports = new Array(Dates.length).fill(0);
+      var i = 0;
+      Dates.forEach(function(date) {
+        
+          results.forEach(function(result){
+              if (result != null){
+                  if (result.date_of_publication.split('T')[0] == date){
+                    num_of_reports[i]++;       
+                  }
+              }
+              
+          });
+          i++;
+      });
+          
+      return {
+        labels: Dates,
         datasets: [
           {
-            label: yLabels[0],
-            backgroundColor: utils.hex2rgb(palette.primary, 0.6).css,
+            label: "Reports",
+            backgroundColor: utils.hex2rgb(palette.info, 0.6).css,
             borderColor: palette.transparent,
-            data: generateArray(size),
+            data: num_of_reports,
           }
         ]
       }
     },
-    getLocationDistribution(){
+    getDiseaseDistribution(results)
+    {
+      let palette = store.getters.palette
+      var Diseases = this.DiseaseList;
+      var num_of_reports = new Array(Diseases.length).fill(0);
+      var i = 0;
+      Diseases.forEach(function(disease) { 
+          results.forEach(function(result){
+            if (result != null){
+                result.reports.forEach(function(report){
+                  if (report != null){
+                    report.disease.forEach(function(d){
+                        if (d == disease){
+                          num_of_reports[i]++;
+                        }
+                    });
+                      
+                  }
+                  
+              }); 
+            }
+               
+          });
+          i++;
+      });
 
+      return {
+        labels: Diseases,
+        datasets: [{
+          label: 'Reports',
+          backgroundColor: [palette.danger, palette.info, palette.success],
+          data: num_of_reports,
+        }]
+      }
     },
-    getDiseaseDistribution(){
 
-    },
-    getDiseaseDevelopment(){},
 
-    showLargeModalNews (index) {
-      this.index_news = index
-      this.$refs.largeModalNews.open()
-    }
   }
 }
 </script>
