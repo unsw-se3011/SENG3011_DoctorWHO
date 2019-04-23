@@ -7,6 +7,7 @@
             <p> endDate: {{ items.end_date }} </p>
             <p> keywords: {{items.keywords }} </p>
             <p> location: {{items.location}} </p>
+            <!--
             <vuestic-collapse>
               <span slot="header"> Graph </span>
               <div slot="body">
@@ -20,7 +21,7 @@
                     </vuestic-widget>
                   </div>
                 </div>
-                
+
                 <div class="row" v-else-if="items.keywords">
                   <div class="col-md-12">
                     <vuestic-widget
@@ -53,10 +54,10 @@
                     </vuestic-widget>
                   </div>
                 </div>
-                
+
               </div>
             </vuestic-collapse>
-            
+          -->
 
     <!-- div v-for="article in who_res.concat(cidrap_res)" -->
 
@@ -247,10 +248,6 @@ export default {
     return {
       listLoops: 1,
       isShown: false,
-      DiseaseDevelopmentInLocation: getDiseaseDevelopmentInLocation(),
-      LocationDistribution: getLocationDistribution(),
-      DiseaseDistribution: getDiseaseDistribution(),
-      DiseaseDevelopment: getDiseaseDevelopment(),
       /*lineChartData: getLineChartData(),
       donutChartData: {
         labels: ['North America', 'South America', 'Australia'],
@@ -394,7 +391,7 @@ export default {
           }
           if (!Locations.includes(location)){
             Locations.push(location);
-          } 
+          }
       }
       return Locations;
     },
