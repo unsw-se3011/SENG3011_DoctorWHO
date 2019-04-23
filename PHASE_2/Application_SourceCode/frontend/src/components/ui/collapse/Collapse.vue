@@ -138,7 +138,7 @@
 
                   </div>
                   <div class="col-md-12 offset-md-4">
-                  <button class="btn btn-primary" @click="saveArticle(search_result[index_article].url, search_result[index_article].headline, search_result[index_article].main_text)">Save</button>
+                  <button class="btn btn-primary" @click="saveArticle(search_result[index_article].url, search_result[index_article].headline, search_result[index_article].main_text, search_result[index_article].date_of_publication.split('T')[0])">Save</button>
                   <button class="btn btn-primary" >Subscribe</button>
                   <p> {{ saveArticleMessage }} </p>
                   </div>
@@ -200,7 +200,7 @@
 
                   </div>
                   <div class="col-md-12 offset-md-4">
-                  <button class="btn btn-primary" @click="saveArticle(news_res[index_news].url, news_res[index_news].title, news_res[index_news].description)">Save</button>
+                  <button class="btn btn-primary" @click="saveArticle(news_res[index_news].url, news_res[index_news].title, news_res[index_news].description, news_res[index_news].publishedAt.split('T')[0])">Save</button>
                   <button class="btn btn-primary">Subscribe</button>
                   <p> {{ saveArticleMessage }} </p>
                   </div>
@@ -432,12 +432,12 @@ export default {
       this.index_news = index
       this.$refs.largeModalNews.open()
     },
-    saveArticle (url, headline, text) {
+    saveArticle (url, headline, text, date) {
       // if not logged in, return error message
       fetch('/saveArticle', {
         method: 'POST',
         headers: new Headers({'Accept': 'application/json', 'Content-Type': 'application/json'}),
-       body: JSON.stringify({'user_id': document.cookie, 'url': url, 'headline': headline, 'text': text})
+       body: JSON.stringify({'user_id': document.cookie, 'url': url, 'headline': headline, 'text': text, 'date': date})
       }).then((r) => {
         if (r.status === 200) {
           //this.saveArticleMessage = 'Article saved'

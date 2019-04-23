@@ -59,12 +59,14 @@ def save_article():
         url = body['url']
         text = body['text']
         headline = body['headline']
+        date = body['date']
         user_id = cookieSession.decodeFlaskCookie(sess[len('session='):])['userId']
         article = {
             'user_id': user_id, 
             'url': url,
             'headline': headline,
-            'text': text
+            'text': text,
+            'date': date
         }
         print(article)
         if db.save_article(article) > 0:

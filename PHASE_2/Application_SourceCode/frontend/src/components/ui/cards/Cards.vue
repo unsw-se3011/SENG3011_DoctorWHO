@@ -28,6 +28,7 @@
               <vuestic-card theme="dark" v-for="(article, index) in saved">
                 <p slot="title">{{ $t(article.headline) }}</p>
                 <p>url: </p><a v-bind:href="article.url"><p> {{article.url}} </p></a>
+                <p> date published: {{ article.date }} </p>
                 <p v-if="article.text"> content: <br>{{article.text}}</p>
                 <p class="pt-3 mb-0">
                   <button class="btn btn-warning" @click="showLargeModalArticles(index)">

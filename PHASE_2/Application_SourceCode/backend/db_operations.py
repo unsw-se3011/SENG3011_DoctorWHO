@@ -54,8 +54,8 @@ def save_article(article):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
     query  = ("INSERT INTO Articles "
-            "(user_id, url, headline, text) "
-            "VALUES (%(user_id)s, %(url)s, %(headline)s, %(text)s) ")
+            "(user_id, url, headline, text, date) "
+            "VALUES (%(user_id)s, %(url)s, %(headline)s, %(text)s, %(date)s) ")
     try:
         cursor.execute(query, article)
         insert_id = cursor.lastrowid

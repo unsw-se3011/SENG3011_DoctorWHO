@@ -49,6 +49,7 @@ def create_tables():
 		" url VARCHAR(255),"
 		" headline VARCHAR(255),"
         " text VARCHAR(5000),"
+        " date VARCHAR(20),"
                 " UNIQUE(url,headline),"
 		" FOREIGN KEY (user_id) REFERENCES Users(user_id))")
 	print("created Articles table")
