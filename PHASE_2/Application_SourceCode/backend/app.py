@@ -63,8 +63,10 @@ def save_article():
         user_id = body['user_id']
         url = body['url']
         headline = body['headline']
+        print(user_id)
+        sess = json.loads(cookieSession.decodeFlaskCookie(user_id))['userId']
         article = {
-            'user_id': json.loads(cookieSession.decodeFlaskCookie(user_id))['userId'],
+            'user_id': sess, 
             'url': url,
             'headline': headline
         }
