@@ -24,16 +24,10 @@ def login():
         user_id = db.check_login(username, password)
         print("login with " + str(user_id))
         if user_id < 0:
-            return jsonify(message='error'), 404, {'Access-Control-Allow-Origin': '*'}
+            return jsonify(message='error', status=404), 404#, {'Access-Control-Allow-Origin': '*'}
         else:
             cookie = cookieSession.encodeFlaskCookie({'userId': user_id})
-            return jsonify(message='success', status=200, cookie=cookie), 200, {'Access-Control-Allow-Origin': '*'}
-        '''
-        if username == 'admin' and password == 'password':
-            return jsonify(message='success'), 200, {'Access-Control-Allow-Origin': '*'}
-        else:
-            return jsonify(message='error'), 404, {'Access-Control-Allow-Origin': '*'}
-        '''
+            return jsonify(message='success', status=200, cookie=cookie), 200#, {'Access-Control-Allow-Origin': '*'}
     return render_template("index.html")
 
 @app.route('/auth/signup', methods = ['POST'])
@@ -52,9 +46,9 @@ def register():
         }
         print(account)
         if db.add_user(account) > 0:
-            return jsonify(message='success'), 200, {'Access-Control-Allow-Origin': '*'}
+            return jsonify(message='success'), 200#, {'Access-Control-Allow-Origin': '*'}
         else:
-            return jsonify(message='error: username or email is taken'), 404, {'Access-Control-Allow-Origin': '*'}
+            return jsonify(message='error: username or email is taken'), 404#, {'Access-Control-Allow-Origin': '*'}
     return render_template("index.html")
 
 @app.route('/saveArticle', methods = ['POST'])
@@ -72,9 +66,9 @@ def save_article():
         }
         print(article)
         if db.save_article(article) > 0:
-            return jsonify(message='success'), 200, {'Access-Control-Allow-Origin': '*'}
+            return jsonify(message='success'), 200#, {'Access-Control-Allow-Origin': '*'}
         else:
-            return jsonify(message='error'), 404, {'Access-Control-Allow-Origin': '*'}
+            return jsonify(message='error'), 404#, {'Access-Control-Allow-Origin': '*'}
 
 @app.route('/getSavedArticles', methods = ['GET'])
 def get_saved_articles():
