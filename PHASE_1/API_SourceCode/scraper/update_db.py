@@ -444,8 +444,6 @@ def search_event(event):
     return res
 """
 
-
-
 def search_location_name(location):
     conn   = db_connect()
     cursor = conn.cursor(buffered=True)
